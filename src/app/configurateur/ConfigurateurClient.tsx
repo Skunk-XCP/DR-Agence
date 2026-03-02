@@ -28,6 +28,10 @@ type SubmitState = {
   message: string;
 };
 
+type QuoteApiErrorResponse = {
+  error?: unknown;
+};
+
 const eur = new Intl.NumberFormat("fr-FR", {
   style: "currency",
   currency: "EUR",
@@ -37,6 +41,22 @@ const eur = new Intl.NumberFormat("fr-FR", {
 const formatMoney = (value: number) => eur.format(value);
 const formatDays = (value: number) => `${value} jours`;
 const quoteMessageRegex = /^(?!.*[<>])[\s\S]{20,3000}$/;
+const QUOTE_API_URL =
+  process.env.NEXT_PUBLIC_QUOTE_API_URL ??
+  "https://quote-mailer-worker.skunk-xcp.workers.dev/api/quote";
+
+const readSubmitError = async (response: Response): Promise<string> => {
+  try {
+    const result = (await response.json()) as QuoteApiErrorResponse;
+    if (typeof result.error === "string" && result.error.trim().length > 0) {
+      return result.error;
+    }
+  } catch {
+    // Ignore JSON parse errors and fallback to HTTP status.
+  }
+
+  return `HTTP ${response.status}`;
+};
 
 export default function ConfigurateurClient({ businessType, siteType }: Props) {
   const sections = useMemo(() => getOptionsFor(businessType, siteType), [businessType, siteType]);
@@ -161,14 +181,14 @@ export default function ConfigurateurClient({ businessType, siteType }: Props) {
       siret: siret.trim(),
       businessType,
       siteType,
-      selectedOptions: selectedLines.map((line) => ({ id: line.id, label: line.label })),
+      selectedOptions: selectedLines.map((line) => line.label),
       totalPrice,
       totalDays,
       message: normalizedMessage
     };
 
     try {
-      const response = await fetch("/api/quote", {
+      const response = await fetch(QUOTE_API_URL, {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
@@ -176,12 +196,11 @@ export default function ConfigurateurClient({ businessType, siteType }: Props) {
         body: JSON.stringify(payload)
       });
 
-      const result = (await response.json()) as { ok?: boolean; error?: string };
-
       if (!response.ok) {
+        const errorMessage = await readSubmitError(response);
         setSubmitState({
           type: "error",
-          message: result.error ?? "Erreur lors de l'envoi."
+          message: `Erreur d'envoi: ${errorMessage}`
         });
         return;
       }
@@ -193,7 +212,7 @@ export default function ConfigurateurClient({ businessType, siteType }: Props) {
     } catch {
       setSubmitState({
         type: "error",
-        message: "Erreur reseau lors de l'envoi."
+        message: "Erreur d'envoi: erreur reseau."
       });
     } finally {
       setIsSubmitting(false);

@@ -11,6 +11,7 @@ type QuotePayload = {
   businessName?: unknown;
   email?: unknown;
   phone?: unknown;
+  siret?: unknown;
   businessType?: unknown;
   siteType?: unknown;
   selectedOptions?: unknown;
@@ -46,8 +47,34 @@ const isNonEmptyString = (value: unknown): value is string =>
 const isValidNonNegativeNumber = (value: unknown): value is number =>
   typeof value === "number" && Number.isFinite(value) && value >= 0;
 
-const isStringArray = (value: unknown): value is string[] =>
-  Array.isArray(value) && value.every((item) => typeof item === "string");
+type OptionLike = string | { label?: unknown };
+
+const normalizeSelectedOptions = (value: unknown): string[] | null => {
+  if (!Array.isArray(value)) {
+    return null;
+  }
+
+  const normalized = value
+    .map((item: OptionLike) => {
+      if (typeof item === "string") {
+        return item.trim();
+      }
+
+      if (
+        typeof item === "object" &&
+        item !== null &&
+        "label" in item &&
+        typeof item.label === "string"
+      ) {
+        return item.label.trim();
+      }
+
+      return "";
+    })
+    .filter((item) => item.length > 0);
+
+  return normalized;
+};
 
 const getClientIp = (request: Request): string => request.headers.get("CF-Connecting-IP") ?? "";
 
@@ -98,36 +125,108 @@ const sendResendEmail = async (apiKey: string, payload: ResendEmailPayload): Pro
 const normalizeOptions = (options: string[]): string =>
   options.length > 0 ? options.map((option) => `- ${option}`).join("\n") : "- Aucune option";
 
+const normalizeInternalOptions = (options: string[]): string =>
+  options.length > 0 ? options.map((option) => `- ${option}`).join("\n") : "Aucune";
+
+const BUSINESS_TYPE_LABELS: Record<string, string> = {
+  snack: "Restauration rapide / snack",
+  restaurant: "Restaurant independant",
+  medical: "Sante (cabinet / dentaire / paramedical)",
+  gastro: "Gastronomique / haut de gamme",
+  artisan: "Artisan (BTP / services)",
+  salon: "Salon (coiffure / esthetique)",
+  coach: "Coach / independant",
+  tpe: "TPE / PME (presence pro)"
+};
+
+const SITE_TYPE_LABELS: Record<string, string> = {
+  vitrine: "Site vitrine",
+  backend: "Vitrine + fonctionnalités"
+};
+
+const getBusinessTypeLabel = (businessType: string): string =>
+  BUSINESS_TYPE_LABELS[businessType] ?? businessType;
+
+const getSiteTypeLabel = (siteType: string): string => SITE_TYPE_LABELS[siteType] ?? siteType;
+
+const buildGeneratedMessageBlock = (payload: {
+  clientName: string;
+  businessName: string;
+  email: string;
+  phone: string;
+  businessTypeLabel: string;
+  siteTypeLabel: string;
+  selectedOptions: string[];
+}): string => {
+  const businessNameLine = payload.businessName ? ` – ${payload.businessName}` : "";
+  const optionsBlock =
+    payload.selectedOptions.length > 0
+      ? `Je souhaite inclure les options suivantes :\n${payload.selectedOptions.map((option) => `- ${option}`).join("\n")}`
+      : "Je n’ai pas d’option supplémentaire pour le moment.";
+  const clientPhoneLine = payload.phone ? `\n${payload.phone}` : "";
+
+  return [
+    "Bonjour,",
+    "",
+    `Je souhaiterais obtenir un devis pour la création d’un ${payload.siteTypeLabel} pour mon activité (${payload.businessTypeLabel}${businessNameLine}).`,
+    "",
+    optionsBlock,
+    "",
+    "Dans l’attente de votre retour,",
+    "Cordialement,",
+    payload.clientName,
+    "",
+    `${payload.email}${clientPhoneLine}`
+  ].join("\n");
+};
+
 const buildMainEmailText = (payload: {
   clientName: string;
   businessName: string;
   email: string;
   phone: string;
+  siret: string;
   businessType: string;
   siteType: string;
   selectedOptions: string[];
   totalPrice: number;
   totalDays: number;
-  message: string;
 }): string => {
+  const businessTypeLabel = getBusinessTypeLabel(payload.businessType);
+  const siteTypeLabel = getSiteTypeLabel(payload.siteType);
+  const generatedMessage = buildGeneratedMessageBlock({
+    clientName: payload.clientName,
+    businessName: payload.businessName,
+    email: payload.email,
+    phone: payload.phone,
+    businessTypeLabel,
+    siteTypeLabel,
+    selectedOptions: payload.selectedOptions
+  });
+
   return [
-    "Nouvelle demande de devis",
-    "",
+    "INFOS",
     `Client: ${payload.clientName}`,
-    `Etablissement: ${payload.businessName}`,
-    `Email client: ${payload.email}`,
-    `Telephone: ${payload.phone || "Non renseigne"}`,
-    `Type de business: ${payload.businessType}`,
-    `Type de site: ${payload.siteType}`,
+    `Établissement: ${payload.businessName}`,
+    `Email: ${payload.email}`,
+    `Téléphone: ${payload.phone || "—"}`,
+    `SIRET: ${payload.siret || "—"}`,
     "",
-    "Options selectionnees:",
-    normalizeOptions(payload.selectedOptions),
+    "BASE",
+    `Type de commerce: ${businessTypeLabel}`,
+    `Type de site: ${siteTypeLabel}`,
     "",
-    `Total estime: ${payload.totalPrice}`,
-    `Delai estime: ${payload.totalDays} jours`,
+    "OPTIONS",
+    normalizeInternalOptions(payload.selectedOptions),
     "",
-    "Message client:",
-    payload.message
+    "ESTIMATION",
+    `Total: ${payload.totalPrice} €`,
+    `Délai: ${payload.totalDays} jours`,
+    "",
+    "_____________________________________________________________________________",
+    "",
+    "",
+    generatedMessage
   ].join("\n");
 };
 
@@ -143,13 +242,14 @@ const buildReceiptEmailText = (payload: {
     "",
     "Nous avons bien recu votre demande de devis.",
     "",
-    "Recapitulatif:",
+    "Récapitulatif:",
     normalizeOptions(payload.selectedOptions),
-    `Total estime: ${payload.totalPrice}`,
-    `Delai estime: ${payload.totalDays} jours`,
+    `Total estimé: ${payload.totalPrice} €`,
+    `Delai estimé: ${payload.totalDays} jours`,
     "",
     "Ce message n'est pas un devis final.",
-    "Il s'agit uniquement d'un recapitulatif de votre demande.",
+    "Il s'agit uniquement d'un récapitulatif de votre demande.",
+    "Ne pas répondre à ce mail.",
     "",
     "Merci."
   ].join("\n");
@@ -208,8 +308,9 @@ export default {
         return json({ error: "siteType is required" }, 400);
       }
 
-      if (!isStringArray(body.selectedOptions)) {
-        return json({ error: "selectedOptions must be an array of strings" }, 400);
+      const selectedOptions = normalizeSelectedOptions(body.selectedOptions);
+      if (!selectedOptions) {
+        return json({ error: "selectedOptions must be an array of strings or {label}" }, 400);
       }
 
       if (!isValidNonNegativeNumber(body.totalPrice)) {
@@ -218,10 +319,6 @@ export default {
 
       if (!isValidNonNegativeNumber(body.totalDays)) {
         return json({ error: "totalDays must be a number >= 0" }, 400);
-      }
-
-      if (!isNonEmptyString(body.message)) {
-        return json({ error: "message is required" }, 400);
       }
 
       const turnstileSecret = env.TURNSTILE_SECRET_KEY?.trim();
@@ -246,19 +343,20 @@ export default {
         businessName: body.businessName.trim(),
         email: body.email.trim(),
         phone: typeof body.phone === "string" ? body.phone.trim() : "",
+        siret: typeof body.siret === "string" ? body.siret.trim() : "",
         businessType: body.businessType.trim(),
         siteType: body.siteType.trim(),
-        selectedOptions: body.selectedOptions,
+        selectedOptions,
         totalPrice: body.totalPrice,
         totalDays: body.totalDays,
-        message: body.message.trim()
+        message: typeof body.message === "string" ? body.message.trim() : ""
       };
 
       await sendResendEmail(resendApiKey, {
         from: fromEmail,
         to: [quoteToEmail],
         reply_to: normalizedPayload.email,
-        subject: `Demande de devis – ${normalizedPayload.siteType} – ${normalizedPayload.businessName}`,
+        subject: `Nouveau lead devis – ${normalizedPayload.businessName} – ${normalizedPayload.siteType} – ${normalizedPayload.totalPrice}€ / ${normalizedPayload.totalDays}j`,
         text: buildMainEmailText(normalizedPayload)
       });
 

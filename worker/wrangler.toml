@@ -8,5 +8,5 @@ compatibility_date = "2026-03-02"
 
 [vars]
 QUOTE_TO_EMAIL = "contact@donatien-rouzeirol.fr"
-FROM_EMAIL = "contact@send.donatien-rouzeirol.fr"
+FROM_EMAIL = "contact@donatien-rouzeirol.fr"
 SEND_CUSTOMER_RECEIPT = "true"

@@ -17,31 +17,29 @@ export const buildQuoteMessage = ({
   phone,
   businessTypeLabel,
   siteTypeLabel,
-  optionLabels,
-  totalPrice,
-  totalDays
+  optionLabels
 }: BuildQuoteMessageParams): string => {
+  const normalizedBusinessName = businessName.trim();
+  const businessNameLine = normalizedBusinessName ? ` – ${normalizedBusinessName}` : "";
+  const normalizedPhone = phone?.trim() ?? "";
+  const clientPhoneLine = normalizedPhone ? `\n${normalizedPhone}` : "";
+
   const optionsBlock =
     optionLabels.length > 0
-      ? optionLabels.map((label) => `- ${label}`).join("\n")
-      : "Aucune option supplémentaire pour le moment.";
-
-  const contactLine = phone?.trim() ? `${email} (${phone.trim()})` : email;
+      ? `Je souhaite inclure les options suivantes :\n${optionLabels.map((label) => `- ${label}`).join("\n")}`
+      : "Je n’ai pas d’option supplémentaire pour le moment.";
 
   return [
-    `Objet : Demande de devis - ${siteTypeLabel} - ${businessName}`,
-    "",
     "Bonjour,",
-    `Je m'appelle ${clientName}, propriétaire de ${businessName}.`,
-    `Je souhaite obtenir un devis pour la création d'un ${siteTypeLabel}.`,
-    `Base sélectionnée : ${businessTypeLabel} - ${siteTypeLabel}`,
-    "Options souhaitées :",
+    "",
+    `Je souhaiterais obtenir un devis pour la création d’un ${siteTypeLabel} pour mon activité (${businessTypeLabel}${businessNameLine}).`,
+    "",
     optionsBlock,
-    `Estimation actuelle : ${totalPrice} €`,
-    `Délai estimé : ${totalDays} jours`,
-    "Pouvez-vous me recontacter pour valider le périmètre et finaliser le devis ?",
-    `Contact : ${contactLine}`,
-    "Merci,",
-    clientName
+    "",
+    "Dans l’attente de votre retour,",
+    "Cordialement,",
+    clientName,
+    "",
+    `${email}${clientPhoneLine}`
   ].join("\n");
 };
