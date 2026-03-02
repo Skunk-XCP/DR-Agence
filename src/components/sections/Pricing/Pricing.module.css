@@ -1,0 +1,100 @@
+.layout {
+  display: grid;
+  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+  gap: 2rem;
+  align-items: start;
+}
+
+.form {
+  display: grid;
+  gap: 1rem;
+  padding: 1.6rem;
+  border-radius: var(--radius);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-sm);
+}
+
+.label {
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--muted);
+}
+
+.select {
+  width: 100%;
+  padding: 0.75rem 0.9rem;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text);
+  font-size: 0.95rem;
+}
+
+.select:focus {
+  outline: 3px solid var(--focus);
+  outline-offset: 2px;
+  border-color: var(--accent-border);
+}
+
+.configureAction {
+  margin-top: 0.5rem;
+}
+
+.card {
+  display: grid;
+  gap: 1rem;
+}
+
+.neutral {
+  display: grid;
+  gap: 1.1rem;
+}
+
+.cardHeader {
+  display: grid;
+  gap: 0.4rem;
+}
+
+.cardTitle {
+  margin: 0;
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+.cardPrice {
+  margin: 0;
+  font-size: 1.3rem;
+  font-weight: 600;
+}
+
+.cardTimeline {
+  margin: 0;
+  color: var(--muted);
+}
+
+.cardList {
+  margin: 0;
+  padding-left: 1.1rem;
+  display: grid;
+  gap: 0.5rem;
+  color: var(--muted);
+}
+
+.cardNote {
+  margin: 0;
+  color: var(--muted);
+}
+
+.cardDisclaimer {
+  margin: 0;
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+
+@media (max-width: 900px) {
+  .layout {
+    grid-template-columns: 1fr;
+  }
+}

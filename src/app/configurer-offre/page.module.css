@@ -1,0 +1,17 @@
+.page {
+  min-height: calc(100vh - 2rem);
+  padding: 6rem 1rem 3rem;
+}
+
+.hero {
+  width: min(1100px, 100%);
+  margin: 0 auto;
+  display: grid;
+  gap: 1rem;
+}
+
+.title {
+  margin: 0;
+  font-size: clamp(2rem, 3.4vw, 3.4rem);
+  font-family: var(--font-display);
+}

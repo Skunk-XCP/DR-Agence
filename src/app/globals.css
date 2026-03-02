@@ -1,26 +1,172 @@
-@import "tailwindcss";
+﻿@font-face {
+  font-family: "Manrope";
+  src: url("/assets/fonts/manrope-latin.woff2") format("woff2");
+  font-weight: 300 800;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Playfair Display";
+  src: url("/assets/fonts/playfair-display-latin.woff2") format("woff2");
+  font-weight: 400 900;
+  font-style: normal;
+  font-display: swap;
+}
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --font-body: "Manrope", "Segoe UI", sans-serif;
+  --font-display: "Playfair Display", "Georgia", serif;
+  --bg: #f5f3ee;
+  --bg2: #eef2f4;
+  --surface: #ffffff;
+  --surface2: #f6f7f9;
+  --text: #0b1220;
+  --muted: #334155;
+  --border: rgba(11, 18, 32, 0.1);
+  --accent: #0a5d57;
+  --accentHover: #084e49;
+  --focus: rgba(15, 118, 110, 0.28);
+  --focus-strong: #0a5d57;
+  --shadow-sm: 0 8px 22px rgba(11, 18, 32, 0.08);
+  --shadow-md: 0 16px 46px rgba(11, 18, 32, 0.12);
+  --radius: 18px;
+  --accent-soft: rgba(15, 118, 110, 0.12);
+  --accent-border: rgba(15, 118, 110, 0.28);
+  --nav-bg: rgba(245, 243, 238, 0.72);
+  --surface-veil: rgba(255, 255, 255, 0.6);
+  --sheen: rgba(255, 255, 255, 0.65);
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+* {
+  box-sizing: border-box;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html,
+body {
+  height: 100%;
+}
+
+html {
+  scroll-behavior: smooth;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  margin: 0;
+  font-family: var(--font-body);
+  color: var(--text);
+  background: linear-gradient(135deg, var(--bg), var(--bg2));
+  min-height: 100vh;
+  position: relative;
+  overflow-x: hidden;
 }
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background:
+    radial-gradient(900px 520px at 18% 12%, rgba(15, 118, 110, 0.1), transparent 60%),
+    radial-gradient(900px 520px at 70% 82%, rgba(196, 122, 74, 0.12), transparent 60%),
+    radial-gradient(700px 420px at 55% 18%, rgba(255, 255, 255, 0.55), transparent 65%),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)' opacity='.25'/%3E%3C/svg%3E");
+  background-repeat: no-repeat, no-repeat, no-repeat, repeat;
+  background-size: auto, auto, auto, 260px 260px;
+  opacity: 0.2;
+  mix-blend-mode: multiply;
+}
+
+@supports not (mix-blend-mode: multiply) {
+  body::before {
+    opacity: 0.12;
+  }
+}
+
+a {
+  color: var(--accent);
+}
+
+a:hover {
+  color: var(--accentHover);
+}
+
+.app {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  position: relative;
+  z-index: 1;
+}
+
+main {
+  flex: 1;
+}
+
+main > section:nth-of-type(even) {
+  background: transparent;
+}
+
+section,
+.section {
+  background: transparent !important;
+}
+
+section::before,
+section::after {
+  box-shadow: none;
+}
+
+hr {
+  display: none;
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+.skipLink {
+  position: fixed;
+  top: 0;
+  left: 0;
+  transform: translateY(-120%);
+  background: var(--surface);
+  color: var(--text);
+  padding: 0.75rem 1rem;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  box-shadow: var(--shadow-sm);
+  z-index: 1000;
+}
+
+.skipLink:focus-visible {
+  transform: translateY(0);
+  outline: 3px solid var(--focus-strong);
+  outline-offset: 2px;
+}
+
+a:focus-visible {
+  outline: 3px solid var(--focus-strong);
+  outline-offset: 2px;
+  border-radius: 6px;
+}
+
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+  outline: 3px solid var(--focus-strong);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
