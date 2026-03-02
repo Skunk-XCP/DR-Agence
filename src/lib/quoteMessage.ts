@@ -1,4 +1,4 @@
-type BuildQuoteMessageParams = {
+﻿type BuildQuoteMessageParams = {
   clientName: string;
   businessName: string;
   email: string;
@@ -24,22 +24,22 @@ export const buildQuoteMessage = ({
   const optionsBlock =
     optionLabels.length > 0
       ? optionLabels.map((label) => `- ${label}`).join("\n")
-      : "Aucune option supplementaire pour le moment.";
+      : "Aucune option supplémentaire pour le moment.";
 
   const contactLine = phone?.trim() ? `${email} (${phone.trim()})` : email;
 
   return [
-    `Objet : Demande de devis – ${siteTypeLabel} – ${businessName}`,
+    `Objet : Demande de devis - ${siteTypeLabel} - ${businessName}`,
     "",
     "Bonjour,",
-    `Je m'appelle ${clientName}, proprietaire de ${businessName}.`,
-    `Je souhaite obtenir un devis pour la creation d'un ${siteTypeLabel}.`,
-    `Base selectionnee : ${businessTypeLabel} – ${siteTypeLabel}`,
-    "Options souhaitees :",
+    `Je m'appelle ${clientName}, propriétaire de ${businessName}.`,
+    `Je souhaite obtenir un devis pour la création d'un ${siteTypeLabel}.`,
+    `Base sélectionnée : ${businessTypeLabel} - ${siteTypeLabel}`,
+    "Options souhaitées :",
     optionsBlock,
     `Estimation actuelle : ${totalPrice} €`,
-    `Delai estime : ${totalDays} jours`,
-    "Pouvez-vous me recontacter pour valider le perimetre et finaliser le devis ?",
+    `Délai estimé : ${totalDays} jours`,
+    "Pouvez-vous me recontacter pour valider le périmètre et finaliser le devis ?",
     `Contact : ${contactLine}`,
     "Merci,",
     clientName

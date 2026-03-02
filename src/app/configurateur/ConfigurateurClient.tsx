@@ -1,11 +1,11 @@
 "use client";
 
-import Link from "next/link";
-import { type FormEvent, useMemo, useState } from "react";
-import { getOptionsFor, type Option } from "@/lib/configuratorOptions";
 import { parseTimelineToDays } from "@/lib/configuratorMath";
-import { buildQuoteMessage } from "@/lib/quoteMessage";
+import { getOptionsFor } from "@/lib/configuratorOptions";
 import { businessTypes, pricingMatrix, siteTypes, type BusinessTypeId, type SiteTypeId } from "@/lib/pricing";
+import { buildQuoteMessage } from "@/lib/quoteMessage";
+import Link from "next/link";
+import { useMemo, useState, type FormEvent } from "react";
 import styles from "./page.module.css";
 
 type Props = {
@@ -188,7 +188,7 @@ export default function ConfigurateurClient({ businessType, siteType }: Props) {
 
       setSubmitState({
         type: "success",
-        message: "Demande envoyee"
+        message: "Demande envoyée"
       });
     } catch {
       setSubmitState({
