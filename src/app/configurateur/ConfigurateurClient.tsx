@@ -1,11 +1,12 @@
-"use client";
+﻿"use client";
 
 import { parseTimelineToDays } from "@/lib/configuratorMath";
 import { getOptionsFor } from "@/lib/configuratorOptions";
 import { businessTypes, pricingMatrix, siteTypes, type BusinessTypeId, type SiteTypeId } from "@/lib/pricing";
 import { buildQuoteMessage } from "@/lib/quoteMessage";
 import Link from "next/link";
-import { useMemo, useState, type FormEvent } from "react";
+import { useRouter } from "next/navigation";
+import { useCallback, useEffect, useMemo, useState, type FormEvent } from "react";
 import styles from "./page.module.css";
 
 type Props = {
@@ -21,11 +22,6 @@ type SelectedLine = {
   label: string;
   price: number;
   days: number;
-};
-
-type SubmitState = {
-  type: "success" | "error";
-  message: string;
 };
 
 type QuoteApiErrorResponse = {
@@ -59,6 +55,7 @@ const readSubmitError = async (response: Response): Promise<string> => {
 };
 
 export default function ConfigurateurClient({ businessType, siteType }: Props) {
+  const router = useRouter();
   const sections = useMemo(() => getOptionsFor(businessType, siteType), [businessType, siteType]);
   const [checked, setChecked] = useState<CheckboxState>({});
   const [selectedRadios, setSelectedRadios] = useState<RadioState>({});
@@ -69,7 +66,9 @@ export default function ConfigurateurClient({ businessType, siteType }: Props) {
   const [siret, setSiret] = useState("");
   const [quoteMessage, setQuoteMessage] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [submitState, setSubmitState] = useState<SubmitState | null>(null);
+  const [isSuccess, setIsSuccess] = useState(false);
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   const base = pricingMatrix[businessType][siteType];
   const timeline = parseTimelineToDays(base.timeline);
@@ -118,12 +117,44 @@ export default function ConfigurateurClient({ businessType, siteType }: Props) {
   const optionsDays = selectedLines.reduce((sum, item) => sum + item.days, 0);
   const totalPrice = basePrice + optionsPrice;
   const totalDays = baseDays + optionsDays;
+  const isFormDisabled = isSubmitting || isSuccess;
+
+  const redirectToLanding = useCallback(() => {
+    setShowSuccessModal(false);
+    router.push("/");
+  }, [router]);
+
+  useEffect(() => {
+    if (!showSuccessModal) {
+      return;
+    }
+
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        redirectToLanding();
+      }
+    };
+    document.addEventListener("keydown", onKeyDown);
+
+    return () => {
+      document.body.style.overflow = previousOverflow;
+      document.removeEventListener("keydown", onKeyDown);
+    };
+  }, [redirectToLanding, showSuccessModal]);
 
   const onCheckboxChange = (optionId: string, value: boolean) => {
+    if (isFormDisabled) {
+      return;
+    }
     setChecked((prev) => ({ ...prev, [optionId]: value }));
   };
 
   const onRadioChange = (optionId: string, choiceId: string) => {
+    if (isFormDisabled) {
+      return;
+    }
     setSelectedRadios((prev) => ({ ...prev, [optionId]: choiceId }));
   };
 
@@ -131,7 +162,7 @@ export default function ConfigurateurClient({ businessType, siteType }: Props) {
     clientName.trim().length > 0 && businessName.trim().length > 0 && email.trim().length > 0;
 
   const handleGenerateMessage = () => {
-    if (!canGenerateMessage) {
+    if (isFormDisabled || !canGenerateMessage) {
       return;
     }
 
@@ -153,24 +184,22 @@ export default function ConfigurateurClient({ businessType, siteType }: Props) {
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
+    if (isSubmitting || isSuccess) {
+      return;
+    }
+
     if (!canGenerateMessage) {
-      setSubmitState({
-        type: "error",
-        message: "Veuillez renseigner nom client, nom etablissement et email."
-      });
+      setErrorMessage("Veuillez renseigner nom client, nom etablissement et email.");
       return;
     }
 
     const normalizedMessage = quoteMessage.trim();
     if (!quoteMessageRegex.test(normalizedMessage)) {
-      setSubmitState({
-        type: "error",
-        message: "Le message doit contenir 20 a 3000 caracteres et ne pas inclure < ou >."
-      });
+      setErrorMessage("Le message doit contenir 20 a 3000 caracteres et ne pas inclure < ou >.");
       return;
     }
 
-    setSubmitState(null);
+    setErrorMessage(null);
     setIsSubmitting(true);
 
     const payload = {
@@ -197,23 +226,23 @@ export default function ConfigurateurClient({ businessType, siteType }: Props) {
       });
 
       if (!response.ok) {
-        const errorMessage = await readSubmitError(response);
-        setSubmitState({
-          type: "error",
-          message: `Erreur d'envoi: ${errorMessage}`
-        });
+        const submitError = await readSubmitError(response);
+        setErrorMessage(`Erreur d'envoi: ${submitError}`);
         return;
       }
 
-      setSubmitState({
-        type: "success",
-        message: "Demande envoyée"
-      });
+      setIsSuccess(true);
+      setShowSuccessModal(true);
+      setClientName("");
+      setBusinessName("");
+      setEmail("");
+      setPhone("");
+      setSiret("");
+      setQuoteMessage("");
+      setChecked({});
+      setSelectedRadios({});
     } catch {
-      setSubmitState({
-        type: "error",
-        message: "Erreur d'envoi: erreur reseau."
-      });
+      setErrorMessage("Erreur d'envoi: erreur reseau.");
     } finally {
       setIsSubmitting(false);
     }
@@ -241,6 +270,7 @@ export default function ConfigurateurClient({ businessType, siteType }: Props) {
                           <input
                             type="checkbox"
                             checked={Boolean(checked[option.id])}
+                            disabled={isFormDisabled}
                             onChange={(e) => onCheckboxChange(option.id, e.target.checked)}
                           />
                           <span>
@@ -266,6 +296,7 @@ export default function ConfigurateurClient({ businessType, siteType }: Props) {
                                 name={option.id}
                                 value={choice.id}
                                 checked={selectedRadios[option.id] === choice.id}
+                                disabled={isFormDisabled}
                                 onChange={() => onRadioChange(option.id, choice.id)}
                               />
                               <span>
@@ -348,9 +379,10 @@ export default function ConfigurateurClient({ businessType, siteType }: Props) {
                 autoComplete="name"
                 required
                 value={clientName}
+                disabled={isFormDisabled}
                 onChange={(event) => setClientName(event.target.value)}
                 pattern="^[A-Za-zÀ-ÖØ-öø-ÿ' -]{2,80}$"
-                title="2 à 80 caractères: lettres, espaces, apostrophes ou tirets."
+                title="2 a 80 caracteres: lettres, espaces, apostrophes ou tirets."
               />
             </label>
 
@@ -362,9 +394,10 @@ export default function ConfigurateurClient({ businessType, siteType }: Props) {
                 autoComplete="organization"
                 required
                 value={businessName}
+                disabled={isFormDisabled}
                 onChange={(event) => setBusinessName(event.target.value)}
                 pattern="^[A-Za-zÀ-ÖØ-öø-ÿ0-9'&()., -]{2,120}$"
-                title="2 à 120 caractères: lettres, chiffres, espaces et ponctuation simple."
+                title="2 a 120 caracteres: lettres, chiffres, espaces et ponctuation simple."
               />
             </label>
 
@@ -376,6 +409,7 @@ export default function ConfigurateurClient({ businessType, siteType }: Props) {
                 autoComplete="email"
                 required
                 value={email}
+                disabled={isFormDisabled}
                 onChange={(event) => setEmail(event.target.value)}
                 pattern="^[^\s@]+@[^\s@]+\.[^\s@]{2,}$"
                 title="Format attendu: nom@domaine.tld"
@@ -390,6 +424,7 @@ export default function ConfigurateurClient({ businessType, siteType }: Props) {
                 autoComplete="tel"
                 inputMode="tel"
                 value={phone}
+                disabled={isFormDisabled}
                 onChange={(event) => setPhone(event.target.value)}
                 pattern="^(?:(?:\+|00)33|0)[1-9](?:[\s.-]?\d{2}){4}$"
                 title="Format FR: 06 12 34 56 78 ou +33 6 12 34 56 78"
@@ -404,6 +439,7 @@ export default function ConfigurateurClient({ businessType, siteType }: Props) {
                 inputMode="numeric"
                 maxLength={14}
                 value={siret}
+                disabled={isFormDisabled}
                 onChange={(event) => setSiret(event.target.value)}
                 pattern="^\d{14}$"
                 title="Le SIRET doit contenir exactement 14 chiffres."
@@ -413,7 +449,7 @@ export default function ConfigurateurClient({ businessType, siteType }: Props) {
             <button
               type="button"
               className={styles.generateButton}
-              disabled={!canGenerateMessage || isSubmitting}
+              disabled={!canGenerateMessage || isFormDisabled}
               onClick={handleGenerateMessage}
             >
               Generer le texte
@@ -432,30 +468,51 @@ export default function ConfigurateurClient({ businessType, siteType }: Props) {
                 maxLength={3000}
                 aria-describedby="quoteMessageHelp"
                 value={quoteMessage}
+                disabled={isFormDisabled}
                 onChange={(event) => setQuoteMessage(event.target.value)}
               />
             </label>
 
-            <button
-              type="submit"
-              className={styles.sendButton}
-              disabled={isSubmitting}
-            >
+            <button type="submit" className={styles.sendButton} disabled={isFormDisabled}>
               {isSubmitting ? "Envoi..." : "Envoyer le message"}
             </button>
 
-            {submitState ? (
-              <p
-                className={submitState.type === "success" ? styles.submitSuccess : styles.submitError}
-                role={submitState.type === "error" ? "alert" : "status"}
-                aria-live={submitState.type === "error" ? "assertive" : "polite"}
-              >
-                {submitState.message}
+            {errorMessage ? (
+              <p className={styles.submitError} role="alert" aria-live="assertive">
+                {errorMessage}
               </p>
             ) : null}
           </form>
         </section>
       </section>
+      {showSuccessModal ? (
+        <div
+          className={styles.modalOverlay}
+          role="presentation"
+          onClick={(event) => {
+            if (event.target === event.currentTarget) {
+              redirectToLanding();
+            }
+          }}
+        >
+          <div
+            className={styles.modalCard}
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="success-modal-title"
+            aria-describedby="success-modal-description"
+          >
+            <h2 id="success-modal-title">Confirmation</h2>
+            <p id="success-modal-description">
+              Votre demande a bien été envoyée. Vous recevrez une réponse dès que possible.
+            </p>
+            <button type="button" className={styles.modalOkButton} autoFocus onClick={redirectToLanding}>
+              OK
+            </button>
+          </div>
+        </div>
+      ) : null}
     </main>
   );
 }
+
