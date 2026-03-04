@@ -3,8 +3,7 @@
 import React, { useMemo, useState } from "react";
 import { Section, Card, Button } from "../../ui";
 import { pricing } from "../../../data";
-import { businessTypes, siteTypes } from "../../../pricing/catalog";
-import { estimatePricing } from "../../../pricing/estimate";
+import { businessTypes, isBusinessType, isSiteType, pricingMatrix, siteTypes } from "@/lib/pricing";
 import styles from "./Pricing.module.css";
 
 const currency = new Intl.NumberFormat("fr-FR", {
@@ -17,17 +16,20 @@ const Pricing = () => {
   const [businessType, setBusinessType] = useState("");
   const [siteType, setSiteType] = useState("");
 
-  const estimate = useMemo(
-    () => estimatePricing({ businessType, siteType }),
-    [businessType, siteType]
-  );
+  const ready = isBusinessType(businessType) && isSiteType(siteType);
+  const estimate = useMemo(() => {
+    if (!ready) {
+      return null;
+    }
+    return pricingMatrix[businessType][siteType];
+  }, [businessType, ready, siteType]);
 
   const businessLabel = businessTypes.find((item) => item.id === businessType)?.label ?? "";
   const siteLabel = siteTypes.find((item) => item.id === siteType)?.label ?? "";
 
-  const hasRange = estimate.rangeMin && estimate.rangeMax;
+  const hasRange = Boolean(estimate && estimate.range[0] && estimate.range[1]);
   const priceLine = hasRange
-    ? `Budget estimatif : ${currency.format(estimate.rangeMin)} - ${currency.format(estimate.rangeMax)}`
+    ? `Budget estimatif : ${currency.format(estimate.range[0])} - ${currency.format(estimate.range[1])}`
     : "Budget estimatif : Sur devis";
 
   const isNeutral = !businessType || !siteType;
@@ -116,13 +118,13 @@ const Pricing = () => {
                 <p className={styles.cardPrice} aria-live="polite">{priceLine}</p>
                 <p className={styles.cardDisclaimer}>{pricing.disclaimer}</p>
               </div>
-              <p className={styles.cardTimeline}>{`Delai typique : ${estimate.timeline}`}</p>
+              <p className={styles.cardTimeline}>{`Delai typique : ${estimate?.timeline ?? "Sur devis"}`}</p>
               <ul className={styles.cardList}>
-                {estimate.includedBullets.map((item) => (
+                {(estimate?.included ?? []).map((item) => (
                   <li key={item}>{item}</li>
                 ))}
               </ul>
-              <p className={styles.cardNote}>{estimate.notes}</p>
+              <p className={styles.cardNote}>{estimate?.notes ?? ""}</p>
             </>
           )}
         </Card>

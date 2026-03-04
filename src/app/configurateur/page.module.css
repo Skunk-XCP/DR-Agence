@@ -125,6 +125,64 @@
   font-size: 0.88rem;
 }
 
+.quantityGroup {
+  margin: 0;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 0.7rem;
+  display: grid;
+  gap: 0.5rem;
+}
+
+.quantityTitle {
+  margin: 0;
+  font-weight: 600;
+}
+
+.quantityControls {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+}
+
+.quantityButton {
+  width: 2rem;
+  height: 2rem;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text);
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.quantityButton:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.quantityInput {
+  width: 4rem;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--surface);
+  color: var(--text);
+  padding: 0.35rem 0.45rem;
+  font: inherit;
+}
+
+.quantityUnit {
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+.quantityImpact {
+  color: var(--muted);
+  font-size: 0.88rem;
+}
+
 .recap {
   background: var(--surface);
   border: 1px solid var(--border);

@@ -1,64 +1,121 @@
 import { businessTypes, type BusinessTypeId, type SiteTypeId } from "@/lib/pricing";
 
-export type OptionKind = "checkbox" | "radio";
+export type OptionKind = "checkbox" | "radio" | "quantity";
 
-export type Option = {
+type OptionBase = {
   id: string;
   section: "Pages" | "Contenus" | "Intégrations" | "SEO/Perf" | "Admin" | "Légal";
   label: string;
   description?: string;
-  kind: OptionKind;
   tags: string[];
-  price?: number;
-  days?: number;
-  choices?: Array<{
-    id: string;
-    label: string;
-    description?: string;
-    price: number;
-    days: number;
-  }>;
 };
+
+type CheckboxOption = OptionBase & {
+  kind: "checkbox";
+  price: number;
+  days: number;
+};
+
+type RadioChoice = {
+  id: string;
+  label: string;
+  description?: string;
+  price: number;
+  days: number;
+};
+
+type RadioOption = OptionBase & {
+  kind: "radio";
+  choices: RadioChoice[];
+};
+
+type QuantityOption = OptionBase & {
+  kind: "quantity";
+  unitLabel: string;
+  unitPrice: number;
+  unitDays: number;
+  min: number;
+  max: number;
+  defaultValue: number;
+};
+
+export type Option = CheckboxOption | RadioOption | QuantityOption;
 
 export type OptionSection = {
   section: Option["section"];
   options: Option[];
 };
 
+const allBusinessTags = businessTypes.map((item) => item.id);
+
 const allOptions: Option[] = [
   {
     id: "menu-affichage",
     section: "Contenus",
     label: "Menu (affichage)",
-    description: "Niveau de rendu du menu selon vos besoins.",
+    description: "Vous fournissez le contenu du menu, nous l'affichons sur le site selon le niveau choisi.",
     kind: "radio",
     tags: ["snack", "vitrine-only"],
     choices: [
       {
         id: "pdf-client",
-        label: "PDF fourni par le client",
+        label: "Menu en PDF (fourni par vous)",
+        description:
+          "Le menu est accessible via un bouton (ouverture/téléchargement du PDF). Le contenu n'est pas affiché sur la page.",
         price: 120,
         days: 0
       },
       {
         id: "pdf-sections-html",
-        label: "PDF + sections HTML (categories)",
+        label: "Menu affiché sur la page (sans photos)",
+        description:
+          "Nous intégrons le menu directement sur le site : catégories + plats + prix. Plus lisible sur mobile. (PDF en téléchargement possible en plus).",
         price: 240,
         days: 1
       },
       {
         id: "sections-premium-photos",
-        label: "Sections + mise en page premium (photos)",
+        label: "Menu premium (avec photos)",
+        description:
+          "Menu affiché sur la page + mise en forme premium + photos des plats (si vous les fournissez).",
         price: 420,
         days: 2
       }
     ]
   },
   {
+    id: "pages-supplementaires-vitrine",
+    section: "Pages",
+    label: "Pages supplémentaires",
+    description: "Pages au-delà du pack de base (ex: À propos, Galerie, Accès, FAQ...).",
+    kind: "quantity",
+    tags: [...allBusinessTags, "vitrine-only"],
+    unitLabel: "page",
+    unitPrice: 120,
+    unitDays: 1,
+    min: 0,
+    max: 10,
+    defaultValue: 0
+  },
+  {
+    id: "pages-supplementaires-backend",
+    section: "Pages",
+    label: "Pages supplémentaires",
+    description: "Pages au-delà du pack de base (ex: À propos, Galerie, Accès, FAQ...).",
+    kind: "quantity",
+    tags: [...allBusinessTags, "backend-only"],
+    unitLabel: "page",
+    unitPrice: 160,
+    unitDays: 1,
+    min: 0,
+    max: 10,
+    defaultValue: 0
+  },
+  {
     id: "cta-commande-externe",
     section: "Intégrations",
     label: "CTA commande/appel externe",
-    description: "Boutons vers plateforme externe de commande/appel.",
+    description: "Vous nous fournissez les liens externes, nous ajoutons les boutons de commande/appel sur le site.",
     kind: "checkbox",
     tags: ["snack"],
     price: 120,
@@ -68,7 +125,7 @@ const allOptions: Option[] = [
     id: "gestion-menu-admin",
     section: "Admin",
     label: "Gestion menu admin",
-    description: "Edition menu depuis back-office.",
+    description: "Vous mettez à jour les contenus, nous livrons une gestion du menu depuis le back-office.",
     kind: "checkbox",
     tags: ["snack", "backend-only"],
     price: 480,
@@ -78,6 +135,7 @@ const allOptions: Option[] = [
     id: "demandes-messages",
     section: "Admin",
     label: "Demandes/messages + statuts",
+    description: "Vos prospects envoient leurs demandes, nous mettons en place le suivi des statuts côté admin.",
     kind: "checkbox",
     tags: ["snack", "backend-only"],
     price: 380,
@@ -87,6 +145,7 @@ const allOptions: Option[] = [
     id: "notifications-email",
     section: "Intégrations",
     label: "Notifications email",
+    description: "Vous indiquez l'adresse de réception, nous configurons les notifications automatiques par email.",
     kind: "checkbox",
     tags: ["snack", "restaurant", "gastro", "artisan", "coach", "tpe", "backend-only"],
     price: 180,
@@ -95,7 +154,8 @@ const allOptions: Option[] = [
   {
     id: "reservation-externe",
     section: "Intégrations",
-    label: "CTA reservation externe (TheFork/Zenchef/Google)",
+    label: "CTA réservation externe (TheFork/Zenchef/Google)",
+    description: "Vous fournissez le lien de réservation, nous ajoutons le bouton de redirection sur le site.",
     kind: "checkbox",
     tags: ["restaurant", "gastro"],
     price: 220,
@@ -104,7 +164,8 @@ const allOptions: Option[] = [
   {
     id: "galerie-photo",
     section: "Contenus",
-    label: "Galerie photo optimisee",
+    label: "Galerie photo optimisée",
+    description: "Vous fournissez les photos, nous créons une galerie optimisée pour le chargement.",
     kind: "checkbox",
     tags: ["restaurant", "gastro"],
     price: 280,
@@ -114,6 +175,7 @@ const allOptions: Option[] = [
     id: "multilingue",
     section: "Contenus",
     label: "Version multilingue",
+    description: "Vous fournissez les contenus traduits, nous intégrons les versions de langue sur le site.",
     kind: "checkbox",
     tags: ["restaurant", "gastro"],
     price: 780,
@@ -123,7 +185,7 @@ const allOptions: Option[] = [
     id: "rdv-doctolib-maiia",
     section: "Intégrations",
     label: "CTA RDV externe (Doctolib/Maiia)",
-    description: "Aucun stockage de donnees medicales.",
+    description: "Vous fournissez le lien de prise de RDV, nous ajoutons le CTA sans stocker de données médicales.",
     kind: "checkbox",
     tags: ["medical", "medical-only", "vitrine-only", "no-health-data"],
     price: 140,
@@ -133,24 +195,17 @@ const allOptions: Option[] = [
     id: "admin-contenu-non-sensible",
     section: "Admin",
     label: "Admin contenu non sensible",
+    description: "Vous gérez les contenus non sensibles, nous mettons en place une administration dédiée.",
     kind: "checkbox",
     tags: ["medical", "medical-only", "backend-only", "no-health-data"],
     price: 520,
     days: 3
   },
   {
-    id: "pages-services-references",
-    section: "Pages",
-    label: "Pages services/references",
-    kind: "checkbox",
-    tags: ["artisan", "coach", "tpe"],
-    price: 420,
-    days: 2
-  },
-  {
     id: "formulaire-lead-devis",
     section: "Intégrations",
     label: "Formulaire lead/devis",
+    description: "Vous définissez les champs utiles, nous configurons le formulaire de contact qualifié.",
     kind: "checkbox",
     tags: ["artisan", "coach", "tpe"],
     price: 320,
@@ -160,6 +215,7 @@ const allOptions: Option[] = [
     id: "mini-crm-leads",
     section: "Admin",
     label: "Mini CRM leads (statuts/notes/export)",
+    description: "Vous suivez vos prospects au quotidien, nous ajoutons un mini CRM dans l'interface admin.",
     kind: "checkbox",
     tags: ["artisan", "coach", "tpe", "backend-only"],
     price: 960,
@@ -168,7 +224,8 @@ const allOptions: Option[] = [
   {
     id: "seo-local-renforce",
     section: "SEO/Perf",
-    label: "SEO local renforce",
+    label: "SEO local renforcé",
+    description: "Vous validez vos zones et mots-clés, nous optimisons le référencement local des pages.",
     kind: "checkbox",
     tags: ["artisan", "coach", "tpe", "medical", "salon"],
     price: 320,
@@ -177,7 +234,8 @@ const allOptions: Option[] = [
   {
     id: "mentions-legales",
     section: "Légal",
-    label: "Mentions legales + CGV/CGU",
+    label: "Mentions légales + CGV/CGU",
+    description: "Vous fournissez vos informations légales, nous intégrons les pages et liens obligatoires.",
     kind: "checkbox",
     tags: ["snack", "restaurant", "medical", "gastro", "artisan", "salon", "coach", "tpe"],
     price: 180,
@@ -185,14 +243,7 @@ const allOptions: Option[] = [
   }
 ];
 
-const sectionOrder: Option["section"][] = [
-  "Pages",
-  "Contenus",
-  "Intégrations",
-  "SEO/Perf",
-  "Admin",
-  "Légal"
-];
+const sectionOrder: Option["section"][] = ["Pages", "Contenus", "Intégrations", "SEO/Perf", "Admin", "Légal"];
 
 const businessIds = new Set<string>(businessTypes.map((item) => item.id));
 

@@ -32,7 +32,7 @@ export const pricingMatrix: PricingMatrix = {
     vitrine: {
       fromPrice: 900,
       range: [900, 1600],
-      timeline: "5-10 jours",
+      timeline: "4-7 jours",
       included: [
         "One-page ou 3 pages max (Accueil, Menu, Contact)",
         "Menu (sections ou PDF), horaires, carte et acces",
@@ -44,7 +44,7 @@ export const pricingMatrix: PricingMatrix = {
     backend: {
       fromPrice: 2200,
       range: [2200, 3800],
-      timeline: "2-4 semaines",
+      timeline: "7-14 jours",
       included: [
         "Tout le site vitrine + base de donnees",
         "Gestion simple du menu (admin)",
@@ -58,7 +58,7 @@ export const pricingMatrix: PricingMatrix = {
     vitrine: {
       fromPrice: 1500,
       range: [1500, 2800],
-      timeline: "1-2 semaines",
+      timeline: "5-10 jours",
       included: [
         "4-6 pages (Accueil, Carte/Menu, Galerie, Infos, Contact)",
         "CTA reservation (TheFork/Zenchef/Google) + Map",
@@ -70,7 +70,7 @@ export const pricingMatrix: PricingMatrix = {
     backend: {
       fromPrice: 3200,
       range: [3200, 6000],
-      timeline: "3-6 semaines",
+      timeline: "10-30 jours",
       included: [
         "Tout le site vitrine + base de donnees",
         "Gestion du menu admin OU demandes/reservations simples",
@@ -84,7 +84,7 @@ export const pricingMatrix: PricingMatrix = {
     vitrine: {
       fromPrice: 1600,
       range: [1600, 3200],
-      timeline: "2-3 semaines",
+      timeline: "5-10 jours",
       included: [
         "4-6 pages (Cabinet/Equipe, Prestations, Infos pratiques, Contact)",
         "CTA prise de RDV (Doctolib/Maiia) + itineraire Google Maps",
@@ -96,7 +96,7 @@ export const pricingMatrix: PricingMatrix = {
     backend: {
       fromPrice: null,
       range: [2800, 5200],
-      timeline: "3-6 semaines",
+      timeline: "10-30 jours",
       included: [
         "Admin simple pour modifier des contenus non sensibles",
         "Pas de stockage d'informations medicales / patients",
@@ -110,7 +110,7 @@ export const pricingMatrix: PricingMatrix = {
     vitrine: {
       fromPrice: 3500,
       range: [3500, 8000],
-      timeline: "3-6 semaines",
+      timeline: "5-10 jours",
       included: [
         "Direction visuelle premium",
         "Pages editoriales (histoire, experience, equipe)",
@@ -122,7 +122,7 @@ export const pricingMatrix: PricingMatrix = {
     backend: {
       fromPrice: 6000,
       range: [6000, 12000],
-      timeline: "6-10 semaines",
+      timeline: "10-30 jours",
       included: [
         "Tout le site vitrine premium + base de donnees",
         "Admin contenu + formulaires avances",
@@ -136,7 +136,7 @@ export const pricingMatrix: PricingMatrix = {
     vitrine: {
       fromPrice: 1200,
       range: [1200, 2500],
-      timeline: "1-2 semaines",
+      timeline: "5-10 jours",
       included: [
         "4-6 pages (Services, Realisations, Zone, Contact)",
         "Galerie avant/apres + formulaire devis",
@@ -148,7 +148,7 @@ export const pricingMatrix: PricingMatrix = {
     backend: {
       fromPrice: 2800,
       range: [2800, 5200],
-      timeline: "3-6 semaines",
+      timeline: "10-30 jours",
       included: [
         "Tout le site vitrine + base de donnees",
         "Demandes de devis stockees + statuts + notes",
@@ -162,7 +162,7 @@ export const pricingMatrix: PricingMatrix = {
     vitrine: {
       fromPrice: 1100,
       range: [1100, 2400],
-      timeline: "1-2 semaines",
+      timeline: "4-7 jours",
       included: [
         "3-5 pages (Prestations, Tarifs, Galerie, Contact)",
         "Horaires, map, avis + CTA RDV externe",
@@ -174,7 +174,7 @@ export const pricingMatrix: PricingMatrix = {
     backend: {
       fromPrice: 2600,
       range: [2600, 5000],
-      timeline: "3-6 semaines",
+      timeline: "7-30 jours",
       included: [
         "Tout le site vitrine + base de donnees",
         "Demandes stockees + back-office leger",
@@ -188,7 +188,7 @@ export const pricingMatrix: PricingMatrix = {
     vitrine: {
       fromPrice: 900,
       range: [900, 1900],
-      timeline: "5-12 jours",
+      timeline: "5-10 jours",
       included: [
         "One-page ou 3-4 pages (Offre, Methode, Contact)",
         "CTA prise de RDV (Calendly/Cal) + lead form",
@@ -200,7 +200,7 @@ export const pricingMatrix: PricingMatrix = {
     backend: {
       fromPrice: 2200,
       range: [2200, 4200],
-      timeline: "3-6 semaines",
+      timeline: "10-30 jours",
       included: [
         "Tout le site vitrine + base de donnees",
         "Formulaire avance + stockage + statuts",
@@ -214,7 +214,7 @@ export const pricingMatrix: PricingMatrix = {
     vitrine: {
       fromPrice: 1600,
       range: [1600, 3500],
-      timeline: "2-3 semaines",
+      timeline: "5-10 jours",
       included: [
         "4-8 pages (Institutionnel, Services, References, Contact)",
         "SEO de base + performance + structure scalable",
@@ -226,7 +226,7 @@ export const pricingMatrix: PricingMatrix = {
     backend: {
       fromPrice: 3500,
       range: [3500, 8000],
-      timeline: "4-8 semaines",
+      timeline: "10-30 jours",
       included: [
         "Tout le site vitrine + base de donnees",
         "Back-office leger + roles simples",

@@ -14,14 +14,14 @@ type Props = {
   siteType: SiteTypeId;
 };
 
-type CheckboxState = Record<string, boolean>;
-type RadioState = Record<string, string>;
+type SelectedOptionsState = Record<string, boolean | string | number | undefined>;
 
 type SelectedLine = {
   id: string;
   label: string;
   price: number;
   days: number;
+  emailLabel: string;
 };
 
 type QuoteApiErrorResponse = {
@@ -36,6 +36,7 @@ const eur = new Intl.NumberFormat("fr-FR", {
 
 const formatMoney = (value: number) => eur.format(value);
 const formatDays = (value: number) => `${value} jours`;
+const formatUnit = (value: number, unitLabel: string) => `${value} ${value > 1 ? `${unitLabel}s` : unitLabel}`;
 const quoteMessageRegex = /^(?!.*[<>])[\s\S]{20,3000}$/;
 const QUOTE_API_URL =
   process.env.NEXT_PUBLIC_QUOTE_API_URL ??
@@ -57,8 +58,7 @@ const readSubmitError = async (response: Response): Promise<string> => {
 export default function ConfigurateurClient({ businessType, siteType }: Props) {
   const router = useRouter();
   const sections = useMemo(() => getOptionsFor(businessType, siteType), [businessType, siteType]);
-  const [checked, setChecked] = useState<CheckboxState>({});
-  const [selectedRadios, setSelectedRadios] = useState<RadioState>({});
+  const [selectedOptions, setSelectedOptions] = useState<SelectedOptionsState>({});
   const [clientName, setClientName] = useState("");
   const [businessName, setBusinessName] = useState("");
   const [email, setEmail] = useState("");
@@ -70,6 +70,18 @@ export default function ConfigurateurClient({ businessType, siteType }: Props) {
   const [showSuccessModal, setShowSuccessModal] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
+  const quantityDefaults = useMemo(() => {
+    const defaults: Record<string, number> = {};
+    sections.forEach((section) => {
+      section.options.forEach((option) => {
+        if (option.kind === "quantity") {
+          defaults[option.id] = option.defaultValue;
+        }
+      });
+    });
+    return defaults;
+  }, [sections]);
+
   const base = pricingMatrix[businessType][siteType];
   const timeline = parseTimelineToDays(base.timeline);
   const basePrice = base.fromPrice ?? base.range[0];
@@ -77,23 +89,40 @@ export default function ConfigurateurClient({ businessType, siteType }: Props) {
   const businessLabel = businessTypes.find((item) => item.id === businessType)?.label ?? businessType;
   const siteLabel = siteTypes.find((item) => item.id === siteType)?.label ?? siteType;
 
+  useEffect(() => {
+    setSelectedOptions((prev) => {
+      const next = { ...prev };
+      let hasChange = false;
+
+      Object.entries(quantityDefaults).forEach(([optionId, defaultValue]) => {
+        if (typeof next[optionId] !== "number") {
+          next[optionId] = defaultValue;
+          hasChange = true;
+        }
+      });
+
+      return hasChange ? next : prev;
+    });
+  }, [quantityDefaults]);
+
   const selectedLines = useMemo(() => {
     const lines: SelectedLine[] = [];
 
     sections.forEach((section) => {
       section.options.forEach((option) => {
-        if (option.kind === "checkbox" && checked[option.id]) {
+        if (option.kind === "checkbox" && Boolean(selectedOptions[option.id])) {
           lines.push({
             id: option.id,
             label: option.label,
-            price: option.price ?? 0,
-            days: option.days ?? 0
+            price: option.price,
+            days: option.days,
+            emailLabel: option.label
           });
         }
 
-        if (option.kind === "radio" && option.choices) {
-          const selectedChoiceId = selectedRadios[option.id];
-          if (!selectedChoiceId) {
+        if (option.kind === "radio") {
+          const selectedChoiceId = selectedOptions[option.id];
+          if (typeof selectedChoiceId !== "string") {
             return;
           }
           const choice = option.choices.find((item) => item.id === selectedChoiceId);
@@ -104,20 +133,65 @@ export default function ConfigurateurClient({ businessType, siteType }: Props) {
             id: `${option.id}:${choice.id}`,
             label: `${option.label} - ${choice.label}`,
             price: choice.price,
-            days: choice.days
+            days: choice.days,
+            emailLabel: `${option.label} - ${choice.label}`
+          });
+        }
+
+        if (option.kind === "quantity") {
+          const rawQty = selectedOptions[option.id];
+          const qty = typeof rawQty === "number" ? rawQty : option.defaultValue;
+          if (qty <= 0) {
+            return;
+          }
+          const optionPrice = qty * option.unitPrice;
+          const optionDays = qty * option.unitDays;
+          lines.push({
+            id: `${option.id}:${qty}`,
+            label: `${option.label}: ${qty}`,
+            price: optionPrice,
+            days: optionDays,
+            emailLabel: `${option.label}: ${qty} x ${option.unitPrice}€`
           });
         }
       });
     });
 
     return lines;
-  }, [checked, sections, selectedRadios]);
+  }, [sections, selectedOptions]);
 
   const optionsPrice = selectedLines.reduce((sum, item) => sum + item.price, 0);
   const optionsDays = selectedLines.reduce((sum, item) => sum + item.days, 0);
   const totalPrice = basePrice + optionsPrice;
   const totalDays = baseDays + optionsDays;
   const isFormDisabled = isSubmitting || isSuccess;
+
+  const getQuantityValue = useCallback(
+    (optionId: string, fallbackValue: number) => {
+      const rawValue = selectedOptions[optionId];
+      return typeof rawValue === "number" ? rawValue : fallbackValue;
+    },
+    [selectedOptions]
+  );
+
+  const setQuantityValue = useCallback(
+    (optionId: string, min: number, max: number, nextValue: number) => {
+      if (isFormDisabled) {
+        return;
+      }
+      const clamped = Math.min(max, Math.max(min, nextValue));
+      setSelectedOptions((prev) => ({ ...prev, [optionId]: clamped }));
+    },
+    [isFormDisabled]
+  );
+
+  const getQuantityImpact = (qty: number, unitPrice: number, unitDays: number) => {
+    const price = qty * unitPrice;
+    const days = qty * unitDays;
+    return `+${price} € / +${days} jours`;
+  };
+
+  const quoteOptionLabels = selectedLines.map((line) => line.emailLabel);
 
   const redirectToLanding = useCallback(() => {
     setShowSuccessModal(false);
@@ -148,14 +222,14 @@ export default function ConfigurateurClient({ businessType, siteType }: Props) {
     if (isFormDisabled) {
       return;
     }
-    setChecked((prev) => ({ ...prev, [optionId]: value }));
+    setSelectedOptions((prev) => ({ ...prev, [optionId]: value }));
   };
 
   const onRadioChange = (optionId: string, choiceId: string) => {
     if (isFormDisabled) {
       return;
     }
-    setSelectedRadios((prev) => ({ ...prev, [optionId]: choiceId }));
+    setSelectedOptions((prev) => ({ ...prev, [optionId]: choiceId }));
   };
 
   const canGenerateMessage =
@@ -174,7 +248,7 @@ export default function ConfigurateurClient({ businessType, siteType }: Props) {
         phone: phone.trim(),
         businessTypeLabel: businessLabel,
         siteTypeLabel: siteLabel,
-        optionLabels: selectedLines.map((line) => line.label),
+        optionLabels: quoteOptionLabels,
         totalPrice,
         totalDays
       })
@@ -210,7 +284,7 @@ export default function ConfigurateurClient({ businessType, siteType }: Props) {
       siret: siret.trim(),
       businessType,
       siteType,
-      selectedOptions: selectedLines.map((line) => line.label),
+      selectedOptions: quoteOptionLabels,
       totalPrice,
       totalDays,
       message: normalizedMessage
@@ -239,8 +313,7 @@ export default function ConfigurateurClient({ businessType, siteType }: Props) {
       setPhone("");
       setSiret("");
       setQuoteMessage("");
-      setChecked({});
-      setSelectedRadios({});
+      setSelectedOptions({});
     } catch {
       setErrorMessage("Erreur d'envoi: erreur reseau.");
     } finally {
@@ -269,47 +342,96 @@ export default function ConfigurateurClient({ businessType, siteType }: Props) {
                         <label key={option.id} className={styles.optionItem}>
                           <input
                             type="checkbox"
-                            checked={Boolean(checked[option.id])}
+                            checked={Boolean(selectedOptions[option.id])}
                             disabled={isFormDisabled}
                             onChange={(e) => onCheckboxChange(option.id, e.target.checked)}
                           />
                           <span>
                             <strong>{option.label}</strong>
                             {option.description ? <small>{option.description}</small> : null}
-                            <em>
-                              {`+${formatMoney(option.price ?? 0)} | +${formatDays(option.days ?? 0)}`}
-                            </em>
+                            <em>{`+${formatMoney(option.price)} | +${formatDays(option.days)}`}</em>
                           </span>
                         </label>
                       );
                     }
 
+                    if (option.kind === "radio") {
+                      return (
+                        <fieldset key={option.id} className={styles.radioGroup}>
+                          <legend>{option.label}</legend>
+                          {option.description ? <p className={styles.radioDescription}>{option.description}</p> : null}
+                          <div className={styles.choiceList}>
+                            {option.choices.map((choice) => (
+                              <label key={choice.id} className={styles.choiceItem}>
+                                <input
+                                  type="radio"
+                                  name={option.id}
+                                  value={choice.id}
+                                  checked={selectedOptions[option.id] === choice.id}
+                                  disabled={isFormDisabled}
+                                  onChange={() => onRadioChange(option.id, choice.id)}
+                                />
+                                <span>
+                                  <strong>{choice.label}</strong>
+                                  {choice.description ? <small>{choice.description}</small> : null}
+                                  <em>
+                                    {`+${formatMoney(choice.price)} | +${formatDays(choice.days)}`}
+                                  </em>
+                                </span>
+                              </label>
+                            ))}
+                          </div>
+                        </fieldset>
+                      );
+                    }
+
+                    const qty = getQuantityValue(option.id, option.defaultValue);
                     return (
-                      <fieldset key={option.id} className={styles.radioGroup}>
-                        <legend>{option.label}</legend>
+                      <div key={option.id} className={styles.quantityGroup}>
+                        <p className={styles.quantityTitle}>{option.label}</p>
                         {option.description ? <p className={styles.radioDescription}>{option.description}</p> : null}
-                        <div className={styles.choiceList}>
-                          {(option.choices ?? []).map((choice) => (
-                            <label key={choice.id} className={styles.choiceItem}>
-                              <input
-                                type="radio"
-                                name={option.id}
-                                value={choice.id}
-                                checked={selectedRadios[option.id] === choice.id}
-                                disabled={isFormDisabled}
-                                onChange={() => onRadioChange(option.id, choice.id)}
-                              />
-                              <span>
-                                <strong>{choice.label}</strong>
-                                {choice.description ? <small>{choice.description}</small> : null}
-                                <em>
-                                  {`+${formatMoney(choice.price)} | +${formatDays(choice.days)}`}
-                                </em>
-                              </span>
-                            </label>
-                          ))}
+                        <div className={styles.quantityControls}>
+                          <button
+                            type="button"
+                            className={styles.quantityButton}
+                            disabled={isFormDisabled || qty <= option.min}
+                            onClick={() => setQuantityValue(option.id, option.min, option.max, qty - 1)}
+                            aria-label={`Retirer 1 ${option.unitLabel}`}
+                          >
+                            -
+                          </button>
+                          <input
+                            className={styles.quantityInput}
+                            type="number"
+                            min={option.min}
+                            max={option.max}
+                            step={1}
+                            value={qty}
+                            disabled={isFormDisabled}
+                            onChange={(event) => {
+                              const parsedValue = Number(event.target.value);
+                              if (Number.isNaN(parsedValue)) {
+                                return;
+                              }
+                              setQuantityValue(option.id, option.min, option.max, parsedValue);
+                            }}
+                            aria-label={`${option.label} en nombre de ${option.unitLabel}`}
+                          />
+                          <button
+                            type="button"
+                            className={styles.quantityButton}
+                            disabled={isFormDisabled || qty >= option.max}
+                            onClick={() => setQuantityValue(option.id, option.min, option.max, qty + 1)}
+                            aria-label={`Ajouter 1 ${option.unitLabel}`}
+                          >
+                            +
+                          </button>
+                          <span className={styles.quantityUnit}>{formatUnit(qty, option.unitLabel)}</span>
                         </div>
-                      </fieldset>
+                        <em className={styles.quantityImpact}>
+                          {getQuantityImpact(qty, option.unitPrice, option.unitDays)}
+                        </em>
+                      </div>
                     );
                   })}
                 </div>
