@@ -151,7 +151,7 @@ export default function ConfigurateurClient({ businessType, siteType }: Props) {
             label: `${option.label}: ${qty}`,
             price: optionPrice,
             days: optionDays,
-            emailLabel: `${option.label}: ${qty} x ${option.unitPrice}€`
+            emailLabel: `${option.label} : ${qty}`
           });
         }
       });
