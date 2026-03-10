@@ -2,7 +2,7 @@ export const valueProps = {
   eyebrow: "Pourquoi moi",
   title: "Une approche structurée, axée résultats",
   subtitle:
-    "Je privilégie la clarté, la qualité du code et l'impact business. Vous gardez le contrôle, je garde le cap.",
+    "Je privilégie la clarté, la stabilité et l'impact business. Vous gardez le contrôle, je garde le cap.",
   items: [
     {
       title: "Architecture solide",

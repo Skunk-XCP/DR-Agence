@@ -7,8 +7,8 @@
   border: 1px solid transparent;
   font-weight: 600;
   letter-spacing: 0.01em;
-  transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease,
-    border-color 0.2s ease, color 0.2s ease;
+  transition: transform 0.22s ease, box-shadow 0.22s ease, background 0.22s ease,
+    border-color 0.22s ease, color 0.22s ease;
   text-decoration: none;
   cursor: pointer;
 }
@@ -19,40 +19,60 @@
 }
 
 .primary {
-  background: var(--accent);
-  color: var(--surface);
-  box-shadow: var(--shadow-sm);
+  background: linear-gradient(180deg, var(--accent), #b97a1f);
+  color: #fff8ef;
+  border-color: rgba(255, 216, 159, 0.35);
+  box-shadow: 0 12px 26px rgba(196, 134, 42, 0.3);
 }
 
 .primary:hover {
   transform: translateY(-1px);
-  background: var(--accentHover);
-  color: var(--surface);
-  box-shadow: var(--shadow-md);
+  background: linear-gradient(180deg, var(--accentHover), #c8892f);
+  color: #fff8ef;
+  box-shadow: 0 18px 34px rgba(196, 134, 42, 0.35);
+}
+
+a.button.primary:hover,
+a.button.primary:visited,
+a.button.primary:focus-visible {
+  color: #fff8ef;
 }
 
 .outline {
-  background: var(--surface2);
+  background: color-mix(in srgb, var(--surface2) 88%, transparent);
   color: var(--text);
-  border-color: var(--border);
+  border-color: color-mix(in srgb, var(--accent) 30%, var(--border));
 }
 
 .outline:hover {
   transform: translateY(-1px);
   color: var(--text);
   box-shadow: var(--shadow-sm);
+  border-color: color-mix(in srgb, var(--accent) 60%, var(--border));
+}
+
+a.button.outline:hover,
+a.button.outline:visited,
+a.button.outline:focus-visible {
+  color: var(--text);
 }
 
 .ghost {
   background: transparent;
   color: var(--text);
-  border-color: var(--border);
+  border-color: color-mix(in srgb, var(--accent) 25%, var(--border));
 }
 
 .ghost:hover {
-  background: var(--surface2);
+  background: color-mix(in srgb, var(--surface2) 80%, transparent);
   color: var(--text);
   transform: translateY(-1px);
+}
+
+a.button.ghost:hover,
+a.button.ghost:visited,
+a.button.ghost:focus-visible {
+  color: var(--text);
 }
 
 .sm {

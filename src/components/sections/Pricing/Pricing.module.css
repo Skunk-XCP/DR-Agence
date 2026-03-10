@@ -1,100 +1,169 @@
+.section {
+  position: relative;
+  background: #2e2010;
+}
+
+.section::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(180deg, #2e2010 0%, #24170b 100%);
+}
+
 .layout {
+  position: relative;
+  z-index: 1;
   display: grid;
-  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
-  gap: 2rem;
+  grid-template-columns: 1fr 1fr;
+  gap: 5rem;
   align-items: start;
 }
 
-.form {
+.copy {
   display: grid;
-  gap: 1rem;
-  padding: 1.6rem;
-  border-radius: var(--radius);
-  background: var(--surface);
-  border: 1px solid var(--border);
-  box-shadow: var(--shadow-sm);
+  align-content: start;
+}
+
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin-bottom: 0.8rem;
+  font-size: 0.7rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: #d9a355;
+}
+
+.eyebrow::before {
+  content: "";
+  width: 20px;
+  height: 1px;
+  background: currentColor;
+}
+
+.title {
+  margin: 0;
+  max-width: 20ch;
+  font-size: clamp(2rem, 3.5vw, 3rem);
+  line-height: 1.12;
+  color: #fbf5ea;
+}
+
+.subtitle {
+  margin: 0.8rem 0 0;
+  max-width: 46ch;
+  font-size: 0.97rem;
+  line-height: 1.8;
+  color: rgba(251, 245, 234, 0.82);
+}
+
+.note {
+  margin: 1.2rem 0 0;
+  font-size: 0.85rem;
+  line-height: 1.6;
+  color: rgba(251, 245, 234, 0.7);
+  font-style: italic;
+}
+
+.form {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(196, 134, 42, 0.2);
+  border-radius: 16px;
+  padding: 2.5rem;
 }
 
 .label {
-  font-size: 0.85rem;
+  display: block;
+  font-size: 0.7rem;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
-  letter-spacing: 0.12em;
-  color: var(--muted);
+  color: rgba(251, 245, 234, 0.78);
+  margin-bottom: 0.4rem;
+  font-weight: 500;
 }
 
 .select {
   width: 100%;
-  padding: 0.75rem 0.9rem;
-  border-radius: 12px;
-  border: 1px solid var(--border);
-  background: var(--surface);
-  color: var(--text);
-  font-size: 0.95rem;
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.07);
+  border: 1px solid rgba(196, 134, 42, 0.2);
+  color: #fbf5ea;
+  cursor: pointer;
+  appearance: none;
+  margin-bottom: 1.2rem;
+  transition: border-color 0.2s;
+  font: inherit;
+  font-size: 0.9rem;
 }
 
 .select:focus {
-  outline: 3px solid var(--focus);
-  outline-offset: 2px;
-  border-color: var(--accent-border);
+  outline: none;
+  border-color: #c4862a;
 }
 
-.configureAction {
-  margin-top: 0.5rem;
+.select option {
+  background: #1a1008;
+  color: #fbf5ea;
 }
 
-.card {
-  display: grid;
-  gap: 1rem;
+.result {
+  padding: 1rem 1.2rem;
+  border-radius: 8px;
+  background: rgba(196, 134, 42, 0.1);
+  border-left: 2px solid #c4862a;
+  font-size: 0.87rem;
+  color: rgba(251, 245, 234, 0.92);
+  line-height: 1.6;
 }
 
-.neutral {
-  display: grid;
-  gap: 1.1rem;
-}
-
-.cardHeader {
-  display: grid;
-  gap: 0.4rem;
-}
-
-.cardTitle {
-  margin: 0;
-  font-size: 1.1rem;
+.cta {
+  display: block;
+  text-align: center;
+  margin-top: 1.5rem;
+  padding: 0.85rem;
+  border-radius: 8px;
+  background: #c4862a;
+  color: #ffffff;
   font-weight: 600;
+  font-size: 0.88rem;
+  text-decoration: none;
+  transition:
+    background 0.2s,
+    transform 0.2s;
 }
 
-.cardPrice {
-  margin: 0;
-  font-size: 1.3rem;
-  font-weight: 600;
+.cta:hover {
+  background: #d9a355;
+  color: #ffffff;
+  transform: translateY(-1px);
 }
 
-.cardTimeline {
-  margin: 0;
-  color: var(--muted);
+.ctaDisabled,
+.ctaDisabled:hover {
+  opacity: 0.55;
+  cursor: not-allowed;
+  transform: none;
 }
 
-.cardList {
-  margin: 0;
-  padding-left: 1.1rem;
-  display: grid;
-  gap: 0.5rem;
-  color: var(--muted);
-}
-
-.cardNote {
-  margin: 0;
-  color: var(--muted);
-}
-
-.cardDisclaimer {
-  margin: 0;
-  font-size: 0.85rem;
-  color: var(--muted);
+:global(.dark-section) .cta,
+:global(.dark-section) .cta:hover,
+:global(.dark-section) .cta:visited,
+:global(.dark-section) .cta:focus-visible {
+  color: #ffffff;
 }
 
 @media (max-width: 900px) {
   .layout {
     grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+}
+
+@media (max-width: 640px) {
+  .form {
+    padding: 1.4rem;
   }
 }

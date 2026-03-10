@@ -1,27 +1,94 @@
-.grid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 1.5rem;
+.section {
+  position: relative;
 }
 
-.card {
+.section::before {
+  content: "";
+  position: absolute;
+  inset: -6% -4%;
+  pointer-events: none;
+  background:
+    radial-gradient(45% 32% at 8% 16%, rgba(196, 134, 42, 0.16), transparent 70%),
+    radial-gradient(38% 28% at 84% 84%, rgba(31, 111, 91, 0.16), transparent 72%);
+  filter: blur(50px);
+}
+
+.layout {
+  position: relative;
+  z-index: 1;
   display: grid;
-  gap: 0.8rem;
+  grid-template-columns: 0.9fr 1.4fr;
+  gap: clamp(2rem, 4vw, 4.5rem);
+  margin-top: 0.6rem;
+}
+
+.stickyBlock {
+  position: sticky;
+  top: 110px;
+  align-self: start;
+}
+
+.stickyNote {
+  margin: 0;
+  padding: 1.2rem 1.3rem;
+  border-radius: 16px;
+  border: 1px solid rgba(196, 134, 42, 0.22);
+  background: rgba(255, 248, 236, 0.68);
+  color: #5d4832;
+  line-height: 1.75;
+  box-shadow: 0 14px 30px rgba(137, 99, 57, 0.12);
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+}
+
+.item {
+  display: grid;
+  grid-template-columns: 32px 1fr;
+  gap: 1.2rem;
+  padding: 1.35rem 0;
+  border-bottom: 1px solid rgba(26, 16, 8, 0.12);
+  transition: padding-left 250ms ease;
+}
+
+.item:hover {
+  padding-left: 0.5rem;
+}
+
+.item:hover .num,
+.item:hover .title {
+  color: var(--accent);
+}
+
+.num {
+  font-family: var(--font-display);
+  font-style: italic;
+  color: #9f8060;
+  transition: color 200ms ease;
+  padding-top: 0.2rem;
 }
 
 .title {
-  margin: 0;
-  font-size: 1.1rem;
+  margin: 0 0 0.35rem;
+  font-size: 1.2rem;
+  font-family: var(--font-display);
+  transition: color 200ms ease;
 }
 
 .description {
   margin: 0;
-  color: var(--color-muted);
-  line-height: 1.6;
+  color: var(--muted);
+  line-height: 1.7;
 }
 
-@media (max-width: 768px) {
-  .grid {
+@media (max-width: 900px) {
+  .layout {
     grid-template-columns: 1fr;
+  }
+
+  .stickyBlock {
+    position: static;
   }
 }

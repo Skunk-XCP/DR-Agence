@@ -1,24 +1,26 @@
 .card {
-  background: var(--surface);
+  background: linear-gradient(150deg, rgba(255, 250, 242, 0.94), rgba(246, 232, 209, 0.84));
   border: 1px solid var(--border);
-  border-radius: var(--radius);
+  border-radius: 20px;
   padding: 1.8rem;
   box-shadow: var(--shadow-sm);
   position: relative;
   overflow: hidden;
-  transition: background 0.2s ease, box-shadow 0.2s ease;
+  transition: transform 220ms ease, box-shadow 220ms ease, border-color 220ms ease,
+    background 220ms ease;
 }
 
 .card:hover {
-  background: var(--surface2);
+  transform: translateY(-2px);
   box-shadow: var(--shadow-md);
+  border-color: color-mix(in srgb, var(--accent) 38%, var(--border));
 }
 
 .card::before {
   content: "";
   position: absolute;
   inset: 0;
-  background: linear-gradient(140deg, var(--sheen), transparent 60%);
-  opacity: 0.22;
+  background: linear-gradient(140deg, var(--sheen), transparent 58%);
+  opacity: 0.25;
   pointer-events: none;
 }

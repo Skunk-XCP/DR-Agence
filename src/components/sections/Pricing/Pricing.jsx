@@ -1,7 +1,8 @@
 "use client";
 
 import React, { useMemo, useState } from "react";
-import { Section, Card, Button } from "../../ui";
+import { Section } from "../../ui";
+import SlideIn from "../../motion/SlideIn";
 import { pricing } from "../../../data";
 import { businessTypes, isBusinessType, isSiteType, pricingMatrix, siteTypes } from "@/lib/pricing";
 import styles from "./Pricing.module.css";
@@ -26,108 +27,89 @@ const Pricing = () => {
 
   const businessLabel = businessTypes.find((item) => item.id === businessType)?.label ?? "";
   const siteLabel = siteTypes.find((item) => item.id === siteType)?.label ?? "";
-
-  const hasRange = Boolean(estimate && estimate.range[0] && estimate.range[1]);
-  const priceLine = hasRange
-    ? `Budget estimatif : ${currency.format(estimate.range[0])} - ${currency.format(estimate.range[1])}`
-    : "Budget estimatif : Sur devis";
-
-  const isNeutral = !businessType || !siteType;
-  const canConfigureOffer = Boolean(businessType && siteType);
-  const configureOfferHref = canConfigureOffer
+  const resultLine = ready
+    ? `☕ ${businessLabel} · ${siteLabel} : ${currency.format(estimate?.range[0] ?? 0)} - ${currency.format(estimate?.range[1] ?? 0)} · ${estimate?.timeline ?? "Sur devis"}`
+    : "☕ Sélectionnez vos options pour voir une fourchette de prix et un délai indicatif.";
+  const configurateurHref = ready
     ? `/configurateur?${new URLSearchParams({
         businessType,
         siteType
       }).toString()}`
-    : "";
+    : "#pricing";
 
   return (
-    <Section
-      id="pricing"
-      eyebrow={pricing.eyebrow}
-      title={pricing.title}
-      subtitle={pricing.subtitle}
-      actions={
-        <Button href="#contact" variant="outline">
-          Demander un devis
-        </Button>
-      }
-    >
+    <Section id="pricing" className={`${styles.section} themeDark dark-section noise-overlay vignette-overlay`}>
       <div className={styles.layout}>
-        <div className={styles.form}>
-          <label className={styles.label} htmlFor="businessType">
-            {pricing.labels.businessType}
-          </label>
-          <select
-            id="businessType"
-            className={styles.select}
-            value={businessType}
-            onChange={(event) => setBusinessType(event.target.value)}
-          >
-            <option value="" disabled>
-              Selectionner un type de commerce
-            </option>
-            {businessTypes.map((item) => (
-              <option key={item.id} value={item.id}>
-                {item.label}
+        <SlideIn direction="left" delay={0.08}>
+          <div className={styles.copy}>
+            <div className={styles.eyebrow}>Estimation</div>
+            <h2 className={styles.title}>Combien ça coûte ?</h2>
+            <p className={styles.subtitle}>
+              Sélectionnez votre type d&apos;activité et de projet pour une fourchette indicative
+              {" "}— sans engagement, sans jargon.
+            </p>
+            <p className={styles.note}>Le devis final est confirmé après un premier échange.</p>
+          </div>
+        </SlideIn>
+
+        <SlideIn direction="right" delay={0.12}>
+          <div className={styles.form}>
+            <label className={styles.label} htmlFor="businessType">
+              {pricing.labels.businessType}
+            </label>
+            <select
+              id="businessType"
+              className={styles.select}
+              value={businessType}
+              onChange={(event) => setBusinessType(event.target.value)}
+            >
+              <option value="" disabled>
+                Selectionner un type de commerce
               </option>
-            ))}
-          </select>
+              {businessTypes.map((item) => (
+                <option key={item.id} value={item.id}>
+                  {item.label}
+                </option>
+              ))}
+            </select>
 
-          <label className={styles.label} htmlFor="siteType">
-            {pricing.labels.siteType}
-          </label>
-          <select
-            id="siteType"
-            className={styles.select}
-            value={siteType}
-            onChange={(event) => setSiteType(event.target.value)}
-          >
-            <option value="" disabled>
-              Selectionner un type de site
-            </option>
-            {siteTypes.map((item) => (
-              <option key={item.id} value={item.id}>
-                {item.label}
+            <label className={styles.label} htmlFor="siteType">
+              {pricing.labels.siteType}
+            </label>
+            <select
+              id="siteType"
+              className={styles.select}
+              value={siteType}
+              onChange={(event) => setSiteType(event.target.value)}
+            >
+              <option value="" disabled>
+                Selectionner un type de site
               </option>
-            ))}
-          </select>
+              {siteTypes.map((item) => (
+                <option key={item.id} value={item.id}>
+                  {item.label}
+                </option>
+              ))}
+            </select>
 
-          {canConfigureOffer ? (
-            <div className={styles.configureAction}>
-              <Button href={configureOfferHref}>Configurer l'offre</Button>
+            <div className={styles.result} aria-live="polite">
+              {resultLine}
             </div>
-          ) : null}
-        </div>
 
-        <Card className={styles.card}>
-          {isNeutral ? (
-            <div className={styles.neutral}>
-              <p className={styles.cardTitle}>Estimation instantanee</p>
-              <p className={styles.cardTimeline}>
-                Selectionnez un type de commerce et un type de site. Vous verrez une fourchette indicative, le delai typique et ce qui est inclus.
-              </p>
-              <p className={styles.cardDisclaimer}>
-                Le devis final est confirme apres un premier contact.
-              </p>
-            </div>
-          ) : (
-            <>
-              <div className={styles.cardHeader}>
-                <p className={styles.cardTitle}>{`${businessLabel} - ${siteLabel}`}</p>
-                <p className={styles.cardPrice} aria-live="polite">{priceLine}</p>
-                <p className={styles.cardDisclaimer}>{pricing.disclaimer}</p>
-              </div>
-              <p className={styles.cardTimeline}>{`Delai typique : ${estimate?.timeline ?? "Sur devis"}`}</p>
-              <ul className={styles.cardList}>
-                {(estimate?.included ?? []).map((item) => (
-                  <li key={item}>{item}</li>
-                ))}
-              </ul>
-              <p className={styles.cardNote}>{estimate?.notes ?? ""}</p>
-            </>
-          )}
-        </Card>
+            <a
+              className={`${styles.cta} ${!ready ? styles.ctaDisabled : ""}`.trim()}
+              href={configurateurHref}
+              aria-disabled={!ready}
+              onClick={(event) => {
+                if (!ready) {
+                  event.preventDefault();
+                }
+              }}
+            >
+              Demander un devis précis →
+            </a>
+          </div>
+        </SlideIn>
       </div>
     </Section>
   );

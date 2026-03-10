@@ -4,19 +4,44 @@
   gap: 0.35rem;
   padding: 0.35rem 0.75rem;
   border-radius: 999px;
-  font-size: 0.75rem;
-  font-weight: 600;
-  letter-spacing: 0.04em;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
 }
 
 .soft {
-  background: var(--accent-soft);
+  background: rgba(196, 134, 42, 0.15);
   color: var(--accent);
+  border: 1px solid rgba(196, 134, 42, 0.3);
 }
 
 .dark {
-  background: var(--surface2);
+  background: color-mix(in srgb, var(--surface2) 90%, transparent);
   color: var(--text);
   border: 1px solid var(--border);
+}
+
+.amber {
+  background: color-mix(in srgb, var(--accent-amber) 16%, white);
+  color: #6f4915;
+  border: 1px solid color-mix(in srgb, var(--accent-amber) 45%, white);
+}
+
+.emerald {
+  background: color-mix(in srgb, var(--accent-emerald) 15%, white);
+  color: #174f41;
+  border: 1px solid color-mix(in srgb, var(--accent-emerald) 42%, white);
+}
+
+.rose {
+  background: color-mix(in srgb, var(--accent-rose) 16%, white);
+  color: #6f3140;
+  border: 1px solid color-mix(in srgb, var(--accent-rose) 42%, white);
+}
+
+.blue {
+  background: color-mix(in srgb, var(--accent-blue) 16%, white);
+  color: #233f61;
+  border: 1px solid color-mix(in srgb, var(--accent-blue) 42%, white);
 }

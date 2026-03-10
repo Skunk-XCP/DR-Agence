@@ -1,38 +1,120 @@
+.section {
+  position: relative;
+}
+
+.section::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(65% 45% at 50% 14%, rgba(196, 134, 42, 0.16), transparent 68%),
+    radial-gradient(54% 40% at 90% 85%, rgba(47, 93, 140, 0.12), transparent 74%);
+}
+
+.section h2 {
+  color: var(--text-dark);
+}
+
+.section p {
+  color: rgba(240, 232, 220, 0.82);
+}
+
 .steps {
+  position: relative;
+  z-index: 1;
+  margin-top: 1.2rem;
   display: grid;
-  gap: 1.2rem;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 1px;
+  border: 1px solid rgba(196, 134, 42, 0.16);
+  border-radius: 16px;
+  overflow: hidden;
 }
 
 .step {
-  display: grid;
-  grid-template-columns: auto 1fr;
-  gap: 1.5rem;
-  padding: 1.6rem;
-  border-radius: var(--radius);
-  background: var(--surface);
-  border: 1px solid var(--border);
-  box-shadow: var(--shadow-sm);
+  height: 100%;
+  padding: 2rem 1.5rem;
+  background: rgba(255, 255, 255, 0.05);
+  border-right: 1px solid rgba(196, 134, 42, 0.14);
+  position: relative;
+  transition: background 220ms ease;
+}
+
+.step::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: var(--accent);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 350ms ease;
+}
+
+.step::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(180px 120px at 50% -10%, rgba(196, 134, 42, 0.12), transparent 70%);
+  opacity: 0;
+  transition: opacity 220ms ease;
+}
+
+.step:hover {
+  background: rgba(196, 134, 42, 0.08);
+}
+
+.step:hover::before {
+  transform: scaleX(1);
+}
+
+.step:hover::after {
+  opacity: 1;
 }
 
 .index {
-  font-size: 1.5rem;
+  font-family: var(--font-display);
+  font-size: 3.4rem;
   font-weight: 700;
-  color: var(--accent);
-  letter-spacing: 0.08em;
+  color: rgba(196, 134, 42, 0.16);
+  line-height: 1;
+  margin-bottom: 1.2rem;
+  transition: color 220ms ease;
+}
+
+.step:hover .index {
+  color: rgba(217, 163, 85, 0.32);
 }
 
 .title {
-  margin: 0 0 0.4rem;
+  margin: 0 0 0.45rem;
+  color: var(--text-dark);
+  font-size: 1.08rem;
+  font-family: var(--font-display);
 }
 
 .description {
   margin: 0;
-  color: var(--muted);
-  line-height: 1.6;
+  color: rgba(240, 232, 220, 0.84);
+  line-height: 1.68;
+}
+
+@media (max-width: 1000px) {
+  .steps {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
 }
 
 @media (max-width: 640px) {
-  .step {
+  .steps {
     grid-template-columns: 1fr;
+  }
+
+  .step {
+    border-right: 0;
   }
 }

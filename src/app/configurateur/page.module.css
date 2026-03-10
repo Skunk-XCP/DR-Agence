@@ -1,6 +1,7 @@
 .page {
   min-height: calc(100vh - 2rem);
   padding: 4rem 1rem 3rem;
+  background: linear-gradient(180deg, var(--bg) 0%, var(--bg2) 100%);
 }
 
 .hero {
@@ -34,6 +35,12 @@
   gap: 1rem;
   grid-template-columns: minmax(0, 1.4fr) minmax(0, 0.9fr);
   align-items: start;
+}
+
+.mainColumn {
+  display: grid;
+  gap: 1rem;
+  min-width: 0;
 }
 
 .optionsPanel {
@@ -185,78 +192,126 @@
 
 .recap {
   background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
+  border: 1px solid rgba(196, 134, 42, 0.24);
+  border-radius: 24px;
   box-shadow: var(--shadow-sm);
-  padding: 1rem;
+  padding: 1.6rem 1.7rem;
   display: grid;
-  gap: 0.75rem;
+  gap: 0.3rem;
   position: sticky;
-  top: 1rem;
+  top: max(6.5rem, calc(50vh - 220px));
 }
 
 .recap h2 {
   margin: 0;
+  font-size: 1.15rem;
+  padding-bottom: 0.9rem;
 }
 
 .recap p {
   margin: 0;
 }
 
-.recapList ul {
-  margin: 0.5rem 0 0;
-  padding-left: 1rem;
+.recapSection {
   display: grid;
-  gap: 0.25rem;
-}
-
-.baseLine {
-  font-size: 1rem;
-}
-
-.baseSmall {
-  font-size: 0.9rem;
-  color: var(--muted);
-}
-
-.totalBlock {
+  gap: 0.3rem;
+  padding: 0.9rem 0 0;
   border-top: 1px solid var(--border);
-  padding-top: 0.75rem;
-  display: grid;
-  gap: 0.35rem;
 }
 
-.totalTitle {
+.recapLabel {
   margin: 0;
   text-transform: uppercase;
-  letter-spacing: 0.1em;
-  font-size: 0.78rem;
-  color: var(--muted);
+  letter-spacing: 0.14em;
+  font-size: 0.72rem;
+  color: #b8a489;
+  font-weight: 700;
 }
 
-.totalLine {
+.recapText {
+  font-size: 0.92rem;
+  line-height: 1.45;
+  color: #4d4338;
+}
+
+.recapValue {
+  font-size: 0.98rem;
+  line-height: 1.35;
+  font-weight: 700;
+  color: #2f2721;
+}
+
+.recapStrong {
+  font-size: 0.98rem;
+  line-height: 1.4;
+  font-weight: 700;
+  color: #2f2721;
+}
+
+.recapMeta {
+  font-size: 0.88rem;
+  color: #b8a489;
+  line-height: 1.5;
+}
+
+.recapList {
   margin: 0;
-  font-size: 1.05rem;
+  display: grid;
+  gap: 0.65rem;
+}
+
+.recapItem {
+  display: grid;
+  gap: 0.1rem;
+}
+
+.recapEmpty {
+  font-size: 0.98rem;
+  line-height: 1.45;
+  color: #4d4338;
 }
 
 .guardrail {
-  font-size: 0.9rem;
-  color: var(--muted);
+  margin-top: 0.2rem;
+  font-size: 0.88rem;
+  color: #b8a489;
+  line-height: 1.45;
 }
 
 .recapActions {
   display: flex;
   flex-wrap: wrap;
   gap: 0.8rem;
+  margin-top: 0.6rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--border);
 }
 
 .recapActions a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 38px;
+  padding: 0.7rem 1.15rem;
+  border-radius: 999px;
+  border: 1px solid rgba(196, 134, 42, 0.72);
+  background: #fff8ee;
+  color: #c4862a;
   font-weight: 600;
   text-decoration: none;
+  line-height: 1;
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease,
+    color 0.2s ease,
+    transform 0.2s ease;
 }
 
 .recapActions a:hover {
-  text-decoration: underline;
+  background: #f8ecd8;
+  border-color: #d9a355;
+  color: #b97a1f;
+  transform: translateY(-1px);
 }
 
 .formSection {

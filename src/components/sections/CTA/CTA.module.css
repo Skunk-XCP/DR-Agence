@@ -1,34 +1,94 @@
 .section {
-  background: transparent;
-  border-top: 1px solid var(--border);
-  border-bottom: 1px solid var(--border);
+  position: relative;
+  border-top: 1px solid rgba(196, 134, 42, 0.2);
+  border-bottom: 1px solid rgba(196, 134, 42, 0.2);
+}
+
+.section::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(38% 30% at 12% 18%, rgba(184, 90, 106, 0.18), transparent 72%),
+    radial-gradient(40% 32% at 88% 76%, rgba(47, 93, 140, 0.16), transparent 72%);
+}
+
+.section :global(header) {
+  max-width: none;
+}
+
+.section :global(header) > :first-child {
+  display: flex;
+  justify-content: flex-start;
+}
+
+.section :global(header) > :nth-child(2),
+.section :global(header) > :nth-child(3),
+.section :global(header) > :nth-child(4) {
+  text-align: center;
+}
+
+.section :global(header) > :nth-child(2) {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.section :global(header) > :nth-child(3) {
+  max-width: 46rem;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.section :global(header) > :nth-child(4) {
+  display: flex;
+  justify-content: center;
 }
 
 .actions {
   display: flex;
   gap: 1rem;
-  justify-content: center;
   flex-wrap: wrap;
 }
 
+.actions :global(a) {
+  background: linear-gradient(180deg, #c4862a, #b97a1f);
+}
+
 .contactGrid {
-  margin-top: 2.5rem;
+  margin-top: 2rem;
+  position: relative;
+  z-index: 1;
   display: grid;
-  grid-template-columns: 1fr;
-  gap: 2rem;
-  text-align: center;
-  justify-items: center;
+  grid-template-columns: minmax(0, 420px);
+}
+
+.contactCard {
+  border: 1px solid rgba(196, 134, 42, 0.24);
+  border-radius: 16px;
+  background: rgba(255, 251, 244, 0.74);
+  box-shadow: 0 14px 34px rgba(124, 85, 45, 0.14);
+  padding: 1.2rem 1.4rem;
 }
 
 .label {
   margin: 0;
   color: var(--muted);
   text-transform: uppercase;
-  letter-spacing: 0.12em;
-  font-size: 0.75rem;
+  letter-spacing: 0.16em;
+  font-size: 0.7rem;
+  font-weight: 700;
 }
 
 .value {
   margin: 0.6rem 0 0;
-  font-size: 1.1rem;
+  font-size: 1.08rem;
+}
+
+.value a {
+  text-decoration: none;
+}
+
+.value a:hover {
+  text-decoration: underline;
 }
