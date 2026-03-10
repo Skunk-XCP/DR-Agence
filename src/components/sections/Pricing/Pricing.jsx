@@ -28,8 +28,8 @@ const Pricing = () => {
   const businessLabel = businessTypes.find((item) => item.id === businessType)?.label ?? "";
   const siteLabel = siteTypes.find((item) => item.id === siteType)?.label ?? "";
   const resultLine = ready
-    ? `☕ ${businessLabel} · ${siteLabel} : ${currency.format(estimate?.range[0] ?? 0)} - ${currency.format(estimate?.range[1] ?? 0)} · ${estimate?.timeline ?? "Sur devis"}`
-    : "☕ Sélectionnez vos options pour voir une fourchette de prix et un délai indicatif.";
+    ? `Estimation - ${businessLabel} - ${siteLabel} : ${currency.format(estimate?.range[0] ?? 0)} - ${currency.format(estimate?.range[1] ?? 0)} - ${estimate?.timeline ?? "Sur devis"}`
+    : "Selectionnez vos options pour voir une fourchette de prix et un delai indicatif.";
   const configurateurHref = ready
     ? `/configurateur?${new URLSearchParams({
         businessType,
@@ -43,12 +43,12 @@ const Pricing = () => {
         <SlideIn direction="left" delay={0.08}>
           <div className={styles.copy}>
             <div className={styles.eyebrow}>Estimation</div>
-            <h2 className={styles.title}>Combien ça coûte ?</h2>
+            <h2 className={styles.title}>Combien ca coute ?</h2>
             <p className={styles.subtitle}>
-              Sélectionnez votre type d&apos;activité et de projet pour une fourchette indicative
-              {" "}— sans engagement, sans jargon.
+              Selectionnez votre type d&apos;activite et de projet pour une fourchette indicative{" "}
+              - sans engagement, sans jargon.
             </p>
-            <p className={styles.note}>Le devis final est confirmé après un premier échange.</p>
+            <p className={styles.note}>Le devis final est confirme apres un premier echange.</p>
           </div>
         </SlideIn>
 
@@ -106,7 +106,7 @@ const Pricing = () => {
                 }
               }}
             >
-              Demander un devis précis →
+              Demander un devis precis -&gt;
             </a>
           </div>
         </SlideIn>

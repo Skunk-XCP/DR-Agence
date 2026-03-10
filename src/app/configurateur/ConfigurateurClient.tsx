@@ -459,7 +459,7 @@ export default function ConfigurateurClient({ businessType, siteType }: Props) {
                 </label>
 
                 <label className={styles.field}>
-                  <span>Nom de l'etablissement *</span>
+                  <span>Nom de l&apos;etablissement *</span>
                   <input
                     type="text"
                     name="businessName"

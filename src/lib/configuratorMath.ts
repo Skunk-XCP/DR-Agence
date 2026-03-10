@@ -9,7 +9,7 @@ export const parseTimelineToDays = (timeline: string): TimelineDays => {
     .toLowerCase()
     .replace(/\s+/g, " ")
     .trim()
-    .replace(/[–—-]/g, "-");
+    .replace(/[–—]/g, "-");
 
   const match = normalized.match(/(\d+)\s*-\s*(\d+)\s*(jour|jours|semaine|semaines)/i);
   if (!match) {

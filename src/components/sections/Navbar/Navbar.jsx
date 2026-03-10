@@ -1,8 +1,10 @@
-﻿"use client";
+"use client";
 
+import Image from "next/image";
+import Link from "next/link";
 import React, { useEffect, useRef, useState } from "react";
 import { usePathname } from "next/navigation";
-import { Container, Button } from "../../ui";
+import { Button, Container } from "../../ui";
 import { brand, nav } from "../../../data";
 import styles from "./Navbar.module.css";
 
@@ -76,13 +78,19 @@ const Navbar = () => {
     <header className={styles.navbar} ref={navbarRef}>
       <Container className={styles.inner}>
         <div className={styles.brand}>
-          <a href="/" className={styles.brandLink} aria-label="Retour a l'accueil">
-            <img className={styles.logo} src="/assets/images/DR-favicon.png" alt="Logo Donatien Rouzeirol" />
+          <Link href="/" className={styles.brandLink} aria-label="Retour a l'accueil">
+            <Image
+              className={styles.logo}
+              src="/assets/images/DR-favicon.png"
+              alt="Logo Donatien Rouzeirol"
+              width={48}
+              height={48}
+            />
             <div className={styles.brandMeta}>
               <p className={styles.name}>{brand.name}</p>
               <p className={styles.role}>{brand.role}</p>
             </div>
-          </a>
+          </Link>
         </div>
 
         <nav className={styles.links} aria-label="Navigation principale">
@@ -95,7 +103,7 @@ const Navbar = () => {
 
         <div className={styles.cta}>
           <Button href={contactHref} variant="outline" size="sm">
-            Démarrer un projet
+            Demarrer un projet
           </Button>
         </div>
 
@@ -120,7 +128,7 @@ const Navbar = () => {
           aria-hidden={!isMobileMenuOpen}
         >
           <Button href={contactHref} variant="primary" size="sm" onClick={closeMobileMenu}>
-            Démarrer un projet
+            Demarrer un projet
           </Button>
           {nav.map((item) => (
             <a
@@ -139,4 +147,3 @@ const Navbar = () => {
 };
 
 export default Navbar;
-
