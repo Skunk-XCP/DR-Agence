@@ -331,281 +331,276 @@ export default function ConfigurateurClient({ businessType, siteType }: Props) {
         </p>
 
         <div className={styles.layout}>
-          <div className={styles.optionsPanel}>
-            {sections.map((section) => (
-              <article key={section.section} className={styles.optionSection}>
-                <h2>{section.section}</h2>
-                <div className={styles.optionList}>
-                  {section.options.map((option) => {
-                    if (option.kind === "checkbox") {
-                      return (
-                        <label key={option.id} className={styles.optionItem}>
-                          <input
-                            type="checkbox"
-                            checked={Boolean(selectedOptions[option.id])}
-                            disabled={isFormDisabled}
-                            onChange={(e) => onCheckboxChange(option.id, e.target.checked)}
-                          />
-                          <span>
-                            <strong>{option.label}</strong>
-                            {option.description ? <small>{option.description}</small> : null}
-                            <em>{`+${formatMoney(option.price)} | +${formatDays(option.days)}`}</em>
-                          </span>
-                        </label>
-                      );
-                    }
+          <div className={styles.mainColumn}>
+            <div className={styles.optionsPanel}>
+              {sections.map((section) => (
+                <article key={section.section} className={styles.optionSection}>
+                  <h2>{section.section}</h2>
+                  <div className={styles.optionList}>
+                    {section.options.map((option) => {
+                      if (option.kind === "checkbox") {
+                        return (
+                          <label key={option.id} className={styles.optionItem}>
+                            <input
+                              type="checkbox"
+                              checked={Boolean(selectedOptions[option.id])}
+                              disabled={isFormDisabled}
+                              onChange={(e) => onCheckboxChange(option.id, e.target.checked)}
+                            />
+                            <span>
+                              <strong>{option.label}</strong>
+                              {option.description ? <small>{option.description}</small> : null}
+                              <em>{`+${formatMoney(option.price)} | +${formatDays(option.days)}`}</em>
+                            </span>
+                          </label>
+                        );
+                      }
 
-                    if (option.kind === "radio") {
+                      if (option.kind === "radio") {
+                        return (
+                          <fieldset key={option.id} className={styles.radioGroup}>
+                            <legend>{option.label}</legend>
+                            {option.description ? <p className={styles.radioDescription}>{option.description}</p> : null}
+                            <div className={styles.choiceList}>
+                              {option.choices.map((choice) => (
+                                <label key={choice.id} className={styles.choiceItem}>
+                                  <input
+                                    type="radio"
+                                    name={option.id}
+                                    value={choice.id}
+                                    checked={selectedOptions[option.id] === choice.id}
+                                    disabled={isFormDisabled}
+                                    onChange={() => onRadioChange(option.id, choice.id)}
+                                  />
+                                  <span>
+                                    <strong>{choice.label}</strong>
+                                    {choice.description ? <small>{choice.description}</small> : null}
+                                    <em>
+                                      {`+${formatMoney(choice.price)} | +${formatDays(choice.days)}`}
+                                    </em>
+                                  </span>
+                                </label>
+                              ))}
+                            </div>
+                          </fieldset>
+                        );
+                      }
+
+                      const qty = getQuantityValue(option.id, option.defaultValue);
                       return (
-                        <fieldset key={option.id} className={styles.radioGroup}>
-                          <legend>{option.label}</legend>
+                        <div key={option.id} className={styles.quantityGroup}>
+                          <p className={styles.quantityTitle}>{option.label}</p>
                           {option.description ? <p className={styles.radioDescription}>{option.description}</p> : null}
-                          <div className={styles.choiceList}>
-                            {option.choices.map((choice) => (
-                              <label key={choice.id} className={styles.choiceItem}>
-                                <input
-                                  type="radio"
-                                  name={option.id}
-                                  value={choice.id}
-                                  checked={selectedOptions[option.id] === choice.id}
-                                  disabled={isFormDisabled}
-                                  onChange={() => onRadioChange(option.id, choice.id)}
-                                />
-                                <span>
-                                  <strong>{choice.label}</strong>
-                                  {choice.description ? <small>{choice.description}</small> : null}
-                                  <em>
-                                    {`+${formatMoney(choice.price)} | +${formatDays(choice.days)}`}
-                                  </em>
-                                </span>
-                              </label>
-                            ))}
+                          <div className={styles.quantityControls}>
+                            <button
+                              type="button"
+                              className={styles.quantityButton}
+                              disabled={isFormDisabled || qty <= option.min}
+                              onClick={() => setQuantityValue(option.id, option.min, option.max, qty - 1)}
+                              aria-label={`Retirer 1 ${option.unitLabel}`}
+                            >
+                              -
+                            </button>
+                            <input
+                              className={styles.quantityInput}
+                              type="number"
+                              min={option.min}
+                              max={option.max}
+                              step={1}
+                              value={qty}
+                              disabled={isFormDisabled}
+                              onChange={(event) => {
+                                const parsedValue = Number(event.target.value);
+                                if (Number.isNaN(parsedValue)) {
+                                  return;
+                                }
+                                setQuantityValue(option.id, option.min, option.max, parsedValue);
+                              }}
+                              aria-label={`${option.label} en nombre de ${option.unitLabel}`}
+                            />
+                            <button
+                              type="button"
+                              className={styles.quantityButton}
+                              disabled={isFormDisabled || qty >= option.max}
+                              onClick={() => setQuantityValue(option.id, option.min, option.max, qty + 1)}
+                              aria-label={`Ajouter 1 ${option.unitLabel}`}
+                            >
+                              +
+                            </button>
+                            <span className={styles.quantityUnit}>{formatUnit(qty, option.unitLabel)}</span>
                           </div>
-                        </fieldset>
-                      );
-                    }
-
-                    const qty = getQuantityValue(option.id, option.defaultValue);
-                    return (
-                      <div key={option.id} className={styles.quantityGroup}>
-                        <p className={styles.quantityTitle}>{option.label}</p>
-                        {option.description ? <p className={styles.radioDescription}>{option.description}</p> : null}
-                        <div className={styles.quantityControls}>
-                          <button
-                            type="button"
-                            className={styles.quantityButton}
-                            disabled={isFormDisabled || qty <= option.min}
-                            onClick={() => setQuantityValue(option.id, option.min, option.max, qty - 1)}
-                            aria-label={`Retirer 1 ${option.unitLabel}`}
-                          >
-                            -
-                          </button>
-                          <input
-                            className={styles.quantityInput}
-                            type="number"
-                            min={option.min}
-                            max={option.max}
-                            step={1}
-                            value={qty}
-                            disabled={isFormDisabled}
-                            onChange={(event) => {
-                              const parsedValue = Number(event.target.value);
-                              if (Number.isNaN(parsedValue)) {
-                                return;
-                              }
-                              setQuantityValue(option.id, option.min, option.max, parsedValue);
-                            }}
-                            aria-label={`${option.label} en nombre de ${option.unitLabel}`}
-                          />
-                          <button
-                            type="button"
-                            className={styles.quantityButton}
-                            disabled={isFormDisabled || qty >= option.max}
-                            onClick={() => setQuantityValue(option.id, option.min, option.max, qty + 1)}
-                            aria-label={`Ajouter 1 ${option.unitLabel}`}
-                          >
-                            +
-                          </button>
-                          <span className={styles.quantityUnit}>{formatUnit(qty, option.unitLabel)}</span>
+                          <em className={styles.quantityImpact}>
+                            {getQuantityImpact(qty, option.unitPrice, option.unitDays)}
+                          </em>
                         </div>
-                        <em className={styles.quantityImpact}>
-                          {getQuantityImpact(qty, option.unitPrice, option.unitDays)}
-                        </em>
-                      </div>
-                    );
-                  })}
-                </div>
-              </article>
-            ))}
+                      );
+                    })}
+                  </div>
+                </article>
+              ))}
+            </div>
+
+            <section className={styles.formSection}>
+              <h2>Vos informations</h2>
+              <form className={styles.formGrid} onSubmit={handleSubmit}>
+                <label className={styles.field}>
+                  <span>Nom du client *</span>
+                  <input
+                    type="text"
+                    name="clientName"
+                    autoComplete="name"
+                    required
+                    value={clientName}
+                    disabled={isFormDisabled}
+                    onChange={(event) => setClientName(event.target.value)}
+                    pattern="^[A-Za-zÀ-ÖØ-öø-ÿ' -]{2,80}$"
+                    title="2 a 80 caracteres: lettres, espaces, apostrophes ou tirets."
+                  />
+                </label>
+
+                <label className={styles.field}>
+                  <span>Nom de l&apos;etablissement *</span>
+                  <input
+                    type="text"
+                    name="businessName"
+                    autoComplete="organization"
+                    required
+                    value={businessName}
+                    disabled={isFormDisabled}
+                    onChange={(event) => setBusinessName(event.target.value)}
+                    pattern="^[A-Za-zÀ-ÖØ-öø-ÿ0-9'&()., -]{2,120}$"
+                    title="2 a 120 caracteres: lettres, chiffres, espaces et ponctuation simple."
+                  />
+                </label>
+
+                <label className={styles.field}>
+                  <span>Email *</span>
+                  <input
+                    type="email"
+                    name="email"
+                    autoComplete="email"
+                    required
+                    value={email}
+                    disabled={isFormDisabled}
+                    onChange={(event) => setEmail(event.target.value)}
+                    pattern="^[^\s@]+@[^\s@]+\.[^\s@]{2,}$"
+                    title="Format attendu: nom@domaine.tld"
+                  />
+                </label>
+
+                <label className={styles.field}>
+                  <span>Telephone</span>
+                  <input
+                    type="tel"
+                    name="phone"
+                    autoComplete="tel"
+                    inputMode="tel"
+                    value={phone}
+                    disabled={isFormDisabled}
+                    onChange={(event) => setPhone(event.target.value)}
+                    pattern="^(?:(?:\+|00)33|0)[1-9](?:[\s.-]?\d{2}){4}$"
+                    title="Format FR: 06 12 34 56 78 ou +33 6 12 34 56 78"
+                  />
+                </label>
+
+                <label className={styles.field}>
+                  <span>Siret</span>
+                  <input
+                    type="text"
+                    name="siret"
+                    inputMode="numeric"
+                    maxLength={14}
+                    value={siret}
+                    disabled={isFormDisabled}
+                    onChange={(event) => setSiret(event.target.value)}
+                    pattern="^\d{14}$"
+                    title="Le SIRET doit contenir exactement 14 chiffres."
+                  />
+                </label>
+
+                <button
+                  type="button"
+                  className={styles.generateButton}
+                  disabled={!canGenerateMessage || isFormDisabled}
+                  onClick={handleGenerateMessage}
+                >
+                  Generer le texte
+                </button>
+
+                <label className={styles.fieldTextarea}>
+                  <span>Message / demande de devis</span>
+                  <p id="quoteMessageHelp" className={styles.fieldHelp}>
+                    20 a 3000 caracteres. Les caracteres {"<"} et {">"} ne sont pas acceptes.
+                  </p>
+                  <textarea
+                    name="quoteMessage"
+                    rows={10}
+                    required
+                    minLength={20}
+                    maxLength={3000}
+                    aria-describedby="quoteMessageHelp"
+                    value={quoteMessage}
+                    disabled={isFormDisabled}
+                    onChange={(event) => setQuoteMessage(event.target.value)}
+                  />
+                </label>
+
+                <button type="submit" className={styles.sendButton} disabled={isFormDisabled}>
+                  {isSubmitting ? "Envoi..." : "Envoyer le message"}
+                </button>
+
+                {errorMessage ? (
+                  <p className={styles.submitError} role="alert" aria-live="assertive">
+                    {errorMessage}
+                  </p>
+                ) : null}
+              </form>
+            </section>
           </div>
 
           <aside className={styles.recap}>
             <h2>Recap live</h2>
-            <p className={styles.baseLine}>
-              Base: <strong>{formatMoney(basePrice)}</strong>
-            </p>
-            <p className={styles.baseLine}>
-              Delai base: <strong>{formatDays(baseDays)}</strong>
-            </p>
-            <p className={styles.baseSmall}>
-              Info delai source: {timeline.min}-{timeline.max} jours
-            </p>
 
-            <div className={styles.recapList}>
-              <p>
-                <strong>Options:</strong>
-              </p>
+            <section className={styles.recapSection}>
+              <p className={styles.recapLabel}>Base</p>
+              <p className={styles.recapValue}>{formatMoney(basePrice)}</p>
+            </section>
+
+            <section className={styles.recapSection}>
+              <p className={styles.recapLabel}>Délai base</p>
+              <p className={styles.recapValue}>{formatDays(baseDays)}</p>
+              <p className={styles.recapMeta}>Source delai: {timeline.min}-{timeline.max} jours</p>
+            </section>
+
+            <section className={styles.recapSection}>
+              <p className={styles.recapLabel}>Options</p>
               {selectedLines.length === 0 ? (
-                <p>Aucune option selectionnee.</p>
+                <p className={styles.recapEmpty}>Aucune option selectionnee.</p>
               ) : (
-                <ul>
+                <div className={styles.recapList}>
                   {selectedLines.map((item) => (
-                    <li key={item.id}>
-                      {item.label}: +{formatMoney(item.price)} (+{formatDays(item.days)})
-                    </li>
+                    <div key={item.id} className={styles.recapItem}>
+                      <p className={styles.recapStrong}>{item.label}</p>
+                      <p className={styles.recapText}>{`+${formatMoney(item.price)} / +${formatDays(item.days)}`}</p>
+                    </div>
                   ))}
-                </ul>
+                </div>
               )}
-            </div>
+            </section>
 
-            <div className={styles.totalBlock}>
-              <p className={styles.totalTitle}>Addition explicite</p>
-              <p className={styles.totalLine}>
-                Total: {formatMoney(basePrice)} + {formatMoney(optionsPrice)} ={" "}
-                <strong>{formatMoney(totalPrice)}</strong>
+            <section className={styles.recapSection}>
+              <p className={styles.recapLabel}>Addition explicite</p>
+              <p className={styles.recapStrong}>{`Total : ${formatMoney(basePrice)} + ${formatMoney(optionsPrice)} = ${formatMoney(totalPrice)}`}</p>
+              <p className={styles.recapText}>{`Délai : ${formatDays(baseDays)} + ${formatDays(optionsDays)} = ${formatDays(totalDays)}`}</p>
+              <p className={styles.guardrail}>
+                Seules les options coherentes avec le type de commerce et le type de site sont proposees.
               </p>
-              <p className={styles.totalLine}>
-                Delai: {formatDays(baseDays)} + {formatDays(optionsDays)} ={" "}
-                <strong>{formatDays(totalDays)}</strong>
-              </p>
-            </div>
-
-            <p className={styles.guardrail}>
-              Seules les options coherentes avec le type de commerce et le type de site sont proposees.
-            </p>
-            <div className={styles.recapActions}>
-              <Link href={`/offres?businessType=${businessType}&siteType=${siteType}`}>Modifier la base</Link>
-              <Link href="/#contact">Demander un devis</Link>
-            </div>
+              <div className={styles.recapActions}>
+                <Link href={`/offres?businessType=${businessType}&siteType=${siteType}`}>Modifier la base</Link>
+              </div>
+            </section>
           </aside>
         </div>
-
-        <section className={styles.formSection}>
-          <h2>Vos informations</h2>
-          <form className={styles.formGrid} onSubmit={handleSubmit}>
-            <label className={styles.field}>
-              <span>Nom du client *</span>
-              <input
-                type="text"
-                name="clientName"
-                autoComplete="name"
-                required
-                value={clientName}
-                disabled={isFormDisabled}
-                onChange={(event) => setClientName(event.target.value)}
-                pattern="^[A-Za-zÀ-ÖØ-öø-ÿ' -]{2,80}$"
-                title="2 a 80 caracteres: lettres, espaces, apostrophes ou tirets."
-              />
-            </label>
-
-            <label className={styles.field}>
-              <span>Nom de l'etablissement *</span>
-              <input
-                type="text"
-                name="businessName"
-                autoComplete="organization"
-                required
-                value={businessName}
-                disabled={isFormDisabled}
-                onChange={(event) => setBusinessName(event.target.value)}
-                pattern="^[A-Za-zÀ-ÖØ-öø-ÿ0-9'&()., -]{2,120}$"
-                title="2 a 120 caracteres: lettres, chiffres, espaces et ponctuation simple."
-              />
-            </label>
-
-            <label className={styles.field}>
-              <span>Email *</span>
-              <input
-                type="email"
-                name="email"
-                autoComplete="email"
-                required
-                value={email}
-                disabled={isFormDisabled}
-                onChange={(event) => setEmail(event.target.value)}
-                pattern="^[^\s@]+@[^\s@]+\.[^\s@]{2,}$"
-                title="Format attendu: nom@domaine.tld"
-              />
-            </label>
-
-            <label className={styles.field}>
-              <span>Telephone</span>
-              <input
-                type="tel"
-                name="phone"
-                autoComplete="tel"
-                inputMode="tel"
-                value={phone}
-                disabled={isFormDisabled}
-                onChange={(event) => setPhone(event.target.value)}
-                pattern="^(?:(?:\+|00)33|0)[1-9](?:[\s.-]?\d{2}){4}$"
-                title="Format FR: 06 12 34 56 78 ou +33 6 12 34 56 78"
-              />
-            </label>
-
-            <label className={styles.field}>
-              <span>Siret</span>
-              <input
-                type="text"
-                name="siret"
-                inputMode="numeric"
-                maxLength={14}
-                value={siret}
-                disabled={isFormDisabled}
-                onChange={(event) => setSiret(event.target.value)}
-                pattern="^\d{14}$"
-                title="Le SIRET doit contenir exactement 14 chiffres."
-              />
-            </label>
-
-            <button
-              type="button"
-              className={styles.generateButton}
-              disabled={!canGenerateMessage || isFormDisabled}
-              onClick={handleGenerateMessage}
-            >
-              Generer le texte
-            </button>
-
-            <label className={styles.fieldTextarea}>
-              <span>Message / demande de devis</span>
-              <p id="quoteMessageHelp" className={styles.fieldHelp}>
-                20 a 3000 caracteres. Les caracteres {"<"} et {">"} ne sont pas acceptes.
-              </p>
-              <textarea
-                name="quoteMessage"
-                rows={10}
-                required
-                minLength={20}
-                maxLength={3000}
-                aria-describedby="quoteMessageHelp"
-                value={quoteMessage}
-                disabled={isFormDisabled}
-                onChange={(event) => setQuoteMessage(event.target.value)}
-              />
-            </label>
-
-            <button type="submit" className={styles.sendButton} disabled={isFormDisabled}>
-              {isSubmitting ? "Envoi..." : "Envoyer le message"}
-            </button>
-
-            {errorMessage ? (
-              <p className={styles.submitError} role="alert" aria-live="assertive">
-                {errorMessage}
-              </p>
-            ) : null}
-          </form>
-        </section>
       </section>
       {showSuccessModal ? (
         <div
@@ -637,4 +632,3 @@ export default function ConfigurateurClient({ businessType, siteType }: Props) {
     </main>
   );
 }
-

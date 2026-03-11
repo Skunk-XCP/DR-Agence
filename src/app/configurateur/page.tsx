@@ -1,6 +1,6 @@
 import { redirect } from "next/navigation";
 import ConfigurateurClient from "./ConfigurateurClient";
-import { Navbar } from "@/components/sections";
+import { Footer, Navbar } from "@/components/sections";
 import { isBusinessType, isSiteType } from "@/lib/pricing";
 
 type PageProps = {
@@ -23,6 +23,7 @@ export default async function ConfigurateurPage({ searchParams }: PageProps) {
     <div className="app">
       <Navbar />
       <ConfigurateurClient businessType={businessType} siteType={siteType} />
+      <Footer />
     </div>
   );
 }

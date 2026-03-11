@@ -1,23 +1,102 @@
-.grid {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 1.5rem;
+.section {
+  position: relative;
 }
 
-.card {
+.grid {
+  margin-top: 1.2rem;
   display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 1rem;
 }
 
+.card {
+  --mx: 50%;
+  --my: 50%;
+  position: relative;
+  border-radius: 14px;
+  border: 1px solid rgba(26, 16, 8, 0.1);
+  background: #fbf5ea;
+  padding: 1.7rem;
+  transition: transform 220ms ease, box-shadow 220ms ease, border-color 220ms ease;
+  overflow: hidden;
+}
+
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 14px 34px rgba(26, 16, 8, 0.12);
+  border-color: rgba(196, 134, 42, 0.24);
+}
+
+.card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 220ms ease;
+  background: radial-gradient(180px circle at var(--mx) var(--my), rgba(196, 134, 42, 0.14), transparent 70%);
+}
+
+.card:hover::after {
+  opacity: 1;
+}
+
+.star {
+  background: #1a1008;
+  border: 0;
+  box-shadow: 0 16px 40px rgba(10, 6, 2, 0.32);
+}
+
+.star:hover {
+  box-shadow: 0 18px 42px rgba(10, 6, 2, 0.36);
+}
+
+.starBadge {
+  display: inline-block;
+  background: var(--accent);
+  color: #fff;
+  font-size: 0.66rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-weight: 700;
+  padding: 0.3rem 0.8rem;
+  border-radius: 6px;
+  margin-bottom: 1rem;
+}
+
+.category {
+  display: inline-block;
+  font-size: 0.68rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #74563a;
+  margin-bottom: 0.8rem;
+  font-weight: 600;
+}
+
 .title {
-  margin: 0;
-  font-size: 1.2rem;
+  margin: 0 0 0.5rem;
+  font-family: var(--font-display);
+  font-size: 1.16rem;
 }
 
 .description {
   margin: 0;
-  color: var(--color-muted);
-  line-height: 1.6;
+  color: #6b5540;
+  line-height: 1.65;
+  font-size: 0.9rem;
+}
+
+.star .title {
+  color: #fbf5ea;
+}
+
+.star .description {
+  color: rgba(251, 245, 234, 0.86);
+}
+
+.star .category {
+  color: rgba(251, 245, 234, 0.76);
 }
 
 @media (max-width: 900px) {

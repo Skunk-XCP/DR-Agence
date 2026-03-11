@@ -1,5 +1,8 @@
+"use client";
+
 import React from "react";
 import Container from "../Container/Container";
+import Reveal from "../../motion/Reveal";
 import styles from "./Section.module.css";
 
 const Section = ({
@@ -23,14 +26,28 @@ const Section = ({
       <Container>
         {(eyebrow || title || subtitle || actions) && (
           <header className={styles.header}>
-            {eyebrow && <span className={styles.eyebrow}>{eyebrow}</span>}
-            {title && (
-              <h2 id={headingId} className={styles.title}>
-                {title}
-              </h2>
+            {eyebrow && (
+              <Reveal delay={0}>
+                <span className={styles.eyebrow}>{eyebrow}</span>
+              </Reveal>
             )}
-            {subtitle && <p className={styles.subtitle}>{subtitle}</p>}
-            {actions && <div className={styles.actions}>{actions}</div>}
+            {title && (
+              <Reveal delay={0.05} y={18}>
+                <h2 id={headingId} className={styles.title}>
+                  {title}
+                </h2>
+              </Reveal>
+            )}
+            {subtitle && (
+              <Reveal delay={0.1}>
+                <p className={styles.subtitle}>{subtitle}</p>
+              </Reveal>
+            )}
+            {actions && (
+              <Reveal delay={0.14}>
+                <div className={styles.actions}>{actions}</div>
+              </Reveal>
+            )}
           </header>
         )}
         {children}

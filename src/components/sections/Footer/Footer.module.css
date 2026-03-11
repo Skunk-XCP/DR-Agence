@@ -1,49 +1,44 @@
 .footer {
-  padding: 3rem 0 4rem;
-  background: var(--accent-soft);
+  background: #0d0804;
+  padding: 1.8rem 0;
+  font-size: 0.77rem;
 }
 
 .inner {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 2rem;
-  flex-wrap: wrap;
+  gap: 1rem 2rem;
+  font-family: var(--font-body);
+  color: #fbf5ea;
 }
 
-.name {
-  font-weight: 600;
-  margin: 0;
+.meta {
+  color: #fbf5ea;
+  white-space: nowrap;
 }
 
-.note {
-  margin: 0.6rem 0 0;
-  color: var(--color-muted);
+.link {
+  color: #fbf5ea;
+  text-decoration: none;
+  transition: color 0.2s ease;
+  white-space: nowrap;
 }
 
-.socials {
-  display: flex;
-  gap: 0.6rem;
-  flex-wrap: wrap;
+.link:hover,
+.link:focus-visible {
+  color: #d9a355;
 }
 
-@media (max-width: 640px) {
+@media (max-width: 900px) {
   .inner {
     justify-content: center;
+    flex-wrap: wrap;
     text-align: center;
   }
 
-  .socials {
-    justify-content: center;
+  .meta,
+  .link {
+    white-space: normal;
   }
 }
-
-
-.linkedinButton {
-  background: #ffffff;
-}
-
-.linkedinButton:hover {
-  background: #ffffff;
-}
-

@@ -10,8 +10,8 @@ const CTA = () => {
       eyebrow={contact.eyebrow}
       title={contact.title}
       subtitle={contact.subtitle}
-      align="center"
-      className={styles.section}
+      align="left"
+      className={`${styles.section} themeWarm noise-overlay vignette-overlay`}
       actions={
         <div className={styles.actions}>
           <Button href={`mailto:${contact.email}`} size="lg">
@@ -19,16 +19,7 @@ const CTA = () => {
           </Button>
         </div>
       }
-    >
-      <div className={styles.contactGrid}>
-        <div>
-          <p className={styles.label}>Email</p>
-          <p className={styles.value}>
-            <a href={`mailto:${contact.email}`}>{contact.email}</a>
-          </p>
-        </div>
-      </div>
-    </Section>
+    />
   );
 };
 
