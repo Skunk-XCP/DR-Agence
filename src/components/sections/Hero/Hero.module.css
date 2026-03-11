@@ -13,12 +13,18 @@
   inset: 0;
   z-index: -3;
   background-image: image-set(
-    url("/assets/images/cafe-cosy-1200.avif") type("image/avif"),
-    url("/assets/images/cafe-cosy-1200.webp") type("image/webp")
+    url("/assets/images/cafe-cosy-800.avif") type("image/avif"),
+    url("/assets/images/cafe-cosy-800.webp") type("image/webp")
   );
   background-size: cover;
   background-position: center 35%;
   transform: scale(1.04);
+}
+
+@media (min-width: 901px) {
+  .heroBg {
+    background-image: url("/assets/images/cafe-cosy-2000.webp");
+  }
 }
 
 .heroOverlay {
