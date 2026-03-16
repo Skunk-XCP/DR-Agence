@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useMemo, useState } from "react";
-import { businessTypes, isBusinessType, isSiteType, pricingMatrix, siteTypes } from "@/lib/pricing";
+import { businessTypes, hostingDisclaimer, isBusinessType, isSiteType, pricingMatrix, siteTypes } from "@/lib/pricing";
 import styles from "./page.module.css";
 
 type Props = {
@@ -95,6 +95,9 @@ export default function OffresClient({ initialBusinessType, initialSiteType }: P
             <p>
               <strong>Note:</strong> {estimate.notes}
             </p>
+            <p className={styles.disclaimer}>
+              <strong>À noter :</strong> {hostingDisclaimer}
+            </p>
           </article>
         ) : null}
 
@@ -112,5 +115,3 @@ export default function OffresClient({ initialBusinessType, initialSiteType }: P
     </main>
   );
 }
-
-

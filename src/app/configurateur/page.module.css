@@ -278,6 +278,17 @@
   line-height: 1.45;
 }
 
+.disclaimer {
+  margin-top: 0.35rem;
+  padding: 0.8rem 0.9rem;
+  border-radius: 14px;
+  background: #fff8ee;
+  border: 1px solid rgba(196, 134, 42, 0.3);
+  color: #4d4338;
+  font-size: 0.92rem;
+  line-height: 1.5;
+}
+
 .recapActions {
   display: flex;
   flex-wrap: wrap;
@@ -496,3 +507,4 @@
     grid-template-columns: 1fr;
   }
 }
+

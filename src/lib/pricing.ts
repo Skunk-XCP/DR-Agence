@@ -27,6 +27,12 @@ export type PricingEntry = {
 
 export type PricingMatrix = Record<BusinessTypeId, Record<SiteTypeId, PricingEntry>>;
 
+export const hostingDisclaimer =
+  "Hébergement & nom de domaine : non inclus (coût récurrent).";
+
+const deploymentIncluded = "Mise en ligne (déploiement + SSL + configuration DNS)";
+const hostingNotIncluded = "Hébergement & nom de domaine : non inclus (coût récurrent)";
+
 export const pricingMatrix: PricingMatrix = {
   snack: {
     vitrine: {
@@ -37,7 +43,9 @@ export const pricingMatrix: PricingMatrix = {
         "One-page ou 3 pages max (Accueil, Menu, Contact)",
         "Menu (sections ou PDF), horaires, carte et accès",
         "CTA commande / appel (lien externe), avis et réseaux",
-        "SEO de base + performance standard + mise en ligne"
+        "SEO de base + performance standard",
+        deploymentIncluded,
+        hostingNotIncluded
       ],
       notes: "Idéal pour une présence propre et immédiate."
     },
@@ -63,7 +71,9 @@ export const pricingMatrix: PricingMatrix = {
         "4-6 pages (Accueil, Carte/Menu, Galerie, Infos, Contact)",
         "CTA réservation (TheFork/Zenchef/Google) + Map",
         "SEO de base + performance standard",
-        "Mise en ligne + Analytics/Search Console"
+        deploymentIncluded,
+        "Analytics/Search Console",
+        hostingNotIncluded
       ],
       notes: "Pour un restaurant indépendant qui veut convertir (réservations)."
     },
@@ -89,7 +99,9 @@ export const pricingMatrix: PricingMatrix = {
         "4-6 pages (Cabinet/Équipe, Prestations, Infos pratiques, Contact)",
         "CTA prise de RDV (Doctolib/Maiia) + itinéraire Google Maps",
         "Infos essentielles : horaires, accès, urgences",
-        "SEO local de base + performance + mise en ligne"
+        "SEO local de base + performance",
+        deploymentIncluded,
+        hostingNotIncluded
       ],
       notes: "Vitrine informative + redirection RDV externe, sans données de santé."
     },
@@ -115,7 +127,9 @@ export const pricingMatrix: PricingMatrix = {
         "Direction visuelle premium",
         "Pages éditoriales (histoire, expérience, équipe)",
         "SEO/perf exigeants + animations sobres",
-        "Option multilingue + mise en ligne"
+        "Option multilingue",
+        deploymentIncluded,
+        hostingNotIncluded
       ],
       notes: "Pour une image de marque forte."
     },
@@ -141,7 +155,9 @@ export const pricingMatrix: PricingMatrix = {
         "4-6 pages (Services, Réalisations, Zone, Contact)",
         "Galerie avant/après + formulaire devis",
         "SEO local de base",
-        "Mise en ligne + Analytics/Search Console"
+        deploymentIncluded,
+        "Analytics/Search Console",
+        hostingNotIncluded
       ],
       notes: "Optimisé pour demandes de devis."
     },
@@ -167,7 +183,9 @@ export const pricingMatrix: PricingMatrix = {
         "3-5 pages (Prestations, Tarifs, Galerie, Contact)",
         "Horaires, map, avis + CTA RDV externe",
         "SEO de base + performance standard",
-        "Mise en ligne + tracking"
+        deploymentIncluded,
+        "Tracking",
+        hostingNotIncluded
       ],
       notes: "Parfait si la prise de RDV est via outil externe."
     },
@@ -193,7 +211,9 @@ export const pricingMatrix: PricingMatrix = {
         "One-page ou 3-4 pages (Offre, Méthode, Contact)",
         "CTA prise de RDV (Calendly/Cal) + lead form",
         "SEO de base + performance standard",
-        "Mise en ligne + tracking"
+        deploymentIncluded,
+        "Tracking",
+        hostingNotIncluded
       ],
       notes: "Conçu pour convertir (prise de contact / RDV)."
     },
@@ -219,7 +239,9 @@ export const pricingMatrix: PricingMatrix = {
         "4-8 pages (Institutionnel, Services, Références, Contact)",
         "SEO de base + performance + structure scalable",
         "Sections de rassurance (process, FAQ)",
-        "Mise en ligne + Analytics/Search Console"
+        deploymentIncluded,
+        "Analytics/Search Console",
+        hostingNotIncluded
       ],
       notes: "Présence pro crédible pour une petite entreprise."
     },

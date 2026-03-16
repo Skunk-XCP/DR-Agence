@@ -2,7 +2,14 @@
 
 import { parseTimelineToDays } from "@/lib/configuratorMath";
 import { getOptionsFor } from "@/lib/configuratorOptions";
-import { businessTypes, pricingMatrix, siteTypes, type BusinessTypeId, type SiteTypeId } from "@/lib/pricing";
+import {
+  businessTypes,
+  hostingDisclaimer,
+  pricingMatrix,
+  siteTypes,
+  type BusinessTypeId,
+  type SiteTypeId
+} from "@/lib/pricing";
 import { buildQuoteMessage } from "@/lib/quoteMessage";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -592,6 +599,7 @@ export default function ConfigurateurClient({ businessType, siteType }: Props) {
               <p className={styles.recapLabel}>Addition explicite</p>
               <p className={styles.recapStrong}>{`Total : ${formatMoney(basePrice)} + ${formatMoney(optionsPrice)} = ${formatMoney(totalPrice)}`}</p>
               <p className={styles.recapText}>{`Délai : ${formatDays(baseDays)} + ${formatDays(optionsDays)} = ${formatDays(totalDays)}`}</p>
+              <p className={styles.disclaimer}>{hostingDisclaimer}</p>
               <p className={styles.guardrail}>
                 Seules les options cohérentes avec le type de commerce et le type de site sont proposées.
               </p>
@@ -632,5 +640,3 @@ export default function ConfigurateurClient({ businessType, siteType }: Props) {
     </main>
   );
 }
-
-

@@ -119,6 +119,17 @@
   line-height: 1.6;
 }
 
+.disclaimer {
+  margin: 0.9rem 0 0;
+  padding: 0.95rem 1rem;
+  border-radius: 10px;
+  background: rgba(255, 248, 238, 0.08);
+  border: 1px solid rgba(217, 163, 85, 0.32);
+  color: rgba(251, 245, 234, 0.9);
+  font-size: 0.86rem;
+  line-height: 1.6;
+}
+
 .cta {
   display: block;
   text-align: center;
@@ -167,3 +178,4 @@
     padding: 1.4rem;
   }
 }
+

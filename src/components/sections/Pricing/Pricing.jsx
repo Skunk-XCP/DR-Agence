@@ -4,7 +4,7 @@ import React, { useMemo, useState } from "react";
 import { Section } from "../../ui";
 import SlideIn from "../../motion/SlideIn";
 import { pricing } from "../../../data";
-import { businessTypes, isBusinessType, isSiteType, pricingMatrix, siteTypes } from "@/lib/pricing";
+import { businessTypes, hostingDisclaimer, isBusinessType, isSiteType, pricingMatrix, siteTypes } from "@/lib/pricing";
 import styles from "./Pricing.module.css";
 
 const currency = new Intl.NumberFormat("fr-FR", {
@@ -95,6 +95,7 @@ const Pricing = () => {
             <div className={styles.result} aria-live="polite">
               {resultLine}
             </div>
+            {ready ? <p className={styles.disclaimer}>{hostingDisclaimer}</p> : null}
 
             <a
               className={`${styles.cta} ${!ready ? styles.ctaDisabled : ""}`.trim()}
@@ -116,5 +117,3 @@ const Pricing = () => {
 };
 
 export default Pricing;
-
-

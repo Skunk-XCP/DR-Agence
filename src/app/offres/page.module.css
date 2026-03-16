@@ -80,6 +80,14 @@
   gap: 0.35rem;
 }
 
+.disclaimer {
+  margin-top: 0.9rem;
+  padding: 0.85rem 0.95rem;
+  border-radius: 12px;
+  border: 1px solid rgba(196, 134, 42, 0.35);
+  background: #fff8ee;
+}
+
 .actions {
   display: flex;
   flex-wrap: wrap;

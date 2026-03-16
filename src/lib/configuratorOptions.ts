@@ -240,6 +240,27 @@ const allOptions: Option[] = [
     tags: ["snack", "restaurant", "medical", "gastro", "artisan", "salon", "coach", "tpe"],
     price: 180,
     days: 1
+  },
+  {
+    id: "hebergement-accompagnement",
+    section: "Intégrations",
+    label: "Conseil hébergement & nom de domaine",
+    description: "Je vous recommande une solution et je vous guide (vous gardez la main). Hors coût récurrent.",
+    kind: "checkbox",
+    tags: ["snack", "restaurant", "medical", "gastro", "artisan", "salon", "coach", "tpe"],
+    price: 0,
+    days: 0
+  },
+  {
+    id: "setup-hebergement-dns",
+    section: "Intégrations",
+    label: "Mise en place hébergement & domaine (clé en main)",
+    description:
+      "Je m’occupe de la configuration : DNS, SSL, déploiement et tests. Hébergement/domaine restent à votre charge (coût récurrent).",
+    kind: "checkbox",
+    tags: ["snack", "restaurant", "medical", "gastro", "artisan", "salon", "coach", "tpe"],
+    price: 180,
+    days: 1
   }
 ];
 
