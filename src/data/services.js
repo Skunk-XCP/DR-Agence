@@ -1,43 +1,43 @@
 export const services = {
   eyebrow: "Prestations",
-  title: "Un catalogue clair, une execution sur mesure",
+  title: "Un catalogue clair, une exécution sur mesure",
   subtitle:
-    "Des offres modulables, pensees pour attirer plus de clients et accelerer votre mise en ligne a Bordeaux et en France.",
+    "Des offres modulables, pensées pour attirer plus de clients et accélérer votre mise en ligne à Bordeaux et en France.",
   items: [
     {
       title: "Vitrine Premium",
       description:
-        "Design editorial, animations subtiles, SEO technique et performance. Ideal pour credibiliser et convertir.",
-      tag: "Le plus demande"
+        "Design éditorial, animations subtiles, SEO technique et performance. Idéal pour crédibiliser et convertir.",
+      tag: "Le plus demandé"
     },
     {
       title: "Landing",
       description:
-        "Une page unique, calibree conversion, A/B testable, livree rapidement pour vos lancements.",
+        "Une page unique, calibrée conversion, A/B testable, livrée rapidement pour vos lancements.",
       tag: "Sprint"
     },
     {
-      title: "Vitrine + fonctionnalites",
+      title: "Vitrine + fonctionnalités",
       description:
-        "Formulaires avances, demandes stockees, mini back-office et integrations. Ideal pour automatiser et gagner du temps.",
-      tag: "Fonctionnalites"
+        "Formulaires avancés, demandes stockées, mini back-office et intégrations. Idéal pour automatiser et gagner du temps.",
+      tag: "Fonctionnalités"
     },
     {
       title: "Sur mesure",
       description:
-        "Fonctionnalites specifiques, integrations API, et logique metier. Concu pour grandir avec vous.",
+        "Fonctionnalités spécifiques, intégrations API, et logique métier. Conçu pour grandir avec vous.",
       tag: "Sur mesure"
     },
     {
-      title: "Performance & accessibilite",
+      title: "Performance & accessibilité",
       description:
-        "Optimisation Core Web Vitals, accessibilite, et bonnes pratiques pour un site rapide et durable.",
-      tag: "Qualite"
+        "Optimisation Core Web Vitals, accessibilité, et bonnes pratiques pour un site rapide et durable.",
+      tag: "Qualité"
     },
     {
-      title: "Maintenance evolutive",
+      title: "Maintenance évolutive",
       description:
-        "Suivi, petites evolutions, correctifs, et optimisation continue apres la mise en ligne.",
+        "Suivi, petites évolutions, correctifs, et optimisation continue après la mise en ligne.",
       tag: "Long terme"
     }
   ]

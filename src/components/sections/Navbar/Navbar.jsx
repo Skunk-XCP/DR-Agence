@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import Image from "next/image";
 import Link from "next/link";
@@ -78,7 +78,7 @@ const Navbar = () => {
     <header className={styles.navbar} ref={navbarRef}>
       <Container className={styles.inner}>
         <div className={styles.brand}>
-          <Link href="/" className={styles.brandLink} aria-label="Retour a l'accueil">
+          <Link href="/" className={styles.brandLink} aria-label="Retour à l'accueil">
             <Image
               className={styles.logo}
               src="/assets/images/DR-favicon.png"
@@ -103,7 +103,7 @@ const Navbar = () => {
 
         <div className={styles.cta}>
           <Button href={contactHref} variant="outline" size="sm">
-            Demarrer un projet
+            Démarrer un projet
           </Button>
         </div>
 
@@ -128,7 +128,7 @@ const Navbar = () => {
           aria-hidden={!isMobileMenuOpen}
         >
           <Button href={contactHref} variant="primary" size="sm" onClick={closeMobileMenu}>
-            Demarrer un projet
+            Démarrer un projet
           </Button>
           {nav.map((item) => (
             <a
@@ -147,3 +147,5 @@ const Navbar = () => {
 };
 
 export default Navbar;
+
+

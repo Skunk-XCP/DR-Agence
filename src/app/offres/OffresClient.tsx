@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import Link from "next/link";
 import { useMemo, useState } from "react";
@@ -49,7 +49,7 @@ export default function OffresClient({ initialBusinessType, initialSiteType }: P
               value={businessType}
               onChange={(e) => setBusinessType(e.target.value)}
             >
-              <option value="">Selectionner un type de commerce</option>
+              <option value="">Sélectionner un type de commerce</option>
               {businessTypes.map((item) => (
                 <option key={item.id} value={item.id}>
                   {item.label}
@@ -65,7 +65,7 @@ export default function OffresClient({ initialBusinessType, initialSiteType }: P
               value={siteType}
               onChange={(e) => setSiteType(e.target.value)}
             >
-              <option value="">Selectionner un type de site</option>
+              <option value="">Sélectionner un type de site</option>
               {siteTypes.map((item) => (
                 <option key={item.id} value={item.id}>
                   {item.label}
@@ -77,12 +77,12 @@ export default function OffresClient({ initialBusinessType, initialSiteType }: P
 
         {estimate ? (
           <article className={styles.card} aria-live="polite">
-            <h2>Estimation instantanee</h2>
+            <h2>Estimation instantanée</h2>
             <p>
               <strong>Fourchette:</strong> {formatRange(estimate.range)}
             </p>
             <p>
-              <strong>Delai typique:</strong> {estimate.timeline}
+              <strong>Délai typique :</strong> {estimate.timeline}
             </p>
             <p>
               <strong>Inclus:</strong>
@@ -101,7 +101,7 @@ export default function OffresClient({ initialBusinessType, initialSiteType }: P
         {ready ? (
           <div className={styles.actions}>
             <Link className={styles.primaryBtn} href={configurateurHref}>
-              configuez votre offre
+              Configurez votre offre
             </Link>
             <Link className={styles.secondaryBtn} href="/#contact">
               Demander un devis
@@ -112,3 +112,5 @@ export default function OffresClient({ initialBusinessType, initialSiteType }: P
     </main>
   );
 }
+
+

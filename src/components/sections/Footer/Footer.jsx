@@ -8,7 +8,7 @@ const Footer = () => {
     <footer className={styles.footer}>
       <Container className={styles.inner}>
         <span className={styles.meta}>(c) 2026 {brand.name}</span>
-        <span className={styles.meta}>Developpeur web freelance - Bordeaux</span>
+        <span className={styles.meta}>Développeur web freelance - Bordeaux</span>
         <a className={styles.link} href="mailto:contact@donatien-rouzeirol.fr">
           contact@donatien-rouzeirol.fr
         </a>

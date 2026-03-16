@@ -8,5 +8,5 @@ export const pricing = {
     siteType: "Type de site"
   },
   disclaimer:
-    "Estimation basee sur un perimetre standard. Devis final apres cadrage."
+    "Estimation basée sur un périmètre standard. Devis final après cadrage."
 };

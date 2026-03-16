@@ -1,4 +1,4 @@
-import { NextResponse } from "next/server";
+﻿import { NextResponse } from "next/server";
 
 type QuotePayload = {
   clientName?: unknown;
@@ -34,7 +34,7 @@ export async function POST(request: Request) {
   }
 
   if (!isNonEmptyString(body.businessName)) {
-    return NextResponse.json({ error: "Le nom de l'etablissement est requis." }, { status: 400 });
+    return NextResponse.json({ error: "Le nom de l'établissement est requis." }, { status: 400 });
   }
 
   if (!isNonEmptyString(body.email) || !emailRegex.test(body.email.trim())) {
@@ -50,25 +50,25 @@ export async function POST(request: Request) {
   }
 
   if (!Array.isArray(body.selectedOptions)) {
-    return NextResponse.json({ error: "selectedOptions doit etre un tableau." }, { status: 400 });
+    return NextResponse.json({ error: "selectedOptions doit être un tableau." }, { status: 400 });
   }
 
   if (typeof body.totalPrice !== "number" || Number.isNaN(body.totalPrice)) {
-    return NextResponse.json({ error: "totalPrice doit etre un nombre." }, { status: 400 });
+    return NextResponse.json({ error: "totalPrice doit être un nombre." }, { status: 400 });
   }
 
   if (typeof body.totalDays !== "number" || Number.isNaN(body.totalDays)) {
-    return NextResponse.json({ error: "totalDays doit etre un nombre." }, { status: 400 });
+    return NextResponse.json({ error: "totalDays doit être un nombre." }, { status: 400 });
   }
 
   if (typeof body.message !== "string") {
-    return NextResponse.json({ error: "message doit etre une chaine." }, { status: 400 });
+    return NextResponse.json({ error: "message doit être une chaîne." }, { status: 400 });
   }
 
   const trimmedMessage = body.message.trim();
   if (!quoteMessageRegex.test(trimmedMessage)) {
     return NextResponse.json(
-      { error: "Le message doit contenir 20 a 3000 caracteres et ne pas inclure < ou >." },
+      { error: "Le message doit contenir 20 à 3000 caractères et ne pas inclure < ou >." },
       { status: 400 }
     );
   }
@@ -91,3 +91,4 @@ export async function POST(request: Request) {
 
   return NextResponse.json({ ok: true }, { status: 200 });
 }
+

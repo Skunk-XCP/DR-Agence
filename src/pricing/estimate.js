@@ -1,4 +1,4 @@
-import { businessTypes, siteTypes, pricingMatrix } from "./catalog";
+﻿import { businessTypes, siteTypes, pricingMatrix } from "./catalog";
 
 const fallbackIncluded = [
   "Cadrage du besoin et recommandations",
@@ -35,4 +35,7 @@ export const estimatePricing = ({ businessType, siteType }) => {
     notes: matrixEntry.notes
   };
 };
+
+
+
 

@@ -263,13 +263,13 @@ export default function ConfigurateurClient({ businessType, siteType }: Props) {
     }
 
     if (!canGenerateMessage) {
-      setErrorMessage("Veuillez renseigner nom client, nom etablissement et email.");
+      setErrorMessage("Veuillez renseigner le nom du client, le nom de l'établissement et l'email.");
       return;
     }
 
     const normalizedMessage = quoteMessage.trim();
     if (!quoteMessageRegex.test(normalizedMessage)) {
-      setErrorMessage("Le message doit contenir 20 a 3000 caracteres et ne pas inclure < ou >.");
+      setErrorMessage("Le message doit contenir 20 à 3000 caractères et ne pas inclure < ou >.");
       return;
     }
 
@@ -301,7 +301,7 @@ export default function ConfigurateurClient({ businessType, siteType }: Props) {
 
       if (!response.ok) {
         const submitError = await readSubmitError(response);
-        setErrorMessage(`Erreur d'envoi: ${submitError}`);
+        setErrorMessage(`Erreur d'envoi : ${submitError}`);
         return;
       }
 
@@ -315,7 +315,7 @@ export default function ConfigurateurClient({ businessType, siteType }: Props) {
       setQuoteMessage("");
       setSelectedOptions({});
     } catch {
-      setErrorMessage("Erreur d'envoi: erreur reseau.");
+      setErrorMessage("Erreur d'envoi : erreur réseau.");
     } finally {
       setIsSubmitting(false);
     }
@@ -324,10 +324,10 @@ export default function ConfigurateurClient({ businessType, siteType }: Props) {
   return (
     <main id="main" tabIndex={-1} className={styles.page}>
       <section className={styles.hero}>
-        <p className={styles.kicker}>Configurateur avance</p>
+        <p className={styles.kicker}>Configurateur avancé</p>
         <h1 className={styles.title}>Configurer votre offre</h1>
         <p className={styles.context}>
-          Base selectionnee: <strong>{businessLabel}</strong> - <strong>{siteLabel}</strong>
+          Base sélectionnée : <strong>{businessLabel}</strong> - <strong>{siteLabel}</strong>
         </p>
 
         <div className={styles.layout}>
@@ -454,12 +454,12 @@ export default function ConfigurateurClient({ businessType, siteType }: Props) {
                     disabled={isFormDisabled}
                     onChange={(event) => setClientName(event.target.value)}
                     pattern="^[A-Za-zÀ-ÖØ-öø-ÿ' -]{2,80}$"
-                    title="2 a 80 caracteres: lettres, espaces, apostrophes ou tirets."
+                    title="2 à 80 caractères : lettres, espaces, apostrophes ou tirets."
                   />
                 </label>
 
                 <label className={styles.field}>
-                  <span>Nom de l&apos;etablissement *</span>
+                  <span>Nom de l&apos;établissement *</span>
                   <input
                     type="text"
                     name="businessName"
@@ -469,7 +469,7 @@ export default function ConfigurateurClient({ businessType, siteType }: Props) {
                     disabled={isFormDisabled}
                     onChange={(event) => setBusinessName(event.target.value)}
                     pattern="^[A-Za-zÀ-ÖØ-öø-ÿ0-9'&()., -]{2,120}$"
-                    title="2 a 120 caracteres: lettres, chiffres, espaces et ponctuation simple."
+                    title="2 à 120 caractères : lettres, chiffres, espaces et ponctuation simple."
                   />
                 </label>
 
@@ -489,7 +489,7 @@ export default function ConfigurateurClient({ businessType, siteType }: Props) {
                 </label>
 
                 <label className={styles.field}>
-                  <span>Telephone</span>
+                  <span>Téléphone</span>
                   <input
                     type="tel"
                     name="phone"
@@ -524,13 +524,13 @@ export default function ConfigurateurClient({ businessType, siteType }: Props) {
                   disabled={!canGenerateMessage || isFormDisabled}
                   onClick={handleGenerateMessage}
                 >
-                  Generer le texte
+                  Générer le texte
                 </button>
 
                 <label className={styles.fieldTextarea}>
                   <span>Message / demande de devis</span>
                   <p id="quoteMessageHelp" className={styles.fieldHelp}>
-                    20 a 3000 caracteres. Les caracteres {"<"} et {">"} ne sont pas acceptes.
+                    20 à 3000 caractères. Les caractères {"<"} et {">"} ne sont pas acceptés.
                   </p>
                   <textarea
                     name="quoteMessage"
@@ -559,7 +559,7 @@ export default function ConfigurateurClient({ businessType, siteType }: Props) {
           </div>
 
           <aside className={styles.recap}>
-            <h2>Recap live</h2>
+            <h2>Récap live</h2>
 
             <section className={styles.recapSection}>
               <p className={styles.recapLabel}>Base</p>
@@ -569,13 +569,13 @@ export default function ConfigurateurClient({ businessType, siteType }: Props) {
             <section className={styles.recapSection}>
               <p className={styles.recapLabel}>Délai base</p>
               <p className={styles.recapValue}>{formatDays(baseDays)}</p>
-              <p className={styles.recapMeta}>Source delai: {timeline.min}-{timeline.max} jours</p>
+              <p className={styles.recapMeta}>Source délai : {timeline.min}-{timeline.max} jours</p>
             </section>
 
             <section className={styles.recapSection}>
               <p className={styles.recapLabel}>Options</p>
               {selectedLines.length === 0 ? (
-                <p className={styles.recapEmpty}>Aucune option selectionnee.</p>
+                <p className={styles.recapEmpty}>Aucune option sélectionnée.</p>
               ) : (
                 <div className={styles.recapList}>
                   {selectedLines.map((item) => (
@@ -593,7 +593,7 @@ export default function ConfigurateurClient({ businessType, siteType }: Props) {
               <p className={styles.recapStrong}>{`Total : ${formatMoney(basePrice)} + ${formatMoney(optionsPrice)} = ${formatMoney(totalPrice)}`}</p>
               <p className={styles.recapText}>{`Délai : ${formatDays(baseDays)} + ${formatDays(optionsDays)} = ${formatDays(totalDays)}`}</p>
               <p className={styles.guardrail}>
-                Seules les options coherentes avec le type de commerce et le type de site sont proposees.
+                Seules les options cohérentes avec le type de commerce et le type de site sont proposées.
               </p>
               <div className={styles.recapActions}>
                 <Link href={`/offres?businessType=${businessType}&siteType=${siteType}`}>Modifier la base</Link>
@@ -632,3 +632,5 @@ export default function ConfigurateurClient({ businessType, siteType }: Props) {
     </main>
   );
 }
+
+

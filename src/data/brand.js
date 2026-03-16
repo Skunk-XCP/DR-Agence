@@ -1,9 +1,9 @@
 export const brand = {
   name: "Donatien Rouzeirol",
-  role: "Developpeur web freelance",
+  role: "Développeur web freelance",
   location: "Bordeaux, France / Remote",
-  availability: "Disponible pour des missions selectives en 2026",
-  footerNote: "Developpeur web a Bordeaux. Sites premium, rapides et optimises SEO.",
+  availability: "Disponible pour des missions sélectives en 2026",
+  footerNote: "Développeur web à Bordeaux. Sites premium, rapides et optimisés SEO.",
   socials: [
     { label: "LinkedIn", href: "https://www.linkedin.com/in/donatien-rouzeirol-0ab070207/" },
   ]
