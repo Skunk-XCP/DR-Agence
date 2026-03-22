@@ -1,4 +1,4 @@
-﻿import { businessTypes, type BusinessTypeId, type SiteTypeId } from "@/lib/pricing";
+import { businessTypes, type BusinessTypeId, type ProjectTypeId, type SiteTypeId } from "@/lib/pricing";
 
 export type OptionKind = "checkbox" | "radio" | "quantity";
 
@@ -89,7 +89,7 @@ const allOptions: Option[] = [
     label: "Pages supplémentaires",
     description: "Pages au-delà du pack de base (ex: À propos, Galerie, Accès, FAQ...).",
     kind: "quantity",
-    tags: [...allBusinessTags, "vitrine-only"],
+    tags: [...allBusinessTags, "vitrine-only", "existing-site-supported"],
     unitLabel: "page",
     unitPrice: 120,
     unitDays: 1,
@@ -117,7 +117,7 @@ const allOptions: Option[] = [
     label: "CTA commande/appel externe",
     description: "Vous nous fournissez les liens externes, nous ajoutons les boutons de commande/appel sur le site.",
     kind: "checkbox",
-    tags: ["snack"],
+    tags: ["snack", "existing-site-supported"],
     price: 120,
     days: 1
   },
@@ -137,7 +137,7 @@ const allOptions: Option[] = [
     label: "Demandes/messages + statuts",
     description: "Vos prospects envoient leurs demandes, nous mettons en place le suivi des statuts côté admin.",
     kind: "checkbox",
-    tags: ["snack", "backend-only"],
+    tags: ["snack", "association", "backend-only"],
     price: 380,
     days: 2
   },
@@ -147,7 +147,7 @@ const allOptions: Option[] = [
     label: "Notifications email",
     description: "Vous indiquez l'adresse de réception, nous configurons les notifications automatiques par email.",
     kind: "checkbox",
-    tags: ["snack", "restaurant", "gastro", "artisan", "coach", "tpe", "backend-only"],
+    tags: ["snack", "restaurant", "gastro", "artisan", "coach", "association", "tpe", "backend-only"],
     price: 180,
     days: 1
   },
@@ -157,7 +157,7 @@ const allOptions: Option[] = [
     label: "CTA réservation externe (TheFork/Zenchef/Google)",
     description: "Vous fournissez le lien de réservation, nous ajoutons le bouton de redirection sur le site.",
     kind: "checkbox",
-    tags: ["restaurant", "gastro"],
+    tags: ["restaurant", "gastro", "existing-site-supported"],
     price: 220,
     days: 1
   },
@@ -187,7 +187,7 @@ const allOptions: Option[] = [
     label: "CTA RDV externe (Doctolib/Maiia)",
     description: "Vous fournissez le lien de prise de RDV, nous ajoutons le CTA sans stocker de données médicales.",
     kind: "checkbox",
-    tags: ["medical", "medical-only", "vitrine-only", "no-health-data"],
+    tags: ["medical", "medical-only", "vitrine-only", "no-health-data", "existing-site-supported"],
     price: 140,
     days: 1
   },
@@ -207,7 +207,7 @@ const allOptions: Option[] = [
     label: "Formulaire lead/devis",
     description: "Vous définissez les champs utiles, nous configurons le formulaire de contact qualifié.",
     kind: "checkbox",
-    tags: ["artisan", "coach", "tpe"],
+    tags: ["artisan", "coach", "association", "tpe", "existing-site-supported"],
     price: 320,
     days: 2
   },
@@ -227,7 +227,7 @@ const allOptions: Option[] = [
     label: "SEO local renforcé",
     description: "Vous validez vos zones et mots-clés, nous optimisons le référencement local des pages.",
     kind: "checkbox",
-    tags: ["artisan", "coach", "tpe", "medical", "salon"],
+    tags: ["artisan", "coach", "association", "tpe", "medical", "salon", "existing-site-supported"],
     price: 320,
     days: 2
   },
@@ -237,7 +237,7 @@ const allOptions: Option[] = [
     label: "Mentions légales + CGV/CGU",
     description: "Vous fournissez vos informations légales, nous intégrons les pages et liens obligatoires.",
     kind: "checkbox",
-    tags: ["snack", "restaurant", "medical", "gastro", "artisan", "salon", "coach", "tpe"],
+    tags: ["snack", "restaurant", "medical", "gastro", "artisan", "salon", "coach", "association", "tpe", "existing-site-supported"],
     price: 180,
     days: 1
   },
@@ -247,7 +247,7 @@ const allOptions: Option[] = [
     label: "Conseil hébergement & nom de domaine",
     description: "Je vous recommande une solution et je vous guide (vous gardez la main). Hors coût récurrent.",
     kind: "checkbox",
-    tags: ["snack", "restaurant", "medical", "gastro", "artisan", "salon", "coach", "tpe"],
+    tags: ["snack", "restaurant", "medical", "gastro", "artisan", "salon", "coach", "association", "tpe"],
     price: 0,
     days: 0
   },
@@ -256,11 +256,31 @@ const allOptions: Option[] = [
     section: "Intégrations",
     label: "Mise en place hébergement & domaine (clé en main)",
     description:
-      "Je m’occupe de la configuration : DNS, SSL, déploiement et tests. Hébergement/domaine restent à votre charge (coût récurrent).",
+      "Je m'occupe de la configuration : DNS, SSL, déploiement et tests. Hébergement/domaine restent à votre charge (coût récurrent).",
     kind: "checkbox",
-    tags: ["snack", "restaurant", "medical", "gastro", "artisan", "salon", "coach", "tpe"],
+    tags: ["snack", "restaurant", "medical", "gastro", "artisan", "salon", "coach", "association", "tpe", "existing-site-supported"],
     price: 180,
     days: 1
+  },
+  {
+    id: "cta-adhesion-don-externe",
+    section: "Intégrations",
+    label: "CTA adhésion/don externe",
+    description: "Vous fournissez le lien externe, nous ajoutons les boutons d'adhésion ou de don sur le site.",
+    kind: "checkbox",
+    tags: ["association", "existing-site-supported"],
+    price: 120,
+    days: 1
+  },
+  {
+    id: "actus-evenements-admin",
+    section: "Admin",
+    label: "Actualités/événements en admin",
+    description: "Vous publiez vos actualités ou événements via un back-office léger.",
+    kind: "checkbox",
+    tags: ["association", "backend-only"],
+    price: 520,
+    days: 3
   }
 ];
 
@@ -296,12 +316,25 @@ const matchesOnlyBusinessTags = (option: Option, businessType: BusinessTypeId) =
   return true;
 };
 
-export const getOptionsFor = (businessType: BusinessTypeId, siteType: SiteTypeId): OptionSection[] => {
+const matchesProjectType = (option: Option, projectType: ProjectTypeId) => {
+  if (projectType === "new_site") {
+    return true;
+  }
+
+  return option.tags.includes("existing-site-supported");
+};
+
+export const getOptionsFor = (
+  businessType: BusinessTypeId,
+  siteType: SiteTypeId,
+  projectType: ProjectTypeId
+): OptionSection[] => {
   const filtered = allOptions.filter(
     (option) =>
       matchesBusiness(option, businessType) &&
       matchesSite(option, siteType) &&
-      matchesOnlyBusinessTags(option, businessType)
+      matchesOnlyBusinessTags(option, businessType) &&
+      matchesProjectType(option, projectType)
   );
 
   return sectionOrder
@@ -311,5 +344,3 @@ export const getOptionsFor = (businessType: BusinessTypeId, siteType: SiteTypeId
     }))
     .filter((group) => group.options.length > 0);
 };
-
-

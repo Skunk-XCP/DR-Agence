@@ -13,6 +13,7 @@ type QuotePayload = {
   phone?: unknown;
   siret?: unknown;
   businessType?: unknown;
+  projectType?: unknown;
   siteType?: unknown;
   selectedOptions?: unknown;
   totalPrice?: unknown;
@@ -136,16 +137,25 @@ const BUSINESS_TYPE_LABELS: Record<string, string> = {
   artisan: "Artisan (BTP / services)",
   salon: "Salon (coiffure / esthetique)",
   coach: "Coach / independant",
+  association: "Association / organisme",
   tpe: "TPE / PME (presence pro)"
+};
+
+const PROJECT_TYPE_LABELS: Record<string, string> = {
+  new_site: "Creer un site",
+  existing_site: "Mettre a jour un site existant"
 };
 
 const SITE_TYPE_LABELS: Record<string, string> = {
   vitrine: "Site vitrine",
-  backend: "Vitrine + fonctionnalités"
+  backend: "Vitrine + fonctionnalites"
 };
 
 const getBusinessTypeLabel = (businessType: string): string =>
   BUSINESS_TYPE_LABELS[businessType] ?? businessType;
+
+const getProjectTypeLabel = (projectType: string): string =>
+  PROJECT_TYPE_LABELS[projectType] ?? projectType;
 
 const getSiteTypeLabel = (siteType: string): string => SITE_TYPE_LABELS[siteType] ?? siteType;
 
@@ -154,25 +164,30 @@ const buildGeneratedMessageBlock = (payload: {
   businessName: string;
   email: string;
   phone: string;
+  projectType: string;
   businessTypeLabel: string;
   siteTypeLabel: string;
   selectedOptions: string[];
 }): string => {
-  const businessNameLine = payload.businessName ? ` – ${payload.businessName}` : "";
+  const businessNameLine = payload.businessName ? ` - ${payload.businessName}` : "";
   const optionsBlock =
     payload.selectedOptions.length > 0
       ? `Je souhaite inclure les options suivantes :\n${payload.selectedOptions.map((option) => `- ${option}`).join("\n")}`
-      : "Je n’ai pas d’option supplémentaire pour le moment.";
+      : "Je n'ai pas d'option supplementaire pour le moment.";
   const clientPhoneLine = payload.phone ? `\n${payload.phone}` : "";
+  const projectSentence =
+    payload.projectType === "existing_site"
+      ? `Je souhaiterais obtenir un devis pour la mise a jour d'un site existant (${payload.siteTypeLabel}) pour mon activite (${payload.businessTypeLabel}${businessNameLine}).`
+      : `Je souhaiterais obtenir un devis pour la creation d'un ${payload.siteTypeLabel} pour mon activite (${payload.businessTypeLabel}${businessNameLine}).`;
 
   return [
     "Bonjour,",
     "",
-    `Je souhaiterais obtenir un devis pour la création d’un ${payload.siteTypeLabel} pour mon activité (${payload.businessTypeLabel}${businessNameLine}).`,
+    projectSentence,
     "",
     optionsBlock,
     "",
-    "Dans l’attente de votre retour,",
+    "Dans l'attente de votre retour,",
     "Cordialement,",
     payload.clientName,
     "",
@@ -187,18 +202,21 @@ const buildMainEmailText = (payload: {
   phone: string;
   siret: string;
   businessType: string;
+  projectType: string;
   siteType: string;
   selectedOptions: string[];
   totalPrice: number;
   totalDays: number;
 }): string => {
   const businessTypeLabel = getBusinessTypeLabel(payload.businessType);
+  const projectTypeLabel = getProjectTypeLabel(payload.projectType);
   const siteTypeLabel = getSiteTypeLabel(payload.siteType);
   const generatedMessage = buildGeneratedMessageBlock({
     clientName: payload.clientName,
     businessName: payload.businessName,
     email: payload.email,
     phone: payload.phone,
+    projectType: payload.projectType,
     businessTypeLabel,
     siteTypeLabel,
     selectedOptions: payload.selectedOptions
@@ -207,12 +225,13 @@ const buildMainEmailText = (payload: {
   return [
     "INFOS",
     `Client: ${payload.clientName}`,
-    `Établissement: ${payload.businessName}`,
+    `Etablissement: ${payload.businessName}`,
     `Email: ${payload.email}`,
-    `Téléphone: ${payload.phone || "—"}`,
-    `SIRET: ${payload.siret || "—"}`,
+    `Telephone: ${payload.phone || "-"}`,
+    `SIRET: ${payload.siret || "-"}`,
     "",
     "BASE",
+    `Mode projet: ${projectTypeLabel}`,
     `Type de commerce: ${businessTypeLabel}`,
     `Type de site: ${siteTypeLabel}`,
     "",
@@ -220,8 +239,8 @@ const buildMainEmailText = (payload: {
     normalizeInternalOptions(payload.selectedOptions),
     "",
     "ESTIMATION",
-    `Total: ${payload.totalPrice} €`,
-    `Délai: ${payload.totalDays} jours`,
+    `Total: ${payload.totalPrice} EUR`,
+    `Delai: ${payload.totalDays} jours`,
     "",
     "_____________________________________________________________________________",
     "",
@@ -233,6 +252,7 @@ const buildMainEmailText = (payload: {
 const buildReceiptEmailText = (payload: {
   clientName: string;
   businessName: string;
+  projectType: string;
   selectedOptions: string[];
   totalPrice: number;
   totalDays: number;
@@ -242,14 +262,15 @@ const buildReceiptEmailText = (payload: {
     "",
     "Nous avons bien recu votre demande de devis.",
     "",
-    "Récapitulatif:",
+    `Mode projet: ${getProjectTypeLabel(payload.projectType)}`,
+    "Recapitulatif:",
     normalizeOptions(payload.selectedOptions),
-    `Total estimé: ${payload.totalPrice} €`,
-    `Delai estimé: ${payload.totalDays} jours`,
+    `Total estime: ${payload.totalPrice} EUR`,
+    `Delai estime: ${payload.totalDays} jours`,
     "",
     "Ce message n'est pas un devis final.",
-    "Il s'agit uniquement d'un récapitulatif de votre demande.",
-    "Ne pas répondre à ce mail.",
+    "Il s'agit uniquement d'un recapitulatif de votre demande.",
+    "Ne pas repondre a ce mail.",
     "",
     "Merci."
   ].join("\n");
@@ -304,6 +325,10 @@ export default {
         return json({ error: "businessType is required" }, 400);
       }
 
+      if (!isNonEmptyString(body.projectType)) {
+        return json({ error: "projectType is required" }, 400);
+      }
+
       if (!isNonEmptyString(body.siteType)) {
         return json({ error: "siteType is required" }, 400);
       }
@@ -345,6 +370,7 @@ export default {
         phone: typeof body.phone === "string" ? body.phone.trim() : "",
         siret: typeof body.siret === "string" ? body.siret.trim() : "",
         businessType: body.businessType.trim(),
+        projectType: body.projectType.trim(),
         siteType: body.siteType.trim(),
         selectedOptions,
         totalPrice: body.totalPrice,
@@ -356,7 +382,7 @@ export default {
         from: fromEmail,
         to: [quoteToEmail],
         reply_to: normalizedPayload.email,
-        subject: `Nouveau lead devis – ${normalizedPayload.businessName} – ${normalizedPayload.siteType} – ${normalizedPayload.totalPrice}€ / ${normalizedPayload.totalDays}j`,
+        subject: `Nouveau lead devis - ${normalizedPayload.businessName} - ${normalizedPayload.projectType} - ${normalizedPayload.siteType}`,
         text: buildMainEmailText(normalizedPayload)
       });
 
@@ -364,7 +390,7 @@ export default {
         await sendResendEmail(resendApiKey, {
           from: fromEmail,
           to: [normalizedPayload.email],
-          subject: `Accusé réception – demande de devis – ${normalizedPayload.businessName}`,
+          subject: `Accuse reception - demande de devis - ${normalizedPayload.businessName}`,
           text: buildReceiptEmailText(normalizedPayload)
         });
       }

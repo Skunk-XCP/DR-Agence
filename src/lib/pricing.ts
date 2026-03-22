@@ -6,7 +6,13 @@
   { id: "artisan", label: "Artisan (BTP / services)" },
   { id: "salon", label: "Salon (coiffure / esthétique)" },
   { id: "coach", label: "Coach / indépendant" },
+  { id: "association", label: "Association / organisme" },
   { id: "tpe", label: "TPE / PME (présence pro)" }
+] as const;
+
+export const projectTypes = [
+  { id: "new_site", label: "Créer un site" },
+  { id: "existing_site", label: "Mettre à jour un site existant" }
 ] as const;
 
 export const siteTypes = [
@@ -15,6 +21,7 @@ export const siteTypes = [
 ] as const;
 
 export type BusinessTypeId = (typeof businessTypes)[number]["id"];
+export type ProjectTypeId = (typeof projectTypes)[number]["id"];
 export type SiteTypeId = (typeof siteTypes)[number]["id"];
 
 export type PricingEntry = {
@@ -230,6 +237,34 @@ export const pricingMatrix: PricingMatrix = {
       notes: "Backend utile pour suivre les leads proprement."
     }
   },
+  association: {
+    vitrine: {
+      fromPrice: 1100,
+      range: [1100, 2400],
+      timeline: "5-10 jours",
+      included: [
+        "3-5 pages (Présentation, Actions, Adhésion/Contact, Infos pratiques)",
+        "Formulaire de contact + CTA adhésion/don/redirection externe",
+        "SEO de base + performance standard",
+        deploymentIncluded,
+        "Analytics/Search Console",
+        hostingNotIncluded
+      ],
+      notes: "Pour présenter l'association clairement et faciliter la prise de contact."
+    },
+    backend: {
+      fromPrice: 2600,
+      range: [2600, 5200],
+      timeline: "10-30 jours",
+      included: [
+        "Tout le site vitrine + base de données",
+        "Gestion simple des actualités/événements ou contenus en admin",
+        "Demandes/messages stockés + statuts",
+        "Notifications email + export basique"
+      ],
+      notes: "Backend léger pour mettre à jour les contenus associatifs sans complexifier le projet."
+    }
+  },
   tpe: {
     vitrine: {
       fromPrice: 1600,
@@ -263,8 +298,8 @@ export const pricingMatrix: PricingMatrix = {
 export const isBusinessType = (value: string): value is BusinessTypeId =>
   businessTypes.some((item) => item.id === value);
 
+export const isProjectType = (value: string): value is ProjectTypeId =>
+  projectTypes.some((item) => item.id === value);
+
 export const isSiteType = (value: string): value is SiteTypeId =>
   siteTypes.some((item) => item.id === value);
-
-
-

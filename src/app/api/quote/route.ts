@@ -7,6 +7,7 @@ type QuotePayload = {
   phone?: unknown;
   siret?: unknown;
   businessType?: unknown;
+  projectType?: unknown;
   siteType?: unknown;
   selectedOptions?: unknown;
   totalPrice?: unknown;
@@ -34,7 +35,7 @@ export async function POST(request: Request) {
   }
 
   if (!isNonEmptyString(body.businessName)) {
-    return NextResponse.json({ error: "Le nom de l'établissement est requis." }, { status: 400 });
+    return NextResponse.json({ error: "Le nom de l'etablissement est requis." }, { status: 400 });
   }
 
   if (!isNonEmptyString(body.email) || !emailRegex.test(body.email.trim())) {
@@ -45,30 +46,34 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Le type de commerce est requis." }, { status: 400 });
   }
 
+  if (!isNonEmptyString(body.projectType)) {
+    return NextResponse.json({ error: "Le mode projet est requis." }, { status: 400 });
+  }
+
   if (!isNonEmptyString(body.siteType)) {
     return NextResponse.json({ error: "Le type de site est requis." }, { status: 400 });
   }
 
   if (!Array.isArray(body.selectedOptions)) {
-    return NextResponse.json({ error: "selectedOptions doit être un tableau." }, { status: 400 });
+    return NextResponse.json({ error: "selectedOptions doit etre un tableau." }, { status: 400 });
   }
 
   if (typeof body.totalPrice !== "number" || Number.isNaN(body.totalPrice)) {
-    return NextResponse.json({ error: "totalPrice doit être un nombre." }, { status: 400 });
+    return NextResponse.json({ error: "totalPrice doit etre un nombre." }, { status: 400 });
   }
 
   if (typeof body.totalDays !== "number" || Number.isNaN(body.totalDays)) {
-    return NextResponse.json({ error: "totalDays doit être un nombre." }, { status: 400 });
+    return NextResponse.json({ error: "totalDays doit etre un nombre." }, { status: 400 });
   }
 
   if (typeof body.message !== "string") {
-    return NextResponse.json({ error: "message doit être une chaîne." }, { status: 400 });
+    return NextResponse.json({ error: "message doit etre une chaine." }, { status: 400 });
   }
 
   const trimmedMessage = body.message.trim();
   if (!quoteMessageRegex.test(trimmedMessage)) {
     return NextResponse.json(
-      { error: "Le message doit contenir 20 à 3000 caractères et ne pas inclure < ou >." },
+      { error: "Le message doit contenir 20 a 3000 caracteres et ne pas inclure < ou >." },
       { status: 400 }
     );
   }
@@ -80,6 +85,7 @@ export async function POST(request: Request) {
     phone: typeof body.phone === "string" ? body.phone.trim() : "",
     siret: typeof body.siret === "string" ? body.siret.trim() : "",
     businessType: body.businessType.trim(),
+    projectType: body.projectType.trim(),
     siteType: body.siteType.trim(),
     selectedOptions: body.selectedOptions,
     totalPrice: body.totalPrice,
@@ -91,4 +97,3 @@ export async function POST(request: Request) {
 
   return NextResponse.json({ ok: true }, { status: 200 });
 }
-

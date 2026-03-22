@@ -7,6 +7,7 @@ export async function submitQuoteToWorker(input: {
   email: string;
   phone?: string;
   businessType: string;
+  projectType: string;
   siteType: string;
   selectedOptions: string[];
   totalPrice: number;
@@ -30,6 +31,7 @@ export async function submitQuoteToWorker(input: {
       email: input.email,
       phone: input.phone,
       businessType: input.businessType,
+      projectType: input.projectType,
       siteType: input.siteType,
       selectedOptions: input.selectedOptions,
       totalPrice: input.totalPrice,

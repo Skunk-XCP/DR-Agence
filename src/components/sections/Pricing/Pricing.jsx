@@ -4,7 +4,16 @@ import React, { useMemo, useState } from "react";
 import { Section } from "../../ui";
 import SlideIn from "../../motion/SlideIn";
 import { pricing } from "../../../data";
-import { businessTypes, hostingDisclaimer, isBusinessType, isSiteType, pricingMatrix, siteTypes } from "@/lib/pricing";
+import {
+  businessTypes,
+  hostingDisclaimer,
+  isBusinessType,
+  isProjectType,
+  isSiteType,
+  pricingMatrix,
+  projectTypes,
+  siteTypes
+} from "@/lib/pricing";
 import styles from "./Pricing.module.css";
 
 const currency = new Intl.NumberFormat("fr-FR", {
@@ -14,12 +23,13 @@ const currency = new Intl.NumberFormat("fr-FR", {
 });
 
 const Pricing = () => {
+  const [projectType, setProjectType] = useState("");
   const [businessType, setBusinessType] = useState("");
   const [siteType, setSiteType] = useState("");
 
-  const ready = isBusinessType(businessType) && isSiteType(siteType);
+  const ready = isProjectType(projectType) && isBusinessType(businessType) && isSiteType(siteType);
   const estimate = useMemo(() => {
-    if (!ready) {
+    if (!ready || !isBusinessType(businessType) || !isSiteType(siteType)) {
       return null;
     }
     return pricingMatrix[businessType][siteType];
@@ -27,11 +37,15 @@ const Pricing = () => {
 
   const businessLabel = businessTypes.find((item) => item.id === businessType)?.label ?? "";
   const siteLabel = siteTypes.find((item) => item.id === siteType)?.label ?? "";
+  const isExistingSiteProject = projectType === "existing_site";
   const resultLine = ready
-    ? `Estimation - ${businessLabel} - ${siteLabel} : ${currency.format(estimate?.range[0] ?? 0)} - ${currency.format(estimate?.range[1] ?? 0)} - ${estimate?.timeline ?? "Sur devis"}`
-    : "Sélectionnez vos options pour voir une fourchette de prix et un délai indicatif.";
+    ? isExistingSiteProject
+      ? `Mise à jour - ${businessLabel} - ${siteLabel} : chiffrage après analyse. Décrivez précisément la modification demandée.`
+      : `Estimation - ${businessLabel} - ${siteLabel} : ${currency.format(estimate?.range[0] ?? 0)} - ${currency.format(estimate?.range[1] ?? 0)} - ${estimate?.timeline ?? "Sur devis"}`
+    : "Sélectionnez votre mode projet, votre type de commerce et votre type de site pour voir une fourchette de prix et un délai indicatif.";
   const configurateurHref = ready
     ? `/configurateur?${new URLSearchParams({
+        projectType,
         businessType,
         siteType
       }).toString()}`
@@ -54,6 +68,25 @@ const Pricing = () => {
 
         <SlideIn direction="right" delay={0.12}>
           <div className={styles.form}>
+            <label className={styles.label} htmlFor="projectType">
+              Mode projet
+            </label>
+            <select
+              id="projectType"
+              className={styles.select}
+              value={projectType}
+              onChange={(event) => setProjectType(event.target.value)}
+            >
+              <option value="" disabled>
+                Sélectionner un mode projet
+              </option>
+              {projectTypes.map((item) => (
+                <option key={item.id} value={item.id}>
+                  {item.label}
+                </option>
+              ))}
+            </select>
+
             <label className={styles.label} htmlFor="businessType">
               {pricing.labels.businessType}
             </label>
@@ -95,7 +128,7 @@ const Pricing = () => {
             <div className={styles.result} aria-live="polite">
               {resultLine}
             </div>
-            {ready ? <p className={styles.disclaimer}>{hostingDisclaimer}</p> : null}
+            {ready && !isExistingSiteProject ? <p className={styles.disclaimer}>{hostingDisclaimer}</p> : null}
 
             <a
               className={`${styles.cta} ${!ready ? styles.ctaDisabled : ""}`.trim()}
