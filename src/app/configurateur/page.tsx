@@ -1,4 +1,5 @@
-﻿import { redirect } from "next/navigation";
+import type { Metadata } from "next";
+import { redirect } from "next/navigation";
 import ConfigurateurClient from "./ConfigurateurClient";
 import { Footer, Navbar } from "@/components/sections";
 import { isBusinessType, isProjectType, isSiteType } from "@/lib/pricing";
@@ -9,6 +10,13 @@ type PageProps = {
     projectType?: string;
     siteType?: string;
   }>;
+};
+
+export const metadata: Metadata = {
+  robots: {
+    index: false,
+    follow: true,
+  },
 };
 
 export default async function ConfigurateurPage({ searchParams }: PageProps) {
