@@ -3,6 +3,9 @@ import "./globals.css";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://www.donatien-rouzeirol.fr"),
+  alternates: {
+    canonical: "/",
+  },
   title: "Donatien Rouzeirol | Développeur web",
   description:
     "Développeur web freelance à Bordeaux, France. Création de sites web premium, rapides et optimisés SEO (React, JavaScript, performance).",
