@@ -1,4 +1,5 @@
-﻿import type { Metadata } from "next";
+import type { Metadata } from "next";
+import { getGeoJsonLd } from "@/data/geo";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -17,7 +18,15 @@ export const metadata: Metadata = {
     "React",
     "JavaScript",
     "SEO",
+    "Generative Engine Optimization",
+    "GEO",
+    "site vitrine performant",
+    "landing page Bordeaux",
   ],
+  authors: [{ name: "Donatien Rouzeirol", url: "https://www.donatien-rouzeirol.fr" }],
+  creator: "Donatien Rouzeirol",
+  publisher: "Donatien Rouzeirol",
+  category: "Développement web",
   icons: {
     icon: [
       { url: "/favicon.ico" },
@@ -40,6 +49,10 @@ export const metadata: Metadata = {
       },
     ],
   },
+  other: {
+    "ai-content-declaration": "human-authored; business facts available at /geo.json and /llms.txt",
+    "llms-txt": "https://www.donatien-rouzeirol.fr/llms.txt",
+  },
 };
 
 export default function RootLayout({
@@ -47,9 +60,17 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const geoJsonLd = getGeoJsonLd();
+
   return (
     <html lang="fr">
       <body>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(geoJsonLd).replace(/</g, "\\u003c"),
+          }}
+        />
         <a className="skipLink" href="#main">
           Aller au contenu principal
         </a>
@@ -58,4 +79,3 @@ export default function RootLayout({
     </html>
   );
 }
-

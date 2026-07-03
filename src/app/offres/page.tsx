@@ -1,5 +1,15 @@
-﻿import OffresClient from "./OffresClient";
+import type { Metadata } from "next";
+import OffresClient from "./OffresClient";
 import { isBusinessType, isProjectType, isSiteType } from "@/lib/pricing";
+
+export const metadata: Metadata = {
+  title: "Offres site web freelance | Donatien Rouzeirol",
+  description:
+    "Choisissez une offre de création de site web selon votre activité, votre projet et le type de site attendu.",
+  alternates: {
+    canonical: "https://www.donatien-rouzeirol.fr/offres",
+  },
+};
 
 type PageProps = {
   searchParams: Promise<{
