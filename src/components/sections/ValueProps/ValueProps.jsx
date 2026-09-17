@@ -11,7 +11,6 @@ const ValueProps = () => {
       id="why"
       eyebrow={valueProps.eyebrow}
       title={valueProps.title}
-      subtitle={valueProps.subtitle}
       className={`${styles.section} themeWarm noise-overlay vignette-overlay`}
     >
       <div className={styles.layout}>
