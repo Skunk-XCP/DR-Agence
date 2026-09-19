@@ -116,7 +116,8 @@ export function getGeoJsonLd() {
         knowsAbout: geoProfile.expertise,
         address: {
           "@type": "PostalAddress",
-          addressLocality: geoProfile.location.locality,
+          addressLocality: "Cenon",
+          postalCode: "33150",
           addressRegion: geoProfile.location.region,
           addressCountry: geoProfile.location.country,
         },

@@ -13,10 +13,12 @@ const Hero = () => {
       <Container className={styles.inner}>
         <div className={styles.content}>
           <Reveal delay={0}>
-            <Badge>{hero.eyebrow}</Badge>
+            <h1 className={styles.eyebrowTitle}>
+              <Badge>{hero.eyebrow}</Badge>
+            </h1>
           </Reveal>
           <Reveal delay={0.08} y={18}>
-            <h1 className={styles.title}>{hero.title}</h1>
+            <p className={styles.title}>{hero.title}</p>
           </Reveal>
           <Reveal delay={0.16}>
             <p className={styles.subtitle}>{hero.subtitle}</p>
