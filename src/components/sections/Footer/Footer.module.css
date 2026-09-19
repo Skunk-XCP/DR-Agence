@@ -25,6 +25,13 @@
   white-space: nowrap;
 }
 
+.legalLinks {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem 1rem;
+}
+
 .link:hover,
 .link:focus-visible {
   color: #d9a355;
@@ -40,5 +47,9 @@
   .meta,
   .link {
     white-space: normal;
+  }
+
+  .legalLinks {
+    flex-wrap: wrap;
   }
 }

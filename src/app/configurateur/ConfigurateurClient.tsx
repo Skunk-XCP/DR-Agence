@@ -596,6 +596,12 @@ export default function ConfigurateurClient({ businessType, projectType, siteTyp
                     {errorMessage}
                   </p>
                 ) : null}
+
+                <p className={styles.privacyNotice}>
+                  Les informations renseignées sont utilisées uniquement pour traiter votre demande et vous
+                  recontacter à son sujet. En savoir plus sur la{" "}
+                  <Link href="/politique-de-confidentialite">politique de confidentialité</Link>.
+                </p>
               </form>
             </section>
           </div>

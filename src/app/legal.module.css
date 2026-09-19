@@ -1,0 +1,74 @@
+.page {
+  padding: clamp(4rem, 8vw, 7rem) 0;
+}
+
+.content {
+  width: min(860px, 100%);
+  margin: 0 auto;
+  padding: clamp(1.35rem, 4vw, 3rem);
+  border: 1px solid var(--paper-border);
+  border-radius: var(--radius);
+  background: linear-gradient(165deg, var(--surface), var(--surface2));
+  box-shadow: var(--shadow-sm);
+}
+
+.content h1,
+.content h2 {
+  font-family: var(--font-display);
+  color: var(--text);
+}
+
+.content h1 {
+  margin: 0 0 clamp(2rem, 5vw, 3.5rem);
+  font-size: clamp(2.15rem, 7vw, 4.5rem);
+  line-height: 1.02;
+  letter-spacing: -0.035em;
+  overflow-wrap: anywhere;
+}
+
+.content section + section {
+  margin-top: 2rem;
+  padding-top: 2rem;
+  border-top: 1px dashed var(--section-divider);
+}
+
+.content h2 {
+  margin: 0 0 0.8rem;
+  font-size: clamp(1.35rem, 3vw, 1.75rem);
+}
+
+.content p,
+.content li,
+.address {
+  color: var(--muted);
+  font-size: 0.98rem;
+  line-height: 1.75;
+}
+
+.content p {
+  margin: 0.65rem 0 0;
+}
+
+.content ul {
+  margin: 0.65rem 0 0;
+  padding-left: 1.25rem;
+}
+
+.address {
+  font-style: normal;
+}
+
+.address span {
+  display: block;
+}
+
+.content a {
+  text-underline-offset: 0.2em;
+  overflow-wrap: anywhere;
+}
+
+@media (max-width: 600px) {
+  .page {
+    padding: 2.5rem 0;
+  }
+}

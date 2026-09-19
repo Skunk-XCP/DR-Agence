@@ -469,6 +469,19 @@
   color: #9f1239;
 }
 
+.privacyNotice {
+  grid-column: 1 / -1;
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.78rem;
+  line-height: 1.55;
+  text-align: center;
+}
+
+.privacyNotice a {
+  text-underline-offset: 0.18em;
+}
+
 .modalOverlay {
   position: fixed;
   inset: 0;
