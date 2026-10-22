@@ -4,12 +4,13 @@ import Link from "next/link";
 import { useMemo, useState } from "react";
 import {
   businessTypes,
+  getPricingEntry,
   hostingDisclaimer,
   isBusinessType,
   isProjectType,
   isSiteType,
-  pricingMatrix,
   projectTypes,
+  requiresCustomEstimate,
   siteTypes
 } from "@/lib/pricing";
 import styles from "./page.module.css";
@@ -35,12 +36,13 @@ export default function OffresClient({ initialBusinessType, initialProjectType, 
 
   const ready = isProjectType(projectType) && isBusinessType(businessType) && isSiteType(siteType);
   const isExistingSiteProject = projectType === "existing_site";
+  const isCustomProject = isSiteType(siteType) && requiresCustomEstimate(siteType);
 
   const estimate = useMemo(() => {
     if (!ready || !isBusinessType(businessType) || !isSiteType(siteType)) {
       return null;
     }
-    return pricingMatrix[businessType][siteType];
+    return getPricingEntry(businessType, siteType);
   }, [businessType, ready, siteType]);
 
   const configurateurHref = ready
@@ -71,9 +73,9 @@ export default function OffresClient({ initialBusinessType, initialProjectType, 
           </label>
 
           <label className={styles.field}>
-            <span>Type de commerce</span>
+            <span>Secteur ou type d&apos;activité</span>
             <select id="businessType" value={businessType} onChange={(e) => setBusinessType(e.target.value)}>
-              <option value="">Sélectionner un type de commerce</option>
+              <option value="">Sélectionner une activité</option>
               {businessTypes.map((item) => (
                 <option key={item.id} value={item.id}>
                   {item.label}
@@ -83,9 +85,9 @@ export default function OffresClient({ initialBusinessType, initialProjectType, 
           </label>
 
           <label className={styles.field}>
-            <span>Type de site</span>
+            <span>Type de projet web</span>
             <select id="siteType" value={siteType} onChange={(e) => setSiteType(e.target.value)}>
-              <option value="">Sélectionner un type de site</option>
+              <option value="">Sélectionner un projet web</option>
               {siteTypes.map((item) => (
                 <option key={item.id} value={item.id}>
                   {item.label}
@@ -97,7 +99,13 @@ export default function OffresClient({ initialBusinessType, initialProjectType, 
 
         {estimate ? (
           <article className={styles.card} aria-live="polite">
-            <h2>{isExistingSiteProject ? "Mise à jour" : "Estimation instantanée"}</h2>
+            <h2>
+              {isExistingSiteProject
+                ? "Mise à jour"
+                : isCustomProject
+                  ? "Estimation personnalisée"
+                  : "Estimation instantanée"}
+            </h2>
             {isExistingSiteProject ? (
               <>
                 <p>Mise à jour : chiffrage après analyse. Décrivez précisément la modification demandée.</p>
@@ -107,6 +115,21 @@ export default function OffresClient({ initialBusinessType, initialProjectType, 
                 <p>
                   <strong>Options cohérentes ensuite :</strong> pages supplémentaires, SEO/Perf, mentions légales,
                   intégrations simples.
+                </p>
+              </>
+            ) : isCustomProject ? (
+              <>
+                <p>{estimate.notes}</p>
+                <p>
+                  <strong>Le cadrage comprend :</strong>
+                </p>
+                <ul>
+                  {estimate.included.map((item) => (
+                    <li key={item}>{item}</li>
+                  ))}
+                </ul>
+                <p>
+                  <strong>Délai :</strong> {estimate.timeline}
                 </p>
               </>
             ) : (
@@ -139,7 +162,7 @@ export default function OffresClient({ initialBusinessType, initialProjectType, 
         {ready ? (
           <div className={styles.actions}>
             <Link className={styles.primaryBtn} href={configurateurHref}>
-              Configurez votre offre
+              {isCustomProject || isExistingSiteProject ? "Décrire le projet" : "Configurer votre offre"}
             </Link>
             <Link className={styles.secondaryBtn} href="/#contact">
               Demander un devis

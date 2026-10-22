@@ -9,7 +9,7 @@ export const metadata: Metadata = {
   },
   title: "Donatien Rouzeirol | Développeur web freelance",
   description:
-    "Développeur web freelance à Bordeaux. Création, refonte et maintenance de sites internet professionnels pour les entreprises en France.",
+    "Développeur web freelance à Bordeaux. Création de sites, applications web, interfaces et fonctionnalités sur mesure pour les professionnels en France.",
   keywords: [
     "Donatien Rouzeirol",
     "développeur web Bordeaux",
@@ -17,6 +17,10 @@ export const metadata: Metadata = {
     "création site web Bordeaux",
     "création site internet professionnel",
     "création site vitrine",
+    "développement web sur mesure",
+    "application web sur mesure",
+    "développeur application web",
+    "intégration API",
     "refonte site internet",
     "maintenance site internet",
     "site vitrine performant",
@@ -34,7 +38,7 @@ export const metadata: Metadata = {
   },
   openGraph: {
     title: "Donatien Rouzeirol | Développeur web freelance",
-    description: "Création, refonte et maintenance de sites internet professionnels à Bordeaux et partout en France.",
+    description: "Sites professionnels, applications web et développement sur mesure à Bordeaux et partout en France.",
     url: "https://www.donatien-rouzeirol.fr/",
     siteName: "Donatien Rouzeirol",
     locale: "fr_FR",

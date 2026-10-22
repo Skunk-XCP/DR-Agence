@@ -6,12 +6,13 @@ import SlideIn from "../../motion/SlideIn";
 import { pricing } from "../../../data";
 import {
   businessTypes,
+  getPricingEntry,
   hostingDisclaimer,
   isBusinessType,
   isProjectType,
   isSiteType,
-  pricingMatrix,
   projectTypes,
+  requiresCustomEstimate,
   siteTypes
 } from "@/lib/pricing";
 import styles from "./Pricing.module.css";
@@ -32,17 +33,20 @@ const Pricing = () => {
     if (!ready || !isBusinessType(businessType) || !isSiteType(siteType)) {
       return null;
     }
-    return pricingMatrix[businessType][siteType];
+    return getPricingEntry(businessType, siteType);
   }, [businessType, ready, siteType]);
 
   const businessLabel = businessTypes.find((item) => item.id === businessType)?.label ?? "";
   const siteLabel = siteTypes.find((item) => item.id === siteType)?.label ?? "";
   const isExistingSiteProject = projectType === "existing_site";
+  const isCustomProject = isSiteType(siteType) && requiresCustomEstimate(siteType);
   const resultLine = ready
     ? isExistingSiteProject
       ? `Mise à jour - ${businessLabel} - ${siteLabel} : chiffrage après analyse. Décrivez précisément la modification demandée.`
-      : `Estimation - ${businessLabel} - ${siteLabel} : ${currency.format(estimate?.range[0] ?? 0)} - ${currency.format(estimate?.range[1] ?? 0)} - ${estimate?.timeline ?? "Sur devis"}`
-    : "Sélectionnez votre mode projet, votre type de commerce et votre type de site pour voir une fourchette de prix et un délai indicatif.";
+      : isCustomProject
+        ? `Estimation personnalisée - ${businessLabel} - ${siteLabel} : un cadrage est nécessaire pour établir un tarif et un calendrier fiables.`
+        : `Estimation - ${businessLabel} - ${siteLabel} : ${currency.format(estimate?.range[0] ?? 0)} - ${currency.format(estimate?.range[1] ?? 0)} - ${estimate?.timeline ?? "Sur devis"}`
+    : "Sélectionnez votre mode projet, votre activité et votre type de projet web. Les projets complexes sont chiffrés après cadrage.";
   const configurateurHref = ready
     ? `/configurateur?${new URLSearchParams({
         projectType,
@@ -59,8 +63,8 @@ const Pricing = () => {
             <div className={styles.eyebrow}>Estimation</div>
             <h2 className={styles.title}>Combien ça coûte ?</h2>
             <p className={styles.subtitle}>
-              Sélectionnez votre type d&apos;activité et de projet pour une fourchette indicative{" "}
-              - sans engagement, sans jargon.
+              Obtenez une fourchette pour un site standard ou préparez le cadrage d&apos;une
+              application, d&apos;une interface métier ou d&apos;une intégration.
             </p>
             <p className={styles.note}>Le devis final est confirmé après un premier échange.</p>
           </div>
@@ -97,7 +101,7 @@ const Pricing = () => {
               onChange={(event) => setBusinessType(event.target.value)}
             >
               <option value="" disabled>
-                Sélectionner un type de commerce
+                Sélectionner une activité
               </option>
               {businessTypes.map((item) => (
                 <option key={item.id} value={item.id}>
@@ -116,7 +120,7 @@ const Pricing = () => {
               onChange={(event) => setSiteType(event.target.value)}
             >
               <option value="" disabled>
-                Sélectionner un type de site
+                Sélectionner un projet web
               </option>
               {siteTypes.map((item) => (
                 <option key={item.id} value={item.id}>
@@ -128,7 +132,9 @@ const Pricing = () => {
             <div className={styles.result} aria-live="polite">
               {resultLine}
             </div>
-            {ready && !isExistingSiteProject ? <p className={styles.disclaimer}>{hostingDisclaimer}</p> : null}
+            {ready && !isExistingSiteProject && !isCustomProject ? (
+              <p className={styles.disclaimer}>{hostingDisclaimer}</p>
+            ) : null}
 
             <a
               className={`${styles.cta} ${!ready ? styles.ctaDisabled : ""}`.trim()}
@@ -140,7 +146,7 @@ const Pricing = () => {
                 }
               }}
             >
-              Demander un devis précis -&gt;
+              {isCustomProject || isExistingSiteProject ? "Décrire mon projet ->" : "Configurer mon estimation ->"}
             </a>
           </div>
         </SlideIn>

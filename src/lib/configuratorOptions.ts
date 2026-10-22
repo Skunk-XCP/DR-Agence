@@ -50,6 +50,56 @@ const allBusinessTags = businessTypes.map((item) => item.id);
 
 const allOptions: Option[] = [
   {
+    id: "interface-metier",
+    section: "Admin",
+    label: "Interface métier ou tableau de bord",
+    description: "Interface interactive pour consulter, filtrer ou piloter les informations utiles à votre activité.",
+    kind: "checkbox",
+    tags: ["webapp-only", "custom-estimate"],
+    price: 0,
+    days: 0
+  },
+  {
+    id: "gestion-donnees",
+    section: "Admin",
+    label: "Gestion et stockage de données",
+    description: "Création, consultation et mise à jour de données selon les règles définies pendant le cadrage.",
+    kind: "checkbox",
+    tags: ["webapp-only", "custom-estimate"],
+    price: 0,
+    days: 0
+  },
+  {
+    id: "comptes-roles",
+    section: "Admin",
+    label: "Comptes utilisateurs et rôles simples",
+    description: "Accès différenciés lorsque le projet nécessite plusieurs profils d'utilisation.",
+    kind: "checkbox",
+    tags: ["webapp-only", "custom-estimate"],
+    price: 0,
+    days: 0
+  },
+  {
+    id: "integration-api",
+    section: "Intégrations",
+    label: "Connexion à une API ou un service tiers",
+    description: "Échange de données avec un service disposant d'une API documentée et compatible avec le projet.",
+    kind: "checkbox",
+    tags: ["webapp-only", "integration-only", "custom-estimate"],
+    price: 0,
+    days: 0
+  },
+  {
+    id: "workflow-formulaire-avance",
+    section: "Intégrations",
+    label: "Formulaire avancé ou automatisation d'un parcours",
+    description: "Étapes conditionnelles, traitement d'une demande, notifications ou transmission vers un outil existant.",
+    kind: "checkbox",
+    tags: ["webapp-only", "integration-only", "custom-estimate"],
+    price: 0,
+    days: 0
+  },
+  {
     id: "menu-affichage",
     section: "Contenus",
     label: "Menu (affichage)",
@@ -294,6 +344,17 @@ const matchesBusiness = (option: Option, businessType: BusinessTypeId) => {
 };
 
 const matchesSite = (option: Option, siteType: SiteTypeId) => {
+  const isCustomOption = option.tags.includes("custom-estimate");
+
+  if (siteType === "webapp") {
+    return option.tags.includes("webapp-only");
+  }
+  if (siteType === "integration") {
+    return option.tags.includes("integration-only");
+  }
+  if (isCustomOption) {
+    return false;
+  }
   if (option.tags.includes("vitrine-only") && siteType !== "vitrine") {
     return false;
   }
@@ -321,7 +382,7 @@ const matchesProjectType = (option: Option, projectType: ProjectTypeId) => {
     return true;
   }
 
-  return option.tags.includes("existing-site-supported");
+  return option.tags.includes("existing-site-supported") || option.tags.includes("custom-estimate");
 };
 
 export const getOptionsFor = (

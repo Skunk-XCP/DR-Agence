@@ -1,13 +1,13 @@
 export const hero = {
   eyebrow: "Donatien Rouzeirol — développeur web freelance",
-  title: "Création de sites internet professionnels à Bordeaux",
+  title: "Sites, applications et outils web sur mesure",
   subtitle:
-    "Je crée des sites vitrines, landing pages et fonctionnalités sur mesure pour les indépendants, commerces et entreprises. J'interviens à Bordeaux et partout en France pour lancer, refaire ou améliorer votre site web.",
+    "Développeur web freelance à Bordeaux, je crée des sites professionnels, applications web, interfaces interactives et intégrations pour les indépendants, commerces et entreprises, partout en France.",
   primaryCta: { label: "Demander un devis", href: "#contact" },
   secondaryCta: { label: "Découvrir les prestations", href: "#services" },
   highlights: [
-    "Site clair sur mobile et ordinateur",
-    "SEO technique et chargement rapide",
-    "Accompagnement de l'idée à la mise en ligne"
+    "Sites professionnels et applications web",
+    "Interfaces, données et intégrations sur mesure",
+    "Accompagnement du cadrage à la mise en ligne"
   ]
 };

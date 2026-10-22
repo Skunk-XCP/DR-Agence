@@ -16,8 +16,10 @@ export const projectTypes = [
 ] as const;
 
 export const siteTypes = [
-  { id: "vitrine", label: "Site vitrine" },
-  { id: "backend", label: "Vitrine + fonctionnalités" }
+  { id: "vitrine", label: "Site vitrine ou landing page", estimateMode: "automatic" },
+  { id: "backend", label: "Site avec espace de gestion", estimateMode: "automatic" },
+  { id: "webapp", label: "Application web ou outil métier", estimateMode: "custom" },
+  { id: "integration", label: "Fonctionnalité avancée ou intégration", estimateMode: "custom" }
 ] as const;
 
 export type BusinessTypeId = (typeof businessTypes)[number]["id"];
@@ -30,9 +32,11 @@ export type PricingEntry = {
   timeline: string;
   included: string[];
   notes: string;
+  customEstimate?: boolean;
 };
 
-export type PricingMatrix = Record<BusinessTypeId, Record<SiteTypeId, PricingEntry>>;
+export type PricedSiteTypeId = "vitrine" | "backend";
+export type PricingMatrix = Record<BusinessTypeId, Record<PricedSiteTypeId, PricingEntry>>;
 
 export const hostingDisclaimer =
   "Hébergement & nom de domaine : non inclus (coût récurrent).";
@@ -294,6 +298,46 @@ export const pricingMatrix: PricingMatrix = {
     }
   }
 };
+
+const customPricingEntries: Record<Exclude<SiteTypeId, PricedSiteTypeId>, PricingEntry> = {
+  webapp: {
+    fromPrice: null,
+    range: [0, 0],
+    timeline: "Calendrier défini après cadrage",
+    included: [
+      "Analyse du besoin et des utilisateurs",
+      "Définition des parcours et règles métier",
+      "Architecture technique adaptée au périmètre",
+      "Estimation détaillée après cadrage"
+    ],
+    notes: "Une application web dépend trop des rôles, données, interfaces et règles métier pour produire un tarif automatique fiable.",
+    customEstimate: true
+  },
+  integration: {
+    fromPrice: null,
+    range: [0, 0],
+    timeline: "Calendrier défini après analyse",
+    included: [
+      "Analyse du site ou de l'application existante",
+      "Étude de l'API ou du service à connecter",
+      "Définition des échanges de données et cas d'erreur",
+      "Estimation détaillée après analyse technique"
+    ],
+    notes: "Le chiffrage dépend de l'existant, de la documentation disponible et des contraintes du service à intégrer.",
+    customEstimate: true
+  }
+};
+
+export const getPricingEntry = (businessType: BusinessTypeId, siteType: SiteTypeId): PricingEntry => {
+  if (siteType === "webapp" || siteType === "integration") {
+    return customPricingEntries[siteType];
+  }
+
+  return pricingMatrix[businessType][siteType];
+};
+
+export const requiresCustomEstimate = (siteType: SiteTypeId) =>
+  siteTypes.find((item) => item.id === siteType)?.estimateMode === "custom";
 
 export const isBusinessType = (value: string): value is BusinessTypeId =>
   businessTypes.some((item) => item.id === value);

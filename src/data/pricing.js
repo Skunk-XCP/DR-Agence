@@ -2,10 +2,10 @@ export const pricing = {
   eyebrow: "Offres",
   title: "Estimation rapide",
   subtitle:
-    "Choisissez votre type de commerce et le type de site pour obtenir une fourchette indicative.",
+    "Choisissez votre activité et votre projet web pour obtenir une première orientation tarifaire.",
   labels: {
-    businessType: "Type de commerce",
-    siteType: "Type de site"
+    businessType: "Secteur ou type d’activité",
+    siteType: "Type de projet web"
   },
   disclaimer:
     "Estimation basée sur un périmètre standard. Devis final après cadrage."

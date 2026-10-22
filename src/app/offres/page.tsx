@@ -3,9 +3,9 @@ import OffresClient from "./OffresClient";
 import { isBusinessType, isProjectType, isSiteType } from "@/lib/pricing";
 
 export const metadata: Metadata = {
-  title: "Offres site web freelance | Donatien Rouzeirol",
+  title: "Estimation site ou application web | Donatien Rouzeirol",
   description:
-    "Choisissez une offre de création de site web selon votre activité, votre projet et le type de site attendu.",
+    "Estimez un site professionnel ou préparez le cadrage d’une application web, d’une fonctionnalité avancée ou d’une intégration sur mesure.",
   alternates: {
     canonical: "https://www.donatien-rouzeirol.fr/offres",
   },

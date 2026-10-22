@@ -14,6 +14,85 @@ export type ServicePageData = {
 };
 
 export const servicePages = {
+  customDevelopment: {
+    slug: "/developpement-web-sur-mesure",
+    title: "Développement web sur mesure et applications web | Freelance",
+    description:
+      "Développement web sur mesure à Bordeaux et en France : applications web, interfaces métier, fonctionnalités avancées et intégrations API.",
+    eyebrow: "Des outils adaptés à votre fonctionnement",
+    h1: "Développement web sur mesure et applications web",
+    intro:
+      "Je conçois des applications web, interfaces interactives et fonctionnalités sur mesure lorsque les possibilités d’un site standard ne suffisent pas. Basé à Bordeaux, je transforme un besoin métier précis en solution web claire, utilisable sur ordinateur comme sur mobile, pour des projets locaux ou menés à distance partout en France.",
+    audience:
+      "Cette prestation s’adresse aux indépendants, commerces et entreprises qui ont besoin d’un outil adapté à leur organisation : interface de gestion, traitement de données, parcours conditionnel, espace avec plusieurs rôles ou connexion à un service tiers. Le périmètre est défini à partir des utilisateurs, des règles métier, des données et des contraintes de l’existant.",
+    problems: [
+      {
+        title: "Des tâches répétitives à structurer",
+        text: "Un parcours web dédié peut guider la saisie, appliquer vos règles métier et rendre le traitement d’une demande plus lisible.",
+      },
+      {
+        title: "Des informations difficiles à exploiter",
+        text: "Une interface métier peut rassembler, filtrer et présenter les données utiles selon les besoins des utilisateurs concernés.",
+      },
+      {
+        title: "Des outils qui ne communiquent pas",
+        text: "Lorsqu’une API compatible et documentée existe, une intégration peut organiser les échanges de données avec un service tiers.",
+      },
+    ],
+    deliverables: [
+      "Cadrage des utilisateurs, objectifs et règles métier",
+      "Définition des parcours, écrans et états importants",
+      "Architecture adaptée aux données et aux intégrations prévues",
+      "Développement d’une interface responsive et accessible",
+      "Fonctionnalités front-end et back-end convenues dans le périmètre",
+      "Tests des parcours essentiels et accompagnement à la mise en ligne",
+    ],
+    process: [
+      {
+        title: "Cadrage fonctionnel",
+        text: "Nous décrivons le problème à résoudre, les utilisateurs, les données manipulées et les cas particuliers avant d’estimer le développement.",
+      },
+      {
+        title: "Conception de la solution",
+        text: "Je structure les écrans, les flux et l’architecture technique, puis nous validons un périmètre prioritaire et vérifiable.",
+      },
+      {
+        title: "Développement et validation",
+        text: "La solution est développée par étapes et les parcours convenus sont testés avant la livraison ou la mise en ligne.",
+      },
+    ],
+    faq: [
+      {
+        question: "Quelle différence avec un site vitrine ?",
+        answer: "Un site vitrine présente principalement une activité et facilite la prise de contact. Une application web ajoute des interactions, des règles métier, des données ou des accès qui nécessitent un cadrage fonctionnel plus approfondi.",
+      },
+      {
+        question: "Pourquoi le tarif n’est-il pas calculé automatiquement ?",
+        answer: "Le coût dépend notamment du nombre d’écrans, des rôles utilisateurs, des données, des règles métier et des intégrations. Une estimation fiable exige donc de clarifier ces éléments avant le devis.",
+      },
+      {
+        question: "Peut-on ajouter une fonctionnalité à un site existant ?",
+        answer: "Oui lorsque sa technologie, son code et ses accès le permettent. Une analyse de l’existant est nécessaire pour confirmer la faisabilité et éviter une intervention fragile.",
+      },
+    ],
+    related: [
+      {
+        href: "/creation-site-internet-bordeaux",
+        label: "Création web à Bordeaux",
+        text: "Créer un site ou une solution web avec un développeur freelance local, également disponible à distance.",
+      },
+      {
+        href: "/refonte-site-internet",
+        label: "Refonte de site internet",
+        text: "Repenser une base existante devenue limitante avant d’y intégrer de nouveaux parcours.",
+      },
+      {
+        href: "/maintenance-site-internet",
+        label: "Maintenance et évolutions",
+        text: "Diagnostiquer, corriger ou faire évoluer un projet web existant selon sa faisabilité technique.",
+      },
+    ],
+  },
   creationBordeaux: {
     slug: "/creation-site-internet-bordeaux",
     title: "Création de site internet à Bordeaux | Donatien Rouzeirol",
@@ -58,9 +137,9 @@ export const servicePages = {
       { question: "Comment obtenir un devis ?", answer: "Décrivez votre activité, l’objectif du site, les pages ou fonctions envisagées et votre calendrier. Je pourrai ensuite préciser le périmètre et établir un devis adapté." },
     ],
     related: [
+      { href: "/developpement-web-sur-mesure", label: "Développement web sur mesure", text: "Applications web, interfaces métier et intégrations pour les besoins qui dépassent un site standard." },
       { href: "/creation-site-vitrine", label: "Création de site vitrine", text: "Une présence professionnelle claire pour présenter votre activité et générer des contacts." },
       { href: "/refonte-site-internet", label: "Refonte de site internet", text: "Moderniser un site existant, son contenu, son ergonomie ou ses performances." },
-      { href: "/maintenance-site-internet", label: "Maintenance de site internet", text: "Corriger, sécuriser et faire évoluer un site après sa mise en ligne." },
     ],
   },
   vitrine: {
@@ -98,9 +177,9 @@ export const servicePages = {
       { question: "Puis-je ajouter des fonctionnalités plus tard ?", answer: "Oui, si l’architecture du projet le permet. Les évolutions peuvent être prévues dès le cadrage pour éviter une reconstruction inutile." },
     ],
     related: [
+      { href: "/developpement-web-sur-mesure", label: "Développement web sur mesure", text: "Pour une application, une interface ou des règles métier qui dépassent le rôle d’un site vitrine." },
       { href: "/creation-site-internet-bordeaux", label: "Création de site à Bordeaux", text: "Un accompagnement local, également disponible partout en France." },
       { href: "/refonte-site-internet", label: "Refonte de site internet", text: "Pour repartir d’un site existant et améliorer son efficacité." },
-      { href: "/offres", label: "Estimer votre projet", text: "Obtenez une première fourchette selon votre activité et le type de site." },
     ],
   },
   refonte: {
@@ -138,8 +217,8 @@ export const servicePages = {
       { question: "Peut-on améliorer seulement les performances ?", answer: "Oui. Si la structure du site reste adaptée, une intervention ciblée peut être préférable à une refonte complète." },
     ],
     related: [
+      { href: "/developpement-web-sur-mesure", label: "Développement web sur mesure", text: "Ajouter une application, une interface interactive ou une intégration après analyse de l’existant." },
       { href: "/maintenance-site-internet", label: "Maintenance de site", text: "Pour les correctifs et améliorations progressives sans refonte complète." },
-      { href: "/creation-site-vitrine", label: "Création de site vitrine", text: "Découvrir les éléments d’une présence professionnelle efficace." },
       { href: "/creation-site-internet-bordeaux", label: "Développeur web à Bordeaux", text: "Échanger avec un freelance local pour votre projet." },
     ],
   },
@@ -178,8 +257,8 @@ export const servicePages = {
       { question: "La maintenance inclut-elle une refonte ?", answer: "Non. Lorsque l’architecture ou l’interface doit être repensée en profondeur, une prestation de refonte est plus adaptée et permet de cadrer correctement la migration." },
     ],
     related: [
+      { href: "/developpement-web-sur-mesure", label: "Développement web sur mesure", text: "Cadrer une évolution fonctionnelle, une interface métier ou une intégration plus importante." },
       { href: "/refonte-site-internet", label: "Refonte de site internet", text: "Quand des corrections ponctuelles ne suffisent plus." },
-      { href: "/creation-site-vitrine", label: "Création de site vitrine", text: "Créer une nouvelle base claire, responsive et évolutive." },
       { href: "/offres", label: "Estimer une évolution", text: "Sélectionnez la mise à jour d’un site existant pour cadrer le besoin." },
     ],
   },

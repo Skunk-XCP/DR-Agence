@@ -33,8 +33,8 @@ export const buildQuoteMessage = ({
 
   const projectSentence =
     projectType === "existing_site"
-      ? `Je souhaiterais obtenir un devis pour la mise à jour d'un site existant (${siteTypeLabel}) pour mon activité (${businessTypeLabel}${businessNameLine}).`
-      : `Je souhaiterais obtenir un devis pour la création d'un ${siteTypeLabel} pour mon activité (${businessTypeLabel}${businessNameLine}).`;
+      ? `Je souhaiterais obtenir un devis pour faire évoluer un projet existant de type « ${siteTypeLabel} » pour mon activité (${businessTypeLabel}${businessNameLine}).`
+      : `Je souhaiterais obtenir un devis pour un projet de type « ${siteTypeLabel} » pour mon activité (${businessTypeLabel}${businessNameLine}).`;
 
   return [
     "Bonjour,",

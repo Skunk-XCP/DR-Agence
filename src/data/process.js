@@ -10,19 +10,19 @@ export const process = {
         "Nous définissons vos objectifs, vos publics, les contenus disponibles et le périmètre utile."
     },
     {
-      title: "Structure et maquette",
+      title: "Parcours et interface",
       description:
-        "Les pages, le message et les principaux parcours sont organisés avant le développement."
+        "Les pages ou écrans, les données utiles et les principaux parcours sont organisés avant le développement."
     },
     {
       title: "Développement",
       description:
-        "Le site est développé pour rester rapide, responsive, accessible et simple à faire évoluer."
+        "La solution est développée pour rester rapide, responsive, accessible et simple à faire évoluer."
     },
     {
       title: "Lancement",
       description:
-        "Les pages et formulaires sont vérifiés avant la mise en ligne, puis les derniers ajustements sont effectués."
+        "Les parcours et formulaires convenus sont vérifiés avant la mise en ligne, puis les derniers ajustements sont effectués."
     }
   ]
 };

@@ -10,6 +10,7 @@ export async function submitQuoteToWorker(input: {
   projectType: string;
   siteType: string;
   selectedOptions: string[];
+  estimateMode: "automatic" | "custom";
   totalPrice: number;
   totalDays: number;
   message: string;
@@ -34,6 +35,7 @@ export async function submitQuoteToWorker(input: {
       projectType: input.projectType,
       siteType: input.siteType,
       selectedOptions: input.selectedOptions,
+      estimateMode: input.estimateMode,
       totalPrice: input.totalPrice,
       totalDays: input.totalDays,
       message: input.message,

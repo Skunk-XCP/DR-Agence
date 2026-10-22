@@ -10,6 +10,7 @@ type QuotePayload = {
   projectType?: unknown;
   siteType?: unknown;
   selectedOptions?: unknown;
+  estimateMode?: unknown;
   totalPrice?: unknown;
   totalDays?: unknown;
   message?: unknown;
@@ -58,6 +59,10 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "selectedOptions doit etre un tableau." }, { status: 400 });
   }
 
+  if (body.estimateMode !== "automatic" && body.estimateMode !== "custom") {
+    return NextResponse.json({ error: "estimateMode doit valoir automatic ou custom." }, { status: 400 });
+  }
+
   if (typeof body.totalPrice !== "number" || Number.isNaN(body.totalPrice)) {
     return NextResponse.json({ error: "totalPrice doit etre un nombre." }, { status: 400 });
   }
@@ -88,6 +93,7 @@ export async function POST(request: Request) {
     projectType: body.projectType.trim(),
     siteType: body.siteType.trim(),
     selectedOptions: body.selectedOptions,
+    estimateMode: body.estimateMode,
     totalPrice: body.totalPrice,
     totalDays: body.totalDays,
     message: trimmedMessage

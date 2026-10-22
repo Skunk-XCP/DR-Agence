@@ -2,12 +2,12 @@ export const valueProps = {
   eyebrow: "Votre projet",
   title: "Une approche claire, sans complexité inutile",
   subtitle:
-    "Je transforme votre besoin en un site compréhensible pour vos clients, simple à faire évoluer et cohérent avec votre activité.",
+    "Je transforme votre besoin en une solution web compréhensible pour ses utilisateurs, cohérente avec votre activité et simple à faire évoluer.",
   items: [
     {
       title: "Objectifs clarifiés",
       description:
-        "Chaque page et chaque fonctionnalité répond à un besoin identifié avant le développement."
+        "Chaque écran, parcours et fonctionnalité répond à un besoin identifié avant le développement."
     },
     {
       title: "Identité respectée",

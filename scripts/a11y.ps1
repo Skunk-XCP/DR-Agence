@@ -59,10 +59,12 @@ try {
     @{ Name = "home"; Path = "/" },
     @{ Name = "creation-bordeaux"; Path = "/creation-site-internet-bordeaux" },
     @{ Name = "creation-vitrine"; Path = "/creation-site-vitrine" },
+    @{ Name = "developpement-sur-mesure"; Path = "/developpement-web-sur-mesure" },
     @{ Name = "refonte"; Path = "/refonte-site-internet" },
     @{ Name = "maintenance"; Path = "/maintenance-site-internet" },
     @{ Name = "offres"; Path = "/offres" },
-    @{ Name = "configurateur"; Path = "/configurateur?businessType=snack&siteType=vitrine" }
+    @{ Name = "configurateur"; Path = "/configurateur?projectType=new_site&businessType=snack&siteType=vitrine" },
+    @{ Name = "configurateur-application"; Path = "/configurateur?projectType=new_site&businessType=tpe&siteType=webapp" }
   )
 
   $results = @()
@@ -72,6 +74,10 @@ try {
       $url = "http://localhost:$port$($target.Path)"
       $reportName = "localhost-$port-$($target.Name)-$formFactor.json"
       $reportPath = Join-Path $reportDir $reportName
+
+      if (Test-Path -LiteralPath $reportPath) {
+        Remove-Item -LiteralPath $reportPath -Force
+      }
 
       if ($url.Contains("&")) {
         $escapedUrl = $url -replace "&", "^&"

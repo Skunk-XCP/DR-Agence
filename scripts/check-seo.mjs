@@ -4,6 +4,7 @@ const pages = [
   "/",
   "/creation-site-internet-bordeaux",
   "/creation-site-vitrine",
+  "/developpement-web-sur-mesure",
   "/refonte-site-internet",
   "/maintenance-site-internet",
   "/offres",

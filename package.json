@@ -8,6 +8,7 @@
     "start": "next start",
     "lint": "eslint",
     "seo:check": "node scripts/check-seo.mjs",
+    "configurator:check": "node scripts/check-configurator.mjs",
     "a11y": "powershell -ExecutionPolicy Bypass -File scripts/a11y.ps1 -Threshold 95"
   },
   "dependencies": {

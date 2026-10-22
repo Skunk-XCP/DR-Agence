@@ -4,9 +4,10 @@ import { parseTimelineToDays } from "@/lib/configuratorMath";
 import { getOptionsFor } from "@/lib/configuratorOptions";
 import {
   businessTypes,
+  getPricingEntry,
   hostingDisclaimer,
-  pricingMatrix,
   projectTypes,
+  requiresCustomEstimate,
   siteTypes,
   type BusinessTypeId,
   type ProjectTypeId,
@@ -93,11 +94,13 @@ export default function ConfigurateurClient({ businessType, projectType, siteTyp
     return defaults;
   }, [sections]);
 
-  const base = pricingMatrix[businessType][siteType];
+  const base = getPricingEntry(businessType, siteType);
   const timeline = parseTimelineToDays(base.timeline);
   const isExistingSiteProject = projectType === "existing_site";
-  const basePrice = isExistingSiteProject ? 0 : (base.fromPrice ?? base.range[0]);
-  const baseDays = isExistingSiteProject ? 0 : timeline.days;
+  const isCustomProject = requiresCustomEstimate(siteType);
+  const usesCustomEstimate = isExistingSiteProject || isCustomProject;
+  const basePrice = usesCustomEstimate ? 0 : (base.fromPrice ?? base.range[0]);
+  const baseDays = usesCustomEstimate ? 0 : timeline.days;
   const businessLabel = businessTypes.find((item) => item.id === businessType)?.label ?? businessType;
   const projectLabel = projectTypes.find((item) => item.id === projectType)?.label ?? projectType;
   const siteLabel = siteTypes.find((item) => item.id === siteType)?.label ?? siteType;
@@ -175,8 +178,8 @@ export default function ConfigurateurClient({ businessType, projectType, siteTyp
 
   const optionsPrice = selectedLines.reduce((sum, item) => sum + item.price, 0);
   const optionsDays = selectedLines.reduce((sum, item) => sum + item.days, 0);
-  const totalPrice = isExistingSiteProject ? 0 : basePrice + optionsPrice;
-  const totalDays = isExistingSiteProject ? 0 : baseDays + optionsDays;
+  const totalPrice = usesCustomEstimate ? 0 : basePrice + optionsPrice;
+  const totalDays = usesCustomEstimate ? 0 : baseDays + optionsDays;
   const isFormDisabled = isSubmitting || isSuccess;
 
   const getQuantityValue = useCallback(
@@ -306,6 +309,7 @@ export default function ConfigurateurClient({ businessType, projectType, siteTyp
       projectType,
       siteType,
       selectedOptions: quoteOptionLabels,
+      estimateMode: usesCustomEstimate ? "custom" : "automatic",
       totalPrice,
       totalDays,
       message: normalizedMessage
@@ -378,7 +382,11 @@ export default function ConfigurateurClient({ businessType, projectType, siteTyp
                             <span>
                               <strong>{option.label}</strong>
                               {option.description ? <small>{option.description}</small> : null}
-                              <em>{`+${formatMoney(option.price)} | +${formatDays(option.days)}`}</em>
+                              <em>
+                                {isCustomProject
+                                  ? "À cadrer"
+                                  : `+${formatMoney(option.price)} | +${formatDays(option.days)}`}
+                              </em>
                             </span>
                           </label>
                         );
@@ -614,7 +622,7 @@ export default function ConfigurateurClient({ businessType, projectType, siteTyp
               <p className={styles.recapValue}>{projectLabel}</p>
             </section>
 
-            {!isExistingSiteProject ? (
+            {!usesCustomEstimate ? (
               <>
                 <section className={styles.recapSection}>
                   <p className={styles.recapLabel}>Base</p>
@@ -627,6 +635,12 @@ export default function ConfigurateurClient({ businessType, projectType, siteTyp
                   <p className={styles.recapMeta}>Source délai : {timeline.min}-{timeline.max} jours</p>
                 </section>
               </>
+            ) : isCustomProject ? (
+              <section className={styles.recapSection}>
+                <p className={styles.recapLabel}>Estimation personnalisée</p>
+                <p className={styles.recapStrong}>{base.notes}</p>
+                <p className={styles.recapText}>{base.timeline}</p>
+              </section>
             ) : (
               <section className={styles.recapSection}>
                 <p className={styles.recapLabel}>Mise à jour</p>
@@ -637,7 +651,7 @@ export default function ConfigurateurClient({ businessType, projectType, siteTyp
             )}
 
             <section className={styles.recapSection}>
-              <p className={styles.recapLabel}>{isExistingSiteProject ? "Pistes selectionnées" : "Options"}</p>
+              <p className={styles.recapLabel}>{usesCustomEstimate ? "Besoins sélectionnés" : "Options"}</p>
               {selectedLines.length === 0 ? (
                 <p className={styles.recapEmpty}>Aucune option sélectionnée.</p>
               ) : (
@@ -645,14 +659,16 @@ export default function ConfigurateurClient({ businessType, projectType, siteTyp
                   {selectedLines.map((item) => (
                     <div key={item.id} className={styles.recapItem}>
                       <p className={styles.recapStrong}>{item.label}</p>
-                      <p className={styles.recapText}>{`+${formatMoney(item.price)} / +${formatDays(item.days)}`}</p>
+                      <p className={styles.recapText}>
+                        {isCustomProject ? "À cadrer" : `+${formatMoney(item.price)} / +${formatDays(item.days)}`}
+                      </p>
                     </div>
                   ))}
                 </div>
               )}
             </section>
 
-            {!isExistingSiteProject ? (
+            {!usesCustomEstimate ? (
               <section className={styles.recapSection}>
                 <p className={styles.recapLabel}>Addition explicite</p>
                 <p className={styles.recapStrong}>{`Total : ${formatMoney(basePrice)} + ${formatMoney(optionsPrice)} = ${formatMoney(totalPrice)}`}</p>

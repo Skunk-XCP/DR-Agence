@@ -16,6 +16,7 @@ type QuotePayload = {
   projectType?: unknown;
   siteType?: unknown;
   selectedOptions?: unknown;
+  estimateMode?: unknown;
   totalPrice?: unknown;
   totalDays?: unknown;
   message?: unknown;
@@ -147,8 +148,10 @@ const PROJECT_TYPE_LABELS: Record<string, string> = {
 };
 
 const SITE_TYPE_LABELS: Record<string, string> = {
-  vitrine: "Site vitrine",
-  backend: "Vitrine + fonctionnalites"
+  vitrine: "Site vitrine ou landing page",
+  backend: "Site avec espace de gestion",
+  webapp: "Application web ou outil metier",
+  integration: "Fonctionnalite avancee ou integration"
 };
 
 const getBusinessTypeLabel = (businessType: string): string =>
@@ -177,8 +180,8 @@ const buildGeneratedMessageBlock = (payload: {
   const clientPhoneLine = payload.phone ? `\n${payload.phone}` : "";
   const projectSentence =
     payload.projectType === "existing_site"
-      ? `Je souhaiterais obtenir un devis pour la mise a jour d'un site existant (${payload.siteTypeLabel}) pour mon activite (${payload.businessTypeLabel}${businessNameLine}).`
-      : `Je souhaiterais obtenir un devis pour la creation d'un ${payload.siteTypeLabel} pour mon activite (${payload.businessTypeLabel}${businessNameLine}).`;
+      ? `Je souhaiterais obtenir un devis pour faire evoluer un projet existant de type « ${payload.siteTypeLabel} » pour mon activite (${payload.businessTypeLabel}${businessNameLine}).`
+      : `Je souhaiterais obtenir un devis pour un projet de type « ${payload.siteTypeLabel} » pour mon activite (${payload.businessTypeLabel}${businessNameLine}).`;
 
   return [
     "Bonjour,",
@@ -205,6 +208,7 @@ const buildMainEmailText = (payload: {
   projectType: string;
   siteType: string;
   selectedOptions: string[];
+  estimateMode: "automatic" | "custom";
   totalPrice: number;
   totalDays: number;
 }): string => {
@@ -232,15 +236,15 @@ const buildMainEmailText = (payload: {
     "",
     "BASE",
     `Mode projet: ${projectTypeLabel}`,
-    `Type de commerce: ${businessTypeLabel}`,
-    `Type de site: ${siteTypeLabel}`,
+    `Secteur ou activite: ${businessTypeLabel}`,
+    `Type de projet web: ${siteTypeLabel}`,
     "",
     "OPTIONS",
     normalizeInternalOptions(payload.selectedOptions),
     "",
     "ESTIMATION",
-    `Total: ${payload.totalPrice} EUR`,
-    `Delai: ${payload.totalDays} jours`,
+    payload.estimateMode === "custom" ? "Chiffrage: apres cadrage" : `Total: ${payload.totalPrice} EUR`,
+    payload.estimateMode === "custom" ? "Calendrier: defini apres cadrage" : `Delai: ${payload.totalDays} jours`,
     "",
     "_____________________________________________________________________________",
     "",
@@ -254,6 +258,7 @@ const buildReceiptEmailText = (payload: {
   businessName: string;
   projectType: string;
   selectedOptions: string[];
+  estimateMode: "automatic" | "custom";
   totalPrice: number;
   totalDays: number;
 }): string => {
@@ -265,8 +270,8 @@ const buildReceiptEmailText = (payload: {
     `Mode projet: ${getProjectTypeLabel(payload.projectType)}`,
     "Recapitulatif:",
     normalizeOptions(payload.selectedOptions),
-    `Total estime: ${payload.totalPrice} EUR`,
-    `Delai estime: ${payload.totalDays} jours`,
+    payload.estimateMode === "custom" ? "Chiffrage: apres cadrage" : `Total estime: ${payload.totalPrice} EUR`,
+    payload.estimateMode === "custom" ? "Calendrier: defini apres cadrage" : `Delai estime: ${payload.totalDays} jours`,
     "",
     "Ce message n'est pas un devis final.",
     "Il s'agit uniquement d'un recapitulatif de votre demande.",
@@ -338,6 +343,11 @@ export default {
         return json({ error: "selectedOptions must be an array of strings or {label}" }, 400);
       }
 
+      if (body.estimateMode !== "automatic" && body.estimateMode !== "custom") {
+        return json({ error: "estimateMode must be automatic or custom" }, 400);
+      }
+      const estimateMode: "automatic" | "custom" = body.estimateMode;
+
       if (!isValidNonNegativeNumber(body.totalPrice)) {
         return json({ error: "totalPrice must be a number >= 0" }, 400);
       }
@@ -373,6 +383,7 @@ export default {
         projectType: body.projectType.trim(),
         siteType: body.siteType.trim(),
         selectedOptions,
+        estimateMode,
         totalPrice: body.totalPrice,
         totalDays: body.totalDays,
         message: typeof body.message === "string" ? body.message.trim() : ""

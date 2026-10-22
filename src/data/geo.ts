@@ -4,7 +4,7 @@ export const geoProfile = {
   alternateName: "DR Freelance",
   jobTitle: "Développeur web freelance",
   description:
-    "Développeur web freelance basé à Bordeaux, spécialisé dans la création de sites vitrines, landing pages et sites sur mesure rapides, accessibles et optimisés SEO.",
+    "Développeur web freelance basé à Bordeaux, spécialisé dans les sites professionnels, applications web, interfaces interactives et fonctionnalités sur mesure.",
   location: {
     locality: "Bordeaux",
     region: "Nouvelle-Aquitaine",
@@ -22,6 +22,8 @@ export const geoProfile = {
     "création de site vitrine",
     "landing page orientée conversion",
     "développement React et Next.js",
+    "applications web et outils métier",
+    "interfaces interactives et tableaux de bord",
     "optimisation SEO technique",
     "performance Core Web Vitals",
     "accessibilité web",
@@ -40,9 +42,9 @@ export const geoProfile = {
         "Page unique calibrée pour la conversion, adaptée aux lancements, campagnes et offres ciblées.",
     },
     {
-      name: "Vitrine avec fonctionnalités",
+      name: "Application web et outil métier",
       description:
-        "Site vitrine enrichi avec formulaires avancés, demandes stockées, mini back-office ou intégrations métier.",
+        "Interface interactive conçue autour des utilisateurs, des données et des règles métier du projet.",
     },
     {
       name: "Développement sur mesure",
@@ -77,6 +79,12 @@ export const geoProfile = {
       name: "Offres",
       description:
         "Parcours d'estimation pour choisir une offre selon le type de commerce, de projet et de site.",
+    },
+    {
+      url: "/developpement-web-sur-mesure",
+      name: "Développement web sur mesure",
+      description:
+        "Applications web, interfaces métier, fonctionnalités avancées et intégrations adaptées au projet.",
     },
     {
       url: "/creation-site-internet-bordeaux",
