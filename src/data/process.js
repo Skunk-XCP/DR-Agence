@@ -5,24 +5,24 @@ export const process = {
     "Chaque mission est découpée en étapes précises pour garder le rythme et la qualité.",
   steps: [
     {
-      title: "Discovery",
+      title: "Cadrage",
       description:
-        "Cadrage des objectifs, définition du message, et priorisation des livrables."
+        "Nous définissons vos objectifs, vos publics, les contenus disponibles et le périmètre utile."
     },
     {
-      title: "Design & prototype",
+      title: "Structure et maquette",
       description:
-        "Wireframes, direction visuelle et prototypes pour valider l'expérience."
+        "Les pages, le message et les principaux parcours sont organisés avant le développement."
     },
     {
       title: "Développement",
       description:
-        "Intégration propre, composants réutilisables, et tests de performance."
+        "Le site est développé pour rester rapide, responsive, accessible et simple à faire évoluer."
     },
     {
       title: "Lancement",
       description:
-        "Mise en ligne, suivi et ajustements pour garantir la stabilité."
+        "Les pages et formulaires sont vérifiés avant la mise en ligne, puis les derniers ajustements sont effectués."
     }
   ]
 };

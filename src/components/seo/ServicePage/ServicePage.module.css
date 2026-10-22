@@ -1,0 +1,35 @@
+.hero { padding: clamp(4rem, 9vw, 7rem) 0; color: var(--text-dark); }
+.hero h1 { max-width: 900px; margin: .7rem 0 1.2rem; font-family: var(--font-display); font-size: clamp(2.4rem, 6vw, 5rem); line-height: 1.02; }
+.breadcrumb { display: flex; flex-wrap: wrap; gap: .5rem; margin-bottom: 2.5rem; color: var(--muted-dark); font-size: .84rem; }
+.breadcrumb a { color: var(--text-dark); }
+.eyebrow, .kicker { margin: 0 0 .7rem; color: var(--accent); font-size: .76rem; font-weight: 700; letter-spacing: .13em; text-transform: uppercase; }
+.lead { max-width: 780px; margin: 0; color: var(--hero-text-soft); font-size: clamp(1.04rem, 2vw, 1.25rem); line-height: 1.75; }
+.actions { display: flex; flex-wrap: wrap; gap: .8rem; margin-top: 2rem; }
+.section { padding: clamp(4rem, 8vw, 6.5rem) 0; }
+.section h2 { max-width: 780px; margin: 0 0 1.2rem; font-family: var(--font-display); font-size: clamp(1.9rem, 4vw, 3.15rem); line-height: 1.12; }
+.section h3 { margin: 0 0 .65rem; font-family: var(--font-display); font-size: 1.2rem; }
+.bodyCopy { max-width: 800px; margin: 0; color: var(--muted); font-size: 1.02rem; line-height: 1.8; }
+.narrow { max-width: 1060px; }
+.cardGrid, .relatedGrid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1rem; margin-top: 2.2rem; }
+.card, .relatedCard { padding: 1.5rem; border: 1px solid var(--border); border-radius: var(--radius); background: color-mix(in srgb, var(--surface) 88%, transparent); box-shadow: var(--shadow-sm); }
+.card p, .relatedCard p { margin: 0; color: var(--muted); line-height: 1.7; }
+.twoColumns { display: grid; grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr); gap: clamp(2rem, 6vw, 5rem); align-items: start; }
+.checkList { display: grid; gap: .75rem; margin: 0; padding: 0; list-style: none; }
+.checkList li { position: relative; padding: 1rem 1rem 1rem 2.8rem; border: 1px solid var(--border); border-radius: 12px; background: var(--surface); }
+.checkList li::before { content: "✓"; position: absolute; left: 1rem; color: var(--accent); font-weight: 800; }
+.steps { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1rem; margin: 2rem 0 0; padding: 0; list-style: none; }
+.steps li { display: flex; gap: 1rem; padding: 1.4rem; border: 1px solid rgba(255,255,255,.12); border-radius: var(--radius); background: var(--card-dark); }
+.steps li > span { color: var(--accentHover); font-size: .8rem; font-weight: 800; letter-spacing: .1em; }
+.steps h3 { color: var(--text-dark); }
+.steps p { margin: 0; color: var(--muted-dark); line-height: 1.7; }
+.faq { display: grid; gap: .8rem; margin-top: 2rem; }
+.faq details { border: 1px solid var(--border); border-radius: 12px; background: var(--surface); padding: 1rem 1.2rem; }
+.faq summary { cursor: pointer; font-weight: 700; }
+.faq p { margin: .8rem 0 0; color: var(--muted); line-height: 1.7; }
+.relatedCard { color: var(--text); text-decoration: none; transition: transform 180ms ease, border-color 180ms ease; }
+.relatedCard:hover { transform: translateY(-3px); border-color: var(--accent-border); color: var(--text); }
+.relatedCard span { display: inline-block; margin-top: 1rem; color: var(--accent); font-weight: 700; }
+.finalCta { margin-top: 4rem; padding: clamp(1.5rem, 5vw, 3rem); border-radius: var(--radius); background: var(--bg-dark); color: var(--text-dark); }
+.finalCta h2 { margin-bottom: .7rem; }
+.finalCta p { max-width: 720px; margin: 0 0 1.4rem; color: var(--muted-dark); line-height: 1.7; }
+@media (max-width: 800px) { .cardGrid, .relatedGrid, .steps, .twoColumns { grid-template-columns: 1fr; } .breadcrumb { margin-bottom: 1.7rem; } }

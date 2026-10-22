@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import Link from "next/link";
 import { Section } from "../../ui";
 import Stagger, { StaggerItem } from "../../motion/Stagger";
 import { services } from "../../../data";
@@ -42,6 +43,9 @@ const Services = () => {
               {index !== 0 ? <span className={styles.category}>{item.tag}</span> : null}
               <h3 className={styles.title}>{item.title}</h3>
               <p className={styles.description}>{item.description}</p>
+              <Link className={styles.link} href={item.href}>
+                En savoir plus <span aria-hidden="true">→</span>
+              </Link>
             </article>
           </StaggerItem>
         ))}

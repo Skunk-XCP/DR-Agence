@@ -7,18 +7,37 @@ import styles from "./Hero.module.css";
 const Hero = () => {
   return (
     <section className={styles.hero}>
-      <div className={styles.heroBg} aria-hidden="true" />
+      <picture className={styles.heroBg}>
+        <source
+          media="(max-width: 900px)"
+          srcSet="/assets/images/cafe-cosy-800.avif"
+          type="image/avif"
+        />
+        <source
+          media="(max-width: 900px)"
+          srcSet="/assets/images/cafe-cosy-800.webp"
+          type="image/webp"
+        />
+        <img
+          src="/assets/images/cafe-cosy-2000.webp"
+          alt=""
+          width="2000"
+          height="1334"
+          fetchPriority="high"
+          decoding="async"
+        />
+      </picture>
       <div className={styles.heroOverlay} aria-hidden="true" />
       <div className={styles.heroGlow} aria-hidden="true" />
       <Container className={styles.inner}>
         <div className={styles.content}>
           <Reveal delay={0}>
-            <h1 className={styles.eyebrowTitle}>
+            <p className={styles.eyebrowTitle}>
               <Badge>{hero.eyebrow}</Badge>
-            </h1>
+            </p>
           </Reveal>
           <Reveal delay={0.08} y={18}>
-            <p className={styles.title}>{hero.title}</p>
+            <h1 className={styles.title}>{hero.title}</h1>
           </Reveal>
           <Reveal delay={0.16}>
             <p className={styles.subtitle}>{hero.subtitle}</p>

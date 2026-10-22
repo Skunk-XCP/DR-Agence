@@ -87,12 +87,33 @@
   font-size: 0.9rem;
 }
 
+.link {
+  position: relative;
+  z-index: 1;
+  display: inline-flex;
+  gap: 0.35rem;
+  margin-top: 1rem;
+  color: var(--accent);
+  font-size: 0.86rem;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.link:hover,
+.link:focus-visible {
+  color: var(--accentHover);
+}
+
 .star .title {
   color: #fbf5ea;
 }
 
 .star .description {
   color: rgba(251, 245, 234, 0.86);
+}
+
+.star .link {
+  color: #e7b86f;
 }
 
 .star .category {

@@ -16,6 +16,17 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "monthly",
       priority: 0.8,
     },
+    ...[
+      "/creation-site-internet-bordeaux",
+      "/creation-site-vitrine",
+      "/refonte-site-internet",
+      "/maintenance-site-internet",
+    ].map((path) => ({
+      url: `${baseUrl}${path}`,
+      lastModified: new Date(),
+      changeFrequency: "monthly" as const,
+      priority: 0.9,
+    })),
     {
       url: `${baseUrl}/mentions-legales`,
       lastModified: new Date(),

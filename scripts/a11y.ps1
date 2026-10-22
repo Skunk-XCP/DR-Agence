@@ -57,6 +57,10 @@ try {
 
   $targets = @(
     @{ Name = "home"; Path = "/" },
+    @{ Name = "creation-bordeaux"; Path = "/creation-site-internet-bordeaux" },
+    @{ Name = "creation-vitrine"; Path = "/creation-site-vitrine" },
+    @{ Name = "refonte"; Path = "/refonte-site-internet" },
+    @{ Name = "maintenance"; Path = "/maintenance-site-internet" },
     @{ Name = "offres"; Path = "/offres" },
     @{ Name = "configurateur"; Path = "/configurateur?businessType=snack&siteType=vitrine" }
   )
@@ -83,8 +87,11 @@ try {
           --throttling-method=provided
       }
 
+      if ($LASTEXITCODE -ne 0 -and -not (Test-Path -LiteralPath $reportPath)) {
+        throw "Lighthouse a echoue pour $url [$formFactor] sans produire de rapport."
+      }
       if ($LASTEXITCODE -ne 0) {
-        throw "Lighthouse a echoue pour $url [$formFactor]."
+        Write-Warning "Lighthouse a produit le rapport mais n'a pas pu nettoyer son profil temporaire pour $url [$formFactor]."
       }
 
       $json = Get-Content -Raw -Path $reportPath | ConvertFrom-Json

@@ -1,44 +1,50 @@
 export const services = {
   eyebrow: "Prestations",
-  title: "Un catalogue clair, une exécution sur mesure",
+  title: "Un site adapté à votre activité et à vos objectifs",
   subtitle:
-    "Des offres modulables, pensées pour attirer plus de clients et accélérer votre mise en ligne à Bordeaux et en France.",
+    "Création, refonte ou maintenance : chaque intervention part de votre besoin commercial, de vos contenus et des attentes de vos clients.",
   items: [
     {
-      title: "Vitrine Premium",
+      title: "Création de site vitrine",
       description:
-        "Design éditorial, animations subtiles, SEO technique et performance. Idéal pour crédibiliser et convertir.",
-      tag: "Le plus demandé"
+        "Présentez clairement votre activité, vos services et vos coordonnées avec un site professionnel, rapide et adapté aux mobiles.",
+      tag: "Le plus demandé",
+      href: "/creation-site-vitrine",
     },
     {
-      title: "Landing",
+      title: "Création web à Bordeaux",
       description:
-        "Une page unique, calibrée conversion, A/B testable, livrée rapidement pour vos lancements.",
-      tag: "Sprint"
+        "Un accompagnement de proximité pour créer un site internet, une landing page ou une fonctionnalité métier, également disponible partout en France.",
+      tag: "Local & distance",
+      href: "/creation-site-internet-bordeaux",
     },
     {
-      title: "Vitrine + fonctionnalités",
+      title: "Fonctionnalités sur mesure",
       description:
-        "Formulaires avancés, demandes stockées, mini back-office et intégrations. Idéal pour automatiser et gagner du temps.",
-      tag: "Fonctionnalités"
+        "Formulaires avancés, demandes stockées, mini back-office ou intégrations pour simplifier un processus de votre activité.",
+      tag: "Sur mesure",
+      href: "/creation-site-internet-bordeaux",
     },
     {
-      title: "Sur mesure",
+      title: "Refonte de site internet",
       description:
-        "Fonctionnalités spécifiques, intégrations API, et logique métier. Conçu pour grandir avec vous.",
-      tag: "Sur mesure"
+        "Modernisez un site devenu lent, peu lisible sur mobile ou incohérent avec vos prestations actuelles.",
+      tag: "Modernisation",
+      href: "/refonte-site-internet",
     },
     {
-      title: "Performance & accessibilité",
+      title: "Performance et accessibilité",
       description:
-        "Optimisation Core Web Vitals, accessibilité, et bonnes pratiques pour un site rapide et durable.",
-      tag: "Qualité"
+        "Identifiez les causes mesurables d'un site lent ou difficile à utiliser, puis corrigez les points prioritaires.",
+      tag: "Qualité",
+      href: "/refonte-site-internet",
     },
     {
-      title: "Maintenance évolutive",
+      title: "Maintenance de site internet",
       description:
-        "Suivi, petites évolutions, correctifs, et optimisation continue après la mise en ligne.",
-      tag: "Long terme"
+        "Corrigez les dysfonctionnements, mettez à jour vos contenus et faites évoluer votre site après sa mise en ligne.",
+      tag: "Suivi",
+      href: "/maintenance-site-internet",
     }
   ]
 };

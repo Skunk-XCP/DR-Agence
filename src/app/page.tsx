@@ -2,16 +2,16 @@ import type { Metadata } from "next";
 import { CTA, Footer, Hero, Navbar, Pricing, Process, Services, ValueProps } from "@/components/sections";
 
 export const metadata: Metadata = {
-  title: "Développeur web freelance à Bordeaux | Donatien Rouzeirol",
+  title: "Création de site internet à Bordeaux | Développeur freelance",
   description:
-    "Développeur web freelance à Bordeaux. Création de sites vitrines clairs, rapides et professionnels pour indépendants et petites entreprises.",
+    "Développeur web freelance à Bordeaux : création de sites vitrines, landing pages, refonte, fonctionnalités sur mesure et maintenance partout en France.",
   alternates: {
     canonical: "https://www.donatien-rouzeirol.fr/",
   },
   openGraph: {
-    title: "Développeur web freelance à Bordeaux | Donatien Rouzeirol",
+    title: "Création de site internet à Bordeaux | Développeur freelance",
     description:
-      "Développeur web freelance à Bordeaux. Création de sites vitrines clairs, rapides et professionnels pour indépendants et petites entreprises.",
+      "Création de sites vitrines, landing pages, refonte, fonctionnalités sur mesure et maintenance à Bordeaux et partout en France.",
     url: "https://www.donatien-rouzeirol.fr/",
     siteName: "Donatien Rouzeirol",
     locale: "fr_FR",
@@ -27,9 +27,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Développeur web freelance à Bordeaux | Donatien Rouzeirol",
+    title: "Création de site internet à Bordeaux | Développeur freelance",
     description:
-      "Développeur web freelance à Bordeaux. Création de sites vitrines clairs, rapides et professionnels pour indépendants et petites entreprises.",
+      "Création de sites vitrines, landing pages, refonte, fonctionnalités sur mesure et maintenance à Bordeaux et partout en France.",
     images: ["/assets/images/cafe-cosy-800.webp"],
   },
 };

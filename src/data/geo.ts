@@ -79,6 +79,30 @@ export const geoProfile = {
         "Parcours d'estimation pour choisir une offre selon le type de commerce, de projet et de site.",
     },
     {
+      url: "/creation-site-internet-bordeaux",
+      name: "Création de site internet à Bordeaux",
+      description:
+        "Création de sites professionnels pour les indépendants, commerces et entreprises à Bordeaux et en France.",
+    },
+    {
+      url: "/creation-site-vitrine",
+      name: "Création de site vitrine",
+      description:
+        "Conception de sites vitrines professionnels, responsive et structurés pour le référencement.",
+    },
+    {
+      url: "/refonte-site-internet",
+      name: "Refonte de site internet",
+      description:
+        "Modernisation de sites existants, amélioration des contenus, de l'ergonomie et des performances.",
+    },
+    {
+      url: "/maintenance-site-internet",
+      name: "Maintenance de site internet",
+      description:
+        "Diagnostic, correctifs, mises à jour et évolutions de sites internet existants.",
+    },
+    {
       url: "/geo.json",
       name: "Données GEO",
       description:

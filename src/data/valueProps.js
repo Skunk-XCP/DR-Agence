@@ -1,28 +1,28 @@
 export const valueProps = {
-  eyebrow: "Pourquoi moi",
-  title: "Une approche structurée, axée résultats",
+  eyebrow: "Votre projet",
+  title: "Une approche claire, sans complexité inutile",
   subtitle:
-    "Je privilégie la clarté, la stabilité et l'impact business. Vous gardez le contrôle, je garde le cap.",
+    "Je transforme votre besoin en un site compréhensible pour vos clients, simple à faire évoluer et cohérent avec votre activité.",
   items: [
     {
-      title: "Architecture solide",
+      title: "Objectifs clarifiés",
       description:
-        "Composants réutilisables, code propre, et structure évolutive pour éviter les dettes techniques."
+        "Chaque page et chaque fonctionnalité répond à un besoin identifié avant le développement."
     },
     {
-      title: "Design premium",
+      title: "Identité respectée",
       description:
-        "UI élégante, typographies fortes et mise en scène claire pour donner du relief à votre marque."
+        "Le design met en valeur votre activité tout en restant lisible et cohérent sur tous les écrans."
     },
     {
-      title: "Exécution rapide",
+      title: "Décisions partagées",
       description:
-        "Process clair, validations courtes, et livraisons cadrées pour tenir vos délais."
+        "Vous validez les étapes importantes avec des explications concrètes et un périmètre défini."
     },
     {
-      title: "Transparence totale",
+      title: "Base durable",
       description:
-        "Communication simple, devis clairs, et une priorisation orientée impact."
+        "Performance, accessibilité et maintenabilité sont prises en compte pour faciliter la suite du projet."
     }
   ]
 };
