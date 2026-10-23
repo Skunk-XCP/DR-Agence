@@ -59,7 +59,7 @@ a.button.outline:focus-visible {
 
 .ghost {
   background: transparent;
-  color: var(--text);
+  color: #fff8ef;
   border-color: color-mix(in srgb, var(--accent) 25%, var(--border));
 }
 
@@ -69,9 +69,12 @@ a.button.outline:focus-visible {
   transform: translateY(-1px);
 }
 
-a.button.ghost:hover,
 a.button.ghost:visited,
 a.button.ghost:focus-visible {
+  color: #fff8ef;
+}
+
+a.button.ghost:hover {
   color: var(--text);
 }
 

@@ -44,7 +44,7 @@ const Services = () => {
               <h3 className={styles.title}>{item.title}</h3>
               <p className={styles.description}>{item.description}</p>
               <Link className={styles.link} href={item.href}>
-                En savoir plus <span aria-hidden="true">→</span>
+                Découvrir la prestation <span aria-hidden="true">→</span>
               </Link>
             </article>
           </StaggerItem>
